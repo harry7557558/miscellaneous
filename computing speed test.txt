@@ -1,0 +1,75 @@
+﻿Double Precision Float Computing Speed Test
+
+Operating System:  Windows 10 home
+Processor:         Intel(R) Core(TM) i7-8550U CPU @ 1.80GHz   1.99GHz
+Compiler:          Microsoft Visual Studio 2017 v15.9.28307.586
+General Idea:      Create a bitmap and set all pixels to the coordinates after various point operations, the 
+                   speed is the reciprocal of elapsed time. This method is closer to actual condition, and 
+                   operations won't be optimized by compiler.
+
+operation              speed                   
+=                      1100                    
+(int)                  1100                    
+(float)                560                     
+isinf                  350                     
+isnan                  330                     
+x!=x                   800                     
+0*x!=0                 660                     
+==                     800                     
+!=                     800                     
+>                      370                     
+<                      370                     
+>=                     380                     
+<=                     380                     
+abs                    1000                    
+floor                  290                     
+ceil                   290                     
+round                  190                     
+trunc                  240                     
++                      900                     
+-                      900                     
+*                      900                     
+/                      580                     
+fmod                   140                     
+a*d-b*c                750                     
+pow                    60                      
+sqrt                   360                     
+cbrt                   75                      
+hypot                  60                      
+sqrt(x*x+y*y)          320                     
+exp                    200                     
+exp2                   100                     
+pow(2,x)               90                      
+log                    170                     
+log2                   90                      
+log(x)/log(2)          170                     
+log10                  170                     
+log(x)/log(10)         160                     
+sin                    170                     
+cos                    170                     
+tan                    130                     
+sin/cos                80                      
+asin                   90                      
+acos                   100                     
+atan                   150                     
+atan2                  70                      
+sinh                   70                      
+0.5*(exp(x)-exp(-x))   100                     
+cosh                   60                      
+0.5*(exp(x)+exp(-x))   100                     
+tanh                   70                      
+2/(exp(-2*x)+1)-1      60                      
+asinh                  90                      
+log(x+sqrt(x*x+1))     130                     
+acosh                  100                     
+log(x+sqrt(x*x-1))     130                     
+atanh                  35                      
+0.5*log((1+x)/(1-x))   70                      
+erf                    480                     
+erfc                   35                      
+1-erfc                 30                      
+tgamma                 8                       
+lgamma                 55                      
+exp(lgamma)            35                      
+
+
