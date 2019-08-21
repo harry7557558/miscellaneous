@@ -1,4 +1,4 @@
-﻿Double Precision Float Computing Speed Test
+Double Precision Float Computing Speed Test
 
 Operating System:  Windows 10 home
 Processor:         Intel(R) Core(TM) i7-8550U CPU @ 1.80GHz   1.99GHz
@@ -6,6 +6,9 @@ Compiler:          Microsoft Visual Studio 2017 v15.9.28307.586
 General Idea:      Create a bitmap and set all pixels to the coordinates after various point operations, the 
                    speed is the reciprocal of elapsed time. This method is closer to actual condition, and 
                    operations won't be optimized by compiler.
+
+This is a very interesting test. Try to test it on your processor, see what will the result look like.
+
 
 operation              speed                   
 =                      1100                    
