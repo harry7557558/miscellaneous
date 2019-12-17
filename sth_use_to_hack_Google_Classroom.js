@@ -39,3 +39,4 @@ for (var i = 0; i < students.length; i++) {
 }
 console.log("There are " + c + " student(s) in this classroom. (excluding yourself)");
 console.log(s);
+
