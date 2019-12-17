@@ -7,8 +7,7 @@ console.log("There are " + teachers.length + " teacher(s) in this classroom.");
 var s = "They are: \n";
 for (var i = 0; i < teachers.length; i++) {
     var n = teachers[i].innerText;
-    n = n.replace(/\t/g, "");
-    n = n.replace(/\n/g, "");
+    n = n.replace(/\t/g, "").replace(/\n/g, "");
     if (n.match("EmailRemove"))
         n = n.substr(0, n.search("EmailRemove"));
     var t = teachers[i].getElementsByTagName("a")[0].getAttribute("aria-label");
@@ -24,8 +23,7 @@ var s = "They are: \n";
 for (var i = 0; i < students.length; i++) {
     var n = students[i].innerText;
     if (!n.match("(invited)")) {
-        n = n.replace(/\t/g, "");
-        n = n.replace(/\n/g, "");
+        n = n.replace(/\t/g, "").replace(/\n/g, "");
         s += n;
         try {
             var t = students[i].getElementsByTagName("a")[0].getAttribute("aria-label");
