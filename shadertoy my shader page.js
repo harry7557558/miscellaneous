@@ -1,3 +1,10 @@
+function max(a, b) {
+    return a > b ? a : b;
+}
+function min(a, b) {
+    return a < b ? a : b;
+}
+
 function toString(r, g, b, a) {
     return "rgba(" + Math.floor(255 * r) + "," + Math.floor(255 * g) + "," + Math.floor(255 * b) + "," + a + ")";
 }
@@ -10,10 +17,10 @@ function stepToString(c1, c2, a) {
     return "repeating-linear-gradient(to right, " + c1 + "," + c1 + al + c2 + al + c2 + "100%)";
 }
 function getTime(s) {
-    var y = new Number(s.substr(0, 4)) - 2000;
-    var m = new Number(s.substr(5, 2)) - 1;
-    var d = new Number(s.substr(8, 2)) - 1;
-    return 365 * y + 30 * m + d;
+    var y = Number(s.substr(0, 4)) - 2000;
+    var m = Number(s.substr(5, 2)) - 1;
+    var d = Number(s.substr(8, 2)) - 1;
+    return 365 * y + 30 * m + d;    // Er...
 }
 
 function Customize() {
@@ -22,43 +29,60 @@ function Customize() {
 
     var allshaders = document.getElementById("divShadersTable");
     var shaders = allshaders.getElementsByTagName("tr");
+    var n = shaders.length;
 
-    shaders[0].style.height = "30px";
-    for (var i = 0; i < shaders.length; i++) {
-        var cell = shaders[i].getElementsByTagName("td");
-        if (i != 0) {
-            //shaders[i].style.backgroundColor = "white";
-            shaders[i].style.backgroundImage = "linear-gradient(white, aliceblue)";
-        }
-        //if (cell.length == 8) shaders[i].deleteCell(7);
+    // get shader data
+    var cells = [shaders[0].getElementsByTagName("td")], cell,
+        url = [""], name = [""], status = [""],
+        date = [NaN], views = [NaN], likes = [NaN], comments = [NaN], ratio = [0];
+    var minDate = 1e+8, maxDate = 0, maxViews = 0, maxLikes = 0, maxComments = 0, maxRatio = 0;
+    for (var i = 1; i < n; i++) {
+        cell = shaders[i].getElementsByTagName("td");
+        cells.push(cell);
+        url.push(cell[0].getElementsByTagName("a")[0].href);
+        name.push(cell[1].innerText);
+        status.push(cell[6].innerText);
+        // date
+        date.push(getTime(cell[2].innerText));
+        maxDate = max(date[i], maxDate), minDate = min(date[i], minDate);
+        // views
+        views.push(Number(cell[3].innerText));
+        maxViews = max(views[i], maxViews);
+        // likes
+        likes.push(Number(cell[4].innerText));
+        maxLikes = max(likes[i], maxLikes);
+        // comments
+        comments.push(Number(cell[5].innerText));
+        maxComments = max(comments[i], maxComments);
+        // ratio of likes to views
+        ratio.push(likes[i] / views[i]);
+        if (isNaN(ratio[i])) ratio[i] = 0;
+        maxRatio = max(ratio[i], maxRatio);
     }
 
-    for (var i = 1; i < shaders.length; i++) {
-        var cell = shaders[i].getElementsByTagName("td");
-        var preview = cell[0].getElementsByClassName("bigPreview")[0].src;
-        var url = cell[0].getElementsByTagName("a")[0].href;
-        var name = cell[1].innerText;
-        var date = cell[2].innerText;
-        var views = new Number(cell[3].innerText);
-        var likes = new Number(cell[4].innerText);
-        var comments = new Number(cell[5].innerText);
-        var status = cell[6].innerText;
-
-        col = toString(1, 0, 0, 1.0 - Math.exp(-0.005 * views));
+    shaders[0].style.height = "30px";
+    for (var i = 1; i < n; i++) {
+        shaders[i].style.backgroundImage = "linear-gradient(white, aliceblue)";
+        var cell = cells[i];
+        // views, red
+        col = toString(1, 0, 0, 1.0 - Math.exp(-0.005 * views[i]));
         cell[3].style.backgroundColor = col;
-        cell[3].style.backgroundImage = stepToString(col, "rgba(0,0,0,0)", views / 150);
-        col = toString(0, 1, 0, 1.0 - Math.exp(-0.05 * likes));
+        cell[3].style.backgroundImage = stepToString(col, "rgba(0,0,0,0)", views[i] / max(100, 50 * Math.ceil((maxViews + 1) / 50)));
+        // likes, green
+        col = toString(0, 1, 0, 1.0 - Math.exp(-0.05 * likes[i]));
         cell[4].style.backgroundColor = col;
-        cell[4].style.backgroundImage = stepToString(col, "rgba(0,0,0,0)", likes / 12);
-        col = toString(0, 0, 1, 1.0 - Math.exp(-0.05 * comments));
+        cell[4].style.backgroundImage = stepToString(col, "rgba(0,0,0,0)", likes[i] / max(10, 5 * Math.ceil((maxLikes + 1) / 5)));
+        // comments, blue
+        col = toString(0, 0, 1, 1.0 - Math.exp(-0.05 * comments[i]));
         cell[5].style.backgroundColor = col;
-        cell[5].style.backgroundImage = stepToString(col, "rgba(0,0,0,0)", comments / 5);
-
-        //var time = getTime(date) - getTime("2019-09-01");
-        //time = 1.0 - Math.exp(-0.02 * time);
-        //col = toString(1, 1, 0, 0.25*time);
-        //cell[2].style.backgroundColor = col;
-        //cell[2].style.backgroundImage = stepToString(col, "rgba(0,0,0,0)", time);
+        cell[5].style.backgroundImage = stepToString(col, "rgba(0,0,0,0)", comments[i] / max(5, maxComments + 1));
+        // status, yellow
+        col = toString(1, 1, 0, 1.0 - Math.exp(-5.0 * ratio[i]));
+        cell[6].style.backgroundColor = col;
+        cell[6].style.backgroundImage = stepToString(col, "rgba(0,0,0,0)", ratio[i] / 0.3);
+        var str = (100 * ratio[i]).toFixed(2) + "% like";
+        if (str.length < 11) str = "0" + str;
+        cell[6].innerText = str;
     }
 }
 
