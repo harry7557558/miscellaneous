@@ -77,7 +77,7 @@ function Customize() {
         cell[5].style.backgroundColor = col;
         cell[5].style.backgroundImage = stepToString(col, "rgba(0,0,0,0)", comments[i] / max(5, maxComments + 1));
         // status, yellow
-        col = toString(1, 1, 0, 1.0 - Math.exp(-5.0 * ratio[i]));
+        col = toString(1, 0.6, 0, 1.0 - Math.exp(-5.0 * ratio[i]));
         cell[6].style.backgroundColor = col;
         cell[6].style.backgroundImage = stepToString(col, "rgba(0,0,0,0)", ratio[i] / 0.3);
         var str = (100 * ratio[i]).toFixed(2) + "% like";
