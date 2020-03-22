@@ -4,10 +4,8 @@
 document.body.onkeydown = function(event) {
 
     var getUsername = function() {
-        var url = window.location.href, username;
-        if (!url.match("https://dmoj.ca/user"))
-            return;
-        username = url.substring(21, url.length);
+        var url = window.location.href, username = "";
+        if (url.match("https://dmoj.ca/user")) username = url.substring(21, url.length);
         if (username.length == 0)
             username = document.getElementById("user-links").getElementsByTagName("b")[0].innerText;
         if (username.match("\/"))
