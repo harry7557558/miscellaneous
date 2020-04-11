@@ -1,29 +1,29 @@
-function max(a, b) {
-    return a > b ? a : b;
-}
-function min(a, b) {
-    return a < b ? a : b;
-}
-
-function toString(r, g, b, a) {
-    return "rgba(" + Math.floor(255 * r) + "," + Math.floor(255 * g) + "," + Math.floor(255 * b) + "," + a + ")";
-}
-function gradientToString(c1, c2) {
-    return "linear-gradient(to right, " + c1 + ", " + c2 + ")";
-}
-function stepToString(c1, c2, a) {
-    // repeating-linear-gradient(#74ABDD, #74ABDD 49.9%, #498DCB 50.1%, #498DCB 100%)
-    var al = " " + 100 * a + "%, ";
-    return "repeating-linear-gradient(to right, " + c1 + "," + c1 + al + c2 + al + c2 + "100%)";
-}
-function getTime(s) {
-    var y = Number(s.substr(0, 4)) - 2000;
-    var m = Number(s.substr(5, 2)) - 1;
-    var d = Number(s.substr(8, 2)) - 1;
-    return 365 * y + 30 * m + d;    // Er...
-}
-
 function Customize() {
+    var max = function(a, b) {
+        return a > b ? a : b;
+    }
+      , min = function(a, b) {
+        return a < b ? a : b;
+    };
+    var toString = function(r, g, b, a) {
+        return "rgba(" + Math.floor(255 * r) + "," + Math.floor(255 * g) + "," + Math.floor(255 * b) + "," + a + ")";
+    }
+      , gradientToString = function(c1, c2) {
+        return "linear-gradient(to right, " + c1 + ", " + c2 + ")";
+    }
+      , stepToString = function(c1, c2, a) {
+        // repeating-linear-gradient(#74ABDD, #74ABDD 49.9%, #498DCB 50.1%, #498DCB 100%)
+        var al = " " + 100 * a + "%, ";
+        return "repeating-linear-gradient(to right, " + c1 + "," + c1 + al + c2 + al + c2 + "100%)";
+    }
+      , getTime = function(s) {
+        var y = Number(s.substr(0, 4)) - 2000;
+        var m = Number(s.substr(5, 2)) - 1;
+        var d = Number(s.substr(8, 2)) - 1;
+        return 365 * y + 30 * m + d;
+        // Er...
+    };
+
     //openTab('Shaders');
     //refreshShadersTable();
 
@@ -32,10 +32,13 @@ function Customize() {
     var n = shaders.length;
 
     // get shader data
-    var cells = [shaders[0].getElementsByTagName("td")], cell,
-        url = [""], name = [""], status = [""],
-        date = [NaN], views = [NaN], likes = [NaN], comments = [NaN], ratio = [0];
-    var minDate = 1e+8, maxDate = 0, maxViews = 0, maxLikes = 0, maxComments = 0, maxRatio = 0;
+    var cells = [shaders[0].getElementsByTagName("td")], cell, url = [""], name = [""], status = [""], date = [NaN], views = [NaN], likes = [NaN], comments = [NaN], ratio = [0];
+    var minDate = 1e+8
+      , maxDate = 0
+      , maxViews = 0
+      , maxLikes = 0
+      , maxComments = 0
+      , maxRatio = 0;
     for (var i = 1; i < n; i++) {
         cell = shaders[i].getElementsByTagName("td");
         cells.push(cell);
@@ -44,7 +47,8 @@ function Customize() {
         status.push(cell[6].innerText);
         // date
         date.push(getTime(cell[2].innerText));
-        maxDate = max(date[i], maxDate), minDate = min(date[i], minDate);
+        maxDate = max(date[i], maxDate),
+        minDate = min(date[i], minDate);
         // views
         views.push(Number(cell[3].innerText));
         maxViews = max(views[i], maxViews);
@@ -56,7 +60,8 @@ function Customize() {
         maxComments = max(comments[i], maxComments);
         // ratio of likes to views
         ratio.push(likes[i] / views[i]);
-        if (isNaN(ratio[i])) ratio[i] = 0;
+        if (isNaN(ratio[i]))
+            ratio[i] = 0;
         maxRatio = max(ratio[i], maxRatio);
     }
 
@@ -81,10 +86,11 @@ function Customize() {
         cell[6].style.backgroundColor = col;
         cell[6].style.backgroundImage = stepToString(col, "rgba(0,0,0,0)", ratio[i] / 0.3);
         var str = (100 * ratio[i]).toFixed(2) + "% like";
-        if (str.length < 11) str = "0" + str;
+        if (str.length < 11)
+            str = "0" + str;
         cell[6].innerText = str;
     }
 }
 
-Customize();
-//document.getElementById("tabShaders").setAttribute("onClick", "javascript: Customize();");
+setTimeout(Customize, 1000);
+document.body.setAttribute("onKeydown", "if (event.keyCode==112) event.preventDefault(), Customize();");
