@@ -5,9 +5,9 @@ using namespace std;
 // write html img src inline (local disk)
 // tested on only one file, likely slow and buggy
 
-const string directory = "D:\\Homework\\ENG2D\\";
-const string filename = "Educated by Tara Westover.html";
-const string outputPath = "o.html";
+const string directory = "D:\\Homework\\Media Art\\CPT\\";
+const string filename = "List.html";
+const string outputPath = "List1.html";
 
 
 const char _64[65] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -52,14 +52,14 @@ void writeImgInline(FILE* fp, char *s) {
 					skip(1); skipSpace;
 					if (s[d] == '\'' || s[d] == '\"') {
 						int d0 = d; skip(1);
-						string t;
-						while (s[d] != s[d0]) t.push_back(s[d]), d++;
-						t = directory + t;
+						string t0, t;
+						while (s[d] != s[d0]) t0.push_back(s[d]), d++;
+						t = directory + t0;
 						printf("%s - ", &t[0]);
 						FILE* img = fopen(&t[0], "rb");
 						if (!img) {
 							printf("FAIL\n");
-							fprintf(img, "%s", &t[0]);
+							fprintf(fp, "%s", &t0[0]);
 						}
 						else {
 							auto getSuffix = [](string s) ->string {
