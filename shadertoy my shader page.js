@@ -33,6 +33,11 @@ function Customize() {
 
     // get shader data
     var cells = [shaders[0].getElementsByTagName("td")], cell, url = [""], name = [""], status = [""], date = [NaN], views = [NaN], likes = [NaN], comments = [NaN], ratio = [0];
+    var totViews = 0
+      , totLikes = 0
+      , totComments = 0
+      , totViewsPub = 0
+      , totLikesPub = 0;
     var minDate = 1e+8
       , maxDate = 0
       , maxViews = 0
@@ -51,21 +56,32 @@ function Customize() {
         minDate = min(date[i], minDate);
         // views
         views.push(Number(cell[3].innerText));
+        totViews += views[i];
         maxViews = max(views[i], maxViews);
         // likes
         likes.push(Number(cell[4].innerText));
+        totLikes += likes[i];
         maxLikes = max(likes[i], maxLikes);
         // comments
         comments.push(Number(cell[5].innerText));
+        totComments += comments[i];
         maxComments = max(comments[i], maxComments);
         // ratio of likes to views
         ratio.push(likes[i] / views[i]);
         if (isNaN(ratio[i]))
             ratio[i] = 0;
         maxRatio = max(ratio[i], maxRatio);
+        if (status[i] == "public" || cell[6].style.color == "rgb(0, 160, 0)") {
+            totViewsPub += views[i];
+            totLikesPub += likes[i];
+        }
     }
 
     shaders[0].style.height = "30px";
+    cells[0][3].innerHTML = "Views <b style='color:#500;'>(" + totViews + ")</b>";
+    cells[0][4].innerHTML = "Likes <b style='color:#030;'>(" + totLikes + ")</b>";
+    cells[0][5].innerHTML = "Comments <b style='color:#005;'>(" + totComments + ")</b>";
+    cells[0][6].innerHTML = "Status <b style='color:#530;'>(" + (100 * totLikesPub / totViewsPub).toFixed(2) + "%&hearts;)</b>";
     for (var i = 1; i < n; i++) {
         shaders[i].style.backgroundImage = "linear-gradient(white, aliceblue)";
         var cell = cells[i];
