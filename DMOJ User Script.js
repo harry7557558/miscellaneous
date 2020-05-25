@@ -1,3 +1,8 @@
+// https://github.com/DMOJ/online-judge/blob/master/judge/comments.py#L47
+$(document).ready(function() {
+    document.getElementById("new-comment").remove();
+});
+
 $(function() {
 
     // Customize user table
@@ -74,72 +79,70 @@ $(function() {
     // DMOJ Point Calculator
     // Press F1 to calculate the points your earned points after solving certain problem(s)
 
-    document.body.onkeydown = function(event) {
+    var getUsername = function() {
+        var url = window.location.href
+          , username = "";
+        if (url.match("https://dmoj.ca/user/"))
+            username = url.substring(21, url.length);
+        if (username.length == 0)
+            username = document.getElementById("user-links").getElementsByTagName("b")[0].innerText;
+        if (username.match("\/"))
+            username = username.substring(0, username.search("\/"));
+        return username;
+    }
 
-        var getUsername = function() {
-            var url = window.location.href
-              , username = "";
-            if (url.match("https://dmoj.ca/user/"))
-                username = url.substring(21, url.length);
-            if (username.length == 0)
-                username = document.getElementById("user-links").getElementsByTagName("b")[0].innerText;
-            if (username.match("\/"))
-                username = username.substring(0, username.search("\/"));
-            return username;
-        }
-        var username = getUsername();
-
-        var getPointData = function(username) {
-            if (document.getElementById("pointcalc") == null) {
-                document.body.innerHTML += "<div id='pointcalc' style='display:none'><div id='pointcalc-pnts'></div><div id='pointcalc-ac'></div></div>";
-                var request = new XMLHttpRequest();
-                request.open("GET", "https://dmoj.ca/api/user/submissions/" + username);
-                request.onload = function() {
-                    var data = JSON.parse(this.response);
-                    var dat = request.responseText.replace(/[\{\}]/g, '').split(", ");
-                    var Subs = [];
-                    for (var i = 0; i < dat.length; i += 7) {
-                        // problem, time, memory, points, language, status, result
-                        var s = dat[i];
-                        s = s.substring(s.search('"problem": "') + 12, s.length - 1);
-                        var p = Number(dat[i + 3].substring(10, dat[i + 3].length));
-                        if (p > 0) {
-                            var res = dat[i + 6].substring(11, dat[i + 6].length - 1);
-                            Subs.push([s, p, res == 'AC']);
-                        }
-                    }
-                    Subs.sort();
-                    var AC = 0;
-                    var Points = [];
-                    var prob = Subs[0][0]
-                      , pp = Subs[0][1]
-                      , ac = Subs[0][2];
-                    for (var i = 1; i < Subs.length; i++) {
-                        if (Subs[i][0] == prob) {
-                            pp = Math.max(pp, Subs[i][1]);
-                            ac |= Subs[i][2];
-                        } else {
-                            Points.push(pp);
-                            AC += Number(ac);
-                            prob = Subs[i][0],
-                            pp = Subs[i][1],
-                            ac = Subs[i][2];
-                        }
-                    }
-                    Points.push(pp),
-                    AC += Number(ac);
-                    document.getElementById("pointcalc-pnts").innerHTML = Points;
-                    document.getElementById("pointcalc-ac").innerHTML = AC;
+    var pointcalc_pnts, pointcalc_ac;
+    var getPointData = function(username) {
+        var request = new XMLHttpRequest();
+        request.open("GET", "https://dmoj.ca/api/user/submissions/" + username);
+        request.onload = function() {
+            var data = JSON.parse(this.response);
+            var dat = request.responseText.replace(/[\{\}]/g, '').split(", ");
+            var Subs = [];
+            for (var i = 0; i < dat.length; i += 7) {
+                // problem, time, memory, points, language, status, result
+                var s = dat[i];
+                s = s.substring(s.search('"problem": "') + 12, s.length - 1);
+                var p = Number(dat[i + 3].substring(10, dat[i + 3].length));
+                if (p > 0) {
+                    var res = dat[i + 6].substring(11, dat[i + 6].length - 1);
+                    Subs.push([s, p, res == 'AC']);
                 }
-                request.send();
-                return true;
             }
-            return false;
-        };
+            Subs.sort();
+            var AC = 0;
+            var Points = [];
+            var prob = Subs[0][0]
+              , pp = Subs[0][1]
+              , ac = Subs[0][2];
+            for (var i = 1; i < Subs.length; i++) {
+                if (Subs[i][0] == prob) {
+                    pp = Math.max(pp, Subs[i][1]);
+                    ac |= Subs[i][2];
+                } else {
+                    Points.push(pp);
+                    AC += Number(ac);
+                    prob = Subs[i][0],
+                    pp = Subs[i][1],
+                    ac = Subs[i][2];
+                }
+            }
+            Points.push(pp),
+            AC += Number(ac);
+            pointcalc_pnts = Points;
+            pointcalc_ac = AC;
+        }
+        request.send();
+        console.log("getPointData('" + username + "');");
+        return true;
+    };
+    $(document).ready(getPointData(getUsername()));
+
+    document.body.onkeydown = function(event) {
 
         var calcPoint = function(added=[]) {
             // DMOJ Point System: https://dmoj.ca/post/103-point-system-rework
-            var Points = document.getElementById("pointcalc-pnts").innerText.split(',');
+            var Points = pointcalc_pnts;
             Points = Points.concat(added);
             Points.sort(function(a, b) {
                 return b - a;
@@ -151,18 +154,21 @@ $(function() {
                 if (i == 99)
                     break;
             }
-            var AC = document.getElementById("pointcalc-ac").innerHTML;
-            var B = 150 * (1.0 - Math.pow(0.997, Number(AC) + added.length));
+            var AC = pointcalc_ac;
+            var B = 150 * (1.0 - Math.pow(0.997, AC + added.length));
             return P + B;
         };
 
-        var pointCalculator = function() {
+        if (event.keyCode == 112) {
+            // F1: point calculator
+            event.preventDefault();
             var oldpoint = calcPoint();
             if (oldpoint == 0.0 || 0.0 * oldpoint != 0.0) {
                 alert("ERROR: Please restart this script");
+                getPointData(getUsername());
                 return;
             }
-            var app = prompt("User " + username + "\nEnter comma-separated problem weight:", "10");
+            var app = prompt("User " + getUsername() + "\nEnter comma-separated problem weight:", "10");
             if (app == null || app == "")
                 return;
             app = app.replace(/ /g, "").split(",");
@@ -175,11 +181,29 @@ $(function() {
             var newpoint = calcPoint(app);
             var dif = newpoint - oldpoint;
             alert("Current Point: " + oldpoint.toFixed(2) + "\nAfter Solving: " + newpoint.toFixed(2) + "\nPoint Earned: " + dif.toFixed(2));
-        };
-
-        if (event.keyCode == 112) {
-            event.preventDefault();
-            setTimeout(pointCalculator, getPointData(username) ? 500 : 0);
+        } else if (event.keyCode == 113) {
+            // Output a table
+            var p0 = calcPoint();
+            var s = "User " + getUsername() + '\n';
+            s += "Problem $      Earned $\n";
+            s += "1              " + (calcPoint([1]) - p0).toFixed(2) + '\n';
+            s += "3              " + (calcPoint([3]) - p0).toFixed(2) + '\n';
+            s += "4              " + (calcPoint([4]) - p0).toFixed(2) + '\n';
+            s += "5              " + (calcPoint([5]) - p0).toFixed(2) + '\n';
+            s += "6              " + (calcPoint([6]) - p0).toFixed(2) + '\n';
+            s += "7              " + (calcPoint([7]) - p0).toFixed(2) + '\n';
+            s += "8              " + (calcPoint([8]) - p0).toFixed(2) + '\n';
+            s += "10             " + (calcPoint([10]) - p0).toFixed(2) + '\n';
+            s += "12             " + (calcPoint([12]) - p0).toFixed(2) + '\n';
+            s += "15             " + (calcPoint([15]) - p0).toFixed(2) + '\n';
+            s += "17             " + (calcPoint([17]) - p0).toFixed(2) + '\n';
+            s += "20             " + (calcPoint([20]) - p0).toFixed(2) + '\n';
+            s += "25             " + (calcPoint([25]) - p0).toFixed(2) + '\n';
+            s += "30             " + (calcPoint([30]) - p0).toFixed(2) + '\n';
+            s += "35             " + (calcPoint([35]) - p0).toFixed(2) + '\n';
+            s += "40             " + (calcPoint([40]) - p0).toFixed(2) + '\n';
+            s += "50             " + (calcPoint([50]) - p0).toFixed(2) + '\n';
+            console.log(s);
         }
 
     }
