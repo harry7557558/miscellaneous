@@ -210,3 +210,33 @@ $(function() {
     ;
 
 });
+
+// hack (potentially) malicious links
+$(function() {
+    var whitelist = ["javascript", "dmoj.ca", "github.com", ".github.io", ".wikipedia.org", "keybase.io", "codeforces.com", "wcipeg.com", ".uwaterloo.ca"];
+    var blacklist = ["youtube", "goo.gl", "bit.ly", "gg.gg", "vimeo", "mailto:", "docs.google.com", "olympiads.ca"];
+    var s = document.getElementsByTagName("a");
+    for (var i = 0; i < s.length; i++) {
+        var url = s[i].href;
+        var ok = false;
+        for (var j = 0; j < whitelist.length; j++)
+            if (url.match(whitelist[j]))
+                ok = true;
+        var bad = false;
+        for (var j = 0; j < blacklist.length; j++)
+            if (url.match(blacklist[j]))
+                bad = true;
+        if (!ok && url[0] != '/') {
+            s[i].style.color = bad ? "red" : "blue";
+            s[i].style.fontWeight = 600;
+            s[i].style.textDecoration = "underline";
+            if (bad) {
+                s[i].href = "javascript:alert('" + url + "')";
+                console.log("Link blocked: " + url);
+            } else {
+                s[i].target = "_blank";
+                console.log("Link suspected: " + url);
+            }
+        }
+    }
+});
