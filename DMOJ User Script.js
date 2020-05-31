@@ -239,4 +239,10 @@ $(function() {
             }
         }
     }
+
+    // highlight natural-looking links inside text
+    s = document.getElementsByClassName("rate-none");
+    for (var i = 0; i < s.length; i++) {
+        s[i].style.textDecoration = "underline";
+    }
 });
