@@ -3,6 +3,13 @@ $(document).ready(function() {
     document.getElementById("new-comment").remove();
 });
 
+// show problem type on problem page
+$(document).ready(function(){
+    if (document.URL.match("problem")){
+        document.getElementById("problem-types").childNodes[1].click();
+    }
+});
+
 $(function() {
 
     // Customize user table
@@ -213,8 +220,8 @@ $(function() {
 
 // hack (potentially) malicious links
 $(function() {
-    var whitelist = ["javascript", "dmoj.ca", "github.com", ".github.io", ".wikipedia.org", "keybase.io", "codeforces.com", "wcipeg.com", ".uwaterloo.ca"];
-    var blacklist = ["youtube", "goo.gl", "bit.ly", "gg.gg", "vimeo", "mailto:", "docs.google.com", "olympiads.ca"];
+    var whitelist = ["javascript", "dmoj.ca", "github.com", ".github.io", ".wikipedia.org", "keybase.io", "codeforces.com", "wcipeg.com", ".uwaterloo.ca", ".algome.me"];
+    var blacklist = ["youtube", "goo.gl", "bit.ly", "gg.gg", "vimeo", "mailto:", "docs.google.com", "olympiads.ca", "www.timeanddate.com"];
     var s = document.getElementsByTagName("a");
     for (var i = 0; i < s.length; i++) {
         var url = s[i].href;
