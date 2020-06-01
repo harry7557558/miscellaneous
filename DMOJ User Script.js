@@ -5,7 +5,7 @@ $(document).ready(function() {
 
 // show problem type on problem page
 $(document).ready(function() {
-    if (document.URL.match("problem")) {
+    if (document.URL.match("problem/")) {
         document.getElementById("problem-types").childNodes[1].click();
     }
 });
@@ -103,8 +103,7 @@ $(function() {
         request.send();
         var str = request.responseText;
         str = str.replace('{"results": "', '').replace('", "has_more": false}', '');
-        str = str.split("\\\"").join("\"").split("\\n").join("");
-        document.getElementById("submissions-table").innerHTML = str;
+        eval("document.getElementById('submissions-table').innerHTML = \"" + str + "\"");
         var ele = document.getElementById("pp-load-link-wrapper");
         if (ele != null)
             ele.remove();
@@ -216,29 +215,27 @@ $(function() {
             var dif = newpoint - oldpoint;
             alert("Current Point: " + oldpoint.toFixed(2) + "\nAfter Solving: " + newpoint.toFixed(2) + "\nPoint Earned: " + dif.toFixed(2));
         } else if (event.keyCode == 113) {
-            // Output a table
-            var p0 = calcPoint();
+            // Output a table and an svg graph
+            const pc = [1, 3, 4, 5, 6, 7, 8, 10, 12, 15, 17, 20, 25, 30, 35, 40, 50];
+            var p0 = calcPoint()
+              , p1 = [];
             var s = "User " + getUsername() + '\n';
-            s += "Problem $      Earned $\n";
-            s += "1              " + (calcPoint([1]) - p0).toFixed(2) + '\n';
-            s += "3              " + (calcPoint([3]) - p0).toFixed(2) + '\n';
-            s += "4              " + (calcPoint([4]) - p0).toFixed(2) + '\n';
-            s += "5              " + (calcPoint([5]) - p0).toFixed(2) + '\n';
-            s += "6              " + (calcPoint([6]) - p0).toFixed(2) + '\n';
-            s += "7              " + (calcPoint([7]) - p0).toFixed(2) + '\n';
-            s += "8              " + (calcPoint([8]) - p0).toFixed(2) + '\n';
-            s += "10             " + (calcPoint([10]) - p0).toFixed(2) + '\n';
-            s += "12             " + (calcPoint([12]) - p0).toFixed(2) + '\n';
-            s += "15             " + (calcPoint([15]) - p0).toFixed(2) + '\n';
-            s += "17             " + (calcPoint([17]) - p0).toFixed(2) + '\n';
-            s += "20             " + (calcPoint([20]) - p0).toFixed(2) + '\n';
-            s += "25             " + (calcPoint([25]) - p0).toFixed(2) + '\n';
-            s += "30             " + (calcPoint([30]) - p0).toFixed(2) + '\n';
-            s += "35             " + (calcPoint([35]) - p0).toFixed(2) + '\n';
-            s += "40             " + (calcPoint([40]) - p0).toFixed(2) + '\n';
-            s += "50             " + (calcPoint([50]) - p0).toFixed(2) + '\n';
+            s += "Problem $     Earned $        Problem $     Earned $        \n";
+            var svg = "M0," + (calcPoint([0]) - p0).toFixed(2);
+            for (var i = 0; i < pc.length; i++) {
+                p1.push(calcPoint([pc[i]]) - p0);
+                svg += "L" + pc[i] + "," + p1[i].toFixed(2);
+            }
+            var ml = Math.ceil(pc.length / 2);
+            for (var i = 0; i < ml; i++) {
+                s += String(pc[i]).padEnd(14) + p1[i].toFixed(2).padEnd(16);
+                if (ml + i < pc.length) {
+                    s += String(pc[ml + i]).padEnd(14) + p1[ml + i].toFixed(2).padEnd(16) + '\n';
+                }
+            }
             alert(s);
             console.log(s);
+            console.log('<path id="' + getUsername() + '" style="" transform="" d="' + svg + '" vector-effect="non-scaling-stroke"></path>');
         }
 
     }
@@ -253,6 +250,8 @@ $(function() {
     var s = document.getElementsByTagName("a");
     for (var i = 0; i < s.length; i++) {
         var url = s[i].href;
+        if (url == "" || url == "#")
+            continue;
         var ok = false;
         for (var j = 0; j < whitelist.length; j++)
             if (url.match(whitelist[j]))
