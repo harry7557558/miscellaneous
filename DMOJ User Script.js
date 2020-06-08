@@ -16,6 +16,8 @@ function getUsername() {
       , username = "";
     if (url.match("https://dmoj.ca/user/"))
         username = url.substring(21, url.length);
+    if (url.match("https://dmoj.ca/submissions/user/"))
+        username = url.substring(33, url.length);
     if (username.length == 0)
         username = document.getElementById("user-links").getElementsByTagName("b")[0].innerText;
     if (username.match("\/"))
