@@ -217,11 +217,11 @@ $(function() {
             var dif = newpoint - oldpoint;
             alert("Current Point: " + oldpoint.toFixed(2) + "\nAfter Solving: " + newpoint.toFixed(2) + "\nPoint Earned: " + dif.toFixed(2));
         } else if (event.keyCode == 113) {
-            // Output a table and an svg graph
+            // F2: Output a table and an svg graph
             const pc = [1, 3, 4, 5, 6, 7, 8, 10, 12, 15, 17, 20, 25, 30, 35, 40, 50];
             var p0 = calcPoint()
               , p1 = [];
-            var s = "User " + getUsername() + '\n';
+            var s = "User " + getUsername() + ' (' + p0.toFixed(2) + ')\n';
             s += "Problem $     Earned $        Problem $     Earned $        \n";
             var svg = "M0," + (calcPoint([0]) - p0).toFixed(2);
             for (var i = 0; i < pc.length; i++) {
