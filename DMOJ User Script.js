@@ -1,13 +1,24 @@
-// https://github.com/DMOJ/online-judge/blob/master/judge/comments.py#L47
 $(document).ready(function() {
-    document.getElementById("new-comment").remove();
-});
+    // https://github.com/DMOJ/online-judge/blob/master/judge/comments.py#L47
+    var s = document.getElementById("new-comment");
+    if (s != null)
+        s.remove();
 
-// show problem type on problem page
-$(document).ready(function() {
+    // show problem type on problem page
     if (document.URL.match("problem/")) {
         document.getElementById("problem-types").childNodes[1].click();
     }
+
+    // show hidden comments
+    s = document.getElementsByClassName("bad-comment");
+    for (var i = 0; i < s.length; i++) {
+        s[i].getElementsByClassName("comment-body")[0].style.display = "";
+        s[i].getElementsByClassName("bad-comment-body")[0].style.display = "none";
+    }
+    $(".bad-comment").css({
+        opacity: "0.7",
+        color: "#555"
+    });
 });
 
 // get the username on the current page
