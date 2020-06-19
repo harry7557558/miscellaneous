@@ -9,11 +9,16 @@ setTimeout(function() {
     for (var i = 0; i < teachers.length; i++) {
         var n = teachers[i].innerText;
         n = n.replace(/\t/g, "").replace(/\n/g, "");
-        if (n.match("EmailRemove"))
-            n = n.substr(0, n.search("EmailRemove"));
-        var t = teachers[i].getElementsByTagName("a")[0].getAttribute("aria-label");
-        t = t.substring(6, t.length);
-        s += n + " (" + t + ")";
+        if (n.match("Remove"))
+            n = n.substr(0, n.search("Remove"));
+        if (n.match("Email"))
+            n = n.substr(0, n.search("Email"));
+        s += n;
+        try {
+            var t = teachers[i].getElementsByTagName("a")[0].getAttribute("aria-label");
+            t = t.substring(6, t.length);
+            s += " (" + t + ")";
+        } catch (e) {}
         if (i != teachers.length - 1)
             s += ", \n";
     }
