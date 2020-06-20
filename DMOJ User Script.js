@@ -6,7 +6,9 @@ $(document).ready(function() {
 
     // show problem type on problem page
     if (document.URL.match("problem/")) {
-        document.getElementById("problem-types").childNodes[1].click();
+        s = document.getElementById("problem-types");
+        if (s != null)
+            s.childNodes[1].click();
     }
 
     // show hidden comments
@@ -16,7 +18,7 @@ $(document).ready(function() {
         s[i].getElementsByClassName("bad-comment-body")[0].style.display = "none";
     }
     $(".bad-comment").css({
-        opacity: "0.7",
+        opacity: "0.5",
         color: "#555"
     });
 });
