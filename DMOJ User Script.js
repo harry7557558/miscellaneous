@@ -11,6 +11,18 @@ $(document).ready(function() {
             s.childNodes[1].click();
     }
 
+    // add "view raw source" botton on submission page
+    if (document.URL.match("submission/")) {
+        s = document.getElementById("content-body");
+        if (s != null) {
+            var raw = document.createElement('div');
+            raw.innerHTML = s.children[1].innerHTML;
+            raw.getElementsByTagName('a')[0].href += '/raw';
+            raw.getElementsByTagName('a')[0].innerText = 'View raw source';
+            s.insertBefore(raw, s.children[2]);
+        }
+    }
+
     // show hidden comments
     s = document.getElementsByClassName("bad-comment");
     for (var i = 0; i < s.length; i++) {
