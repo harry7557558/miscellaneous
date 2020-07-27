@@ -33,6 +33,9 @@ $(document).ready(function() {
         opacity: "0.5",
         color: "#555"
     });
+    $(".new-comments .gravatar-main").css({
+        height: 'min-content'
+    });
 });
 
 // get the username on the current page
@@ -273,7 +276,7 @@ $(function() {
 // hack (potentially) malicious links
 $(function() {
     var whitelist = ["javascript", "dmoj.ca", "github.com", ".github.io", ".wikipedia.org", "keybase.io", "codeforces.com", "wcipeg.com", ".uwaterloo.ca", ".algome.me"];
-    var blacklist = ["youtube", "goo.gl", "bit.ly", "gg.gg", "vimeo", "mailto:", "docs.google.com", "olympiads.ca", "www.timeanddate.com"];
+    var blacklist = ["youtube", "goo.gl", "bit.ly", "gg.gg", "vimeo", "mailto:", "olympiads.ca", "www.timeanddate.com"];
     var s = document.getElementsByTagName("a");
     for (var i = 0; i < s.length; i++) {
         var url = s[i].href;
