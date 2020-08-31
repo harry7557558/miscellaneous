@@ -1,24 +1,27 @@
 # Extrude text contents in code directory for spelling/grammar check
 # Requires source files to be UTF-8 encoding
 
-# To-do:
-# Rewrite the function below using AI ↓↓↓↓↓↓
+# classify text and code in comments
+import comment_string_test
+comment_string_test.initSVM()
+
+# replace sensitive words in code by very less-used characters
+# should work for most of supported languages
+def replaceSW(s):
+    return s.replace('\\\\','⑊').replace("\\'",'❜').replace('\\"','❞').replace('<!--','‹‹!--').replace('-->','--››')
+def replaceSW_Back(s):
+    return s.replace('‹‹','‹').replace('‹','<').replace('››','›').replace('›','>').replace('❜',"\\'").replace('❞','\\"').replace('⑊','\\\\')
+# characters ['‹','›'] are still used in later code as HTML comment quotes
 
 # test if a commented string is English text
+isText_Params = []  # record strings for AI training
 def isText(s, quotes=['','']):
     # the two cases: no doubt
     if s.replace('\n','').strip()=='': return False
     if not any(c.isalpha() for c in s): return False
-    # works bad
-    s = s.strip().replace('\n','').replace('...','.')
-    if not 6<len(s)<10000: return False
-    ln = sum([s.lower().count(chr(c+97)) for c in range(26)])
-    if ln<3: return False
-    sm = sum([c in '''!#$&%.;<>@[\\]_`{|}~''' for c in s])
-    coe = 10*len(s)**(-1.5)
-    if 10<len(s) and sm/len(s)>max(min(coe,0.25),0.05):
-        return False
-    return True
+    s,quotes[0],quotes[1] = replaceSW_Back(s),replaceSW_Back(quotes[0]),replaceSW_Back(quotes[1])
+    isText_Params.append([s,quotes])  # see commented code near the end if this file
+    return comment_string_test.isText(s, quotes)
 
 
 
@@ -68,7 +71,7 @@ def checkFile(filename):
     msg = ''
     msg += (ord(s[0])==65279)*'UTF-8 BOM detected\n'
     msg += lineEnding(s)
-    s = s.lstrip(chr(65279)).replace('\r\n', '\n')
+    s = s.lstrip(chr(65279)).replace('\r\n', '\n').replace('\r','\n')
     s = s.replace('\t', '    ')  # distinguish from tab after line number
 
     # guess comment quotes from file extension
@@ -86,6 +89,7 @@ def checkFile(filename):
     if ext in ['htm','html','shtm','shtml','xhtm','xhtml','xml','svg']:
         lang, quotes = 'HTML', QUOTES_X
 
+    # record discarded texts for debug purpose
     DiscardedList = []
 
     # treat unsupported languages as plain text
@@ -97,14 +101,9 @@ def checkFile(filename):
                 msg += 'L'+str(i+1)+'\t'+st+'\n'
         return msg
 
-    # most languages use quotes to represent string
-    sq1, sq2, bkslash = ['❜','❞','⑊']  # very less-used characters
-    s = s.replace('\\\\',bkslash).replace("\\'",sq1).replace('\\"',sq2)  # quotes in quoted string
-    s = s.replace('<!--','‹‹!--').replace('-->','--››')  # hmmm...
-    #quotes.sort(reverse=True,key=(lambda s: len(s[0])))
-    s += '\n'
+    s = replaceSW(s) + '\n'
 
-    # initialize a prefix sum array of lines (map index to line)
+    # initialize a prefix sum array that maps character index to line number
     line = []
     for i in s:
         if len(line)==0: line.append(1)
@@ -123,7 +122,7 @@ def checkFile(filename):
             quo = []
             for q in quotes:
                 dd = s.find(q[0],d0)
-                if dd!=-1 and dd<=md:
+                if dd!=-1 and dd<md:
                     md=dd
                     quo=q
             if md==d1:
@@ -138,14 +137,14 @@ def checkFile(filename):
             
             # add the comment
             ss = s[md+len(quo[0]):dd]
-            if quo==['>','<'] and ss.find('‹')!=-1:  # fix html overriding
+            if quo==['>','<'] and ss.find('‹')!=-1:  # fix html quote overriding
                 lang, quotes = 'iHTML', [['‹!--','--›'],['>','‹'],['›','<']]
                 checkScript(md,dd+1)
                 lang, quotes = 'HTML', QUOTES_X
             elif isText(ss,quo):
                 if quo[0]!='>' and quo[1]!='<':
                     ss = quo[0]+ss+quo[1]
-                msg += 'L'+str(line[md])+'\t'+ss.strip('\n')+'\n'
+                msg += 'L'+str(line[md])+'\t'+ss.strip().strip('\n').strip()+'\n'
             else:
                 DiscardedList.append([line[md],ss.replace('\n','').replace('    ',' ')])
             d0 = dd+len(quo[1])
@@ -166,9 +165,7 @@ def checkFile(filename):
     checkScript(0,len(s))
     
     #print(str(DiscardedList))
-    msg = msg.replace(sq1,"\\'").replace(sq2,'\\"').replace(bkslash,'\\\\')
-    msg = msg.replace('‹‹','<').replace('››','>').replace('‹','<').replace('›','>')
-    return msg
+    return replaceSW_Back(msg)
 
 
 
@@ -189,3 +186,15 @@ for f in fs:
     fp.flush()
 
 fp.close()
+
+
+# write training data in a random order
+"""from random import randint
+s = isText_Params
+for i in range(0,len(s)-2):
+    j = randint(i,len(s)-1)
+    s[i],s[j]=s[j],s[i]
+fp = open("strings.log","w")
+fp.write(str(s))
+fp.close()"""
+
