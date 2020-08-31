@@ -1,3 +1,5 @@
+// An old script; Replaced by Javascript/Python
+
 #pragma GCC optimize "Ofast"
 #include <bits/stdc++.h>
 using namespace std;
