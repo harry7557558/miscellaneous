@@ -65,11 +65,11 @@ void solveQuartic(double a, double b, double c, double d, double e, double &r1, 
 	double r, u, v;
 	if (solveCubic(a_, b_, c_, d_, r, u, v)) {
 		double mi = u < v ? u : v, ma = u > v ? u : v;
-		mi = mi < r ? mi : r, ma = ma > r ? ma : r;	// two minimas
+		mi = mi < r ? mi : r, ma = ma > r ? ma : r;	// two minimums
 		if ((((mi + b)*mi + c)*mi + d)*mi + e > 0 && (((ma + b)*ma + c)*ma + d)*ma + e > 0) return;
 	}
 	else {
-		if ((((r + b)*r + c)*r + d)*r + e > 0) return;	// one minima with value greate 0
+		if ((((r + b)*r + c)*r + d)*r + e > 0) return;	// one minimum with a positive value
 	}
 	x = -0.25*b;	// fourth derivative equals to zero (Note that this is not always the best point, sometimes trig extreme point
 	unsigned n = 0, lim = 60; do {
@@ -77,7 +77,7 @@ void solveQuartic(double a, double b, double c, double d, double e, double &r1, 
 		u = (((x + b)*x + c)*x + d)*x + e, v = ((a_*x + b_)*x + c_)*x + d_;
 		dx = u / v; x -= dx;
 	} while (abs(dx) > ERR_EPSILON_SN && ++n < 120);		// finding one root x using Newton's method
-	//if (n >= 120) return;		// test shows this situation mostly occurs when no solution, but its minima shows it has solution (negative number with extreme small absolute value)
+	//if (n >= 120) return;        // test shows this situation mostly occurs when no solution, but its minima shows it has solutions (negative number with extreme small absolute value)
 	r1 = x;
 	c_ = b + x, d_ = x * c_ + c, e = x * d_ + d, d = d_, c = c_, b = 1, a = 0;	// Euclid division
 	if (!solveCubic(b, c, d, e, r2, r3, r4)) r3 = r4 = NAN;
@@ -87,14 +87,13 @@ void solveQuartic(double a, double b, double c, double d, double e, double &r1, 
 
 // Five real roots
 void solveQuintic(double a, double b, double c, double d, double e, double f, double &r1, double &r2, double &r3, double &r4, double &r5) {
-	// Note: try Halley's method https://en.wikipedia.org/wiki/Halley%27s_method  Cubic convergence, but more ratio of failture  Also https://en.wikipedia.org/wiki/Householder%27s_method
 	r1 = r2 = r3 = r4 = r5 = NAN;
 	b /= a, c /= a, d /= a, e /= a, f /= a, a = 1;
 	double x = -0.2*b, u, v, dx;
 	double a_ = 5, b_ = 4 * b, c_ = 3 * c, d_ = 2 * d, e_ = e;
 	unsigned n = 0, lim = 1000; do {
 		if (n > lim && dx > 0.01) x = pick_random(-2, 2) - 0.2*b, n -= 60, lim++;	// In random-value test: 0.008% fail, average 1.4μs elapsed; switch 1000/2000 to 60/120 reaches an average elapsed time of 1.1μs but 0.10% fail
-		// Failture mostly occurs on functions with a root with extreme large absolute value and an extremum with small absolute value. Its solution would be the large root and two small numbers. I don't know why. (There're a few exceptions)
+		// Failures mostly occur on functions with roots with extremely large absolute value and an extremum with small absolute value. Its solution would be the large root and two small numbers. I don't know why. (There're a few exceptions)
 		u = ((((a*x + b)*x + c)*x + d)*x + e)*x + f, v = (((a_*x + b_)*x + c_)*x + d_)*x + e_;
 		dx = u / v; x -= dx;
 	} while (abs(dx) > ERR_EPSILON_SN && ++n < 2000);
@@ -105,7 +104,7 @@ void solveQuintic(double a, double b, double c, double d, double e, double f, do
 }
 
 
-// All real roots, may be low efficiency
+// All real roots, may be slow
 void solvePolynomial(const double* C, double* r, unsigned N) {
 	cout << noshowpos << C[0] << "*x^" << N;
 	for (int i = 1; i < N - 1; i++) cout << showpos << C[i] << "*x^" << (N - i);

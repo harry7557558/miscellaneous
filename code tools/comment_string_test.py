@@ -1,5 +1,5 @@
-# Text/code classfication for comment_string_directory.py
-# Based on machine learning and SVM
+# SVM based Text/code classification for comment_string_directory.py
+# Accuracy: 90%-95%
 
 from sklearn import svm
 clf = svm.SVC(kernel='poly',degree=3,probability=True)
@@ -7,12 +7,12 @@ clf = svm.SVC(kernel='poly',degree=3,probability=True)
 
 # convert a string to a number array for SVM
 def str2array(s):
-    # may affect accuracy but I assume it depends on coding habit
+    # may affect the accuracy but I assume it depends on coding habit
     s = s.strip()
     # manually handle "unusual" cases
     s = s.replace('...','.').replace('!!!','!').replace('???','?')
     while s.find('====')!=-1: s=s.replace('====','=')
-    # count occurences of characters
+    # count occurrences of characters
     C = []
     l = max(len(s),1)
     C.append(1./l) # string length
@@ -46,7 +46,7 @@ def manualTrain():
     fp.close()
 
 
-# test if a string is text by syntax
+# test if a string is text by rules
 def isText_old(s, quotes=['','']):
     s = s.strip().replace('\n','')
     if not 6<len(s)<10000: return False

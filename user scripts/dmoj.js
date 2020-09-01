@@ -4,14 +4,14 @@ $(document).ready(function() {
     if (s != null)
         s.remove();
 
-    // show problem type on problem page
+    // show problem type on problem pages
     if (document.URL.match("problem/")) {
         s = document.getElementById("problem-types");
         if (s != null)
             s.childNodes[1].click();
     }
 
-    // add "view raw source" botton on submission page
+    // add "view raw source" button on submissions page
     if (document.URL.match("submission/")) {
         s = document.getElementById("content-body");
         if (s != null) {
@@ -54,7 +54,7 @@ function getUsername() {
 }
 
 // Customize user table
-// Addd a scale to Points and Problems in user table,
+// Add a scale to Points and Problems in user tables,
 // and add an Average Point Per Problem column.
 $(function() {
     var table = document.getElementById("users-table");

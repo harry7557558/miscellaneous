@@ -6,7 +6,7 @@ import comment_string_test
 comment_string_test.initSVM()
 
 # replace sensitive words in code by very less-used characters
-# should work for most of supported languages
+# should work for most of the supported languages
 def replaceSW(s):
     return s.replace('\\\\','⑊').replace("\\'",'❜').replace('\\"','❞').replace('<!--','‹‹!--').replace('-->','--››')
 def replaceSW_Back(s):
@@ -20,7 +20,7 @@ def isText(s, quotes=['','']):
     if s.replace('\n','').strip()=='': return False
     if not any(c.isalpha() for c in s): return False
     s,quotes[0],quotes[1] = replaceSW_Back(s),replaceSW_Back(quotes[0]),replaceSW_Back(quotes[1])
-    isText_Params.append([s,quotes])  # see commented code near the end if this file
+    isText_Params.append([s,quotes])  # see commented code near the end of this file
     return comment_string_test.isText(s, quotes)
 
 
@@ -44,14 +44,14 @@ def searchDirectory(_dir):
         return True
     return [f for f in files if isValid(f)]
 
-# read utf-8 file, preserves BOM and line ending
+# read a UTF-8 file, preserves BOM and line ending
 def readFile(filename):
     if os.path.getsize(filename)>2**20:  # 1MB size limit
         return ''
     try: return str(open(filename,'rb').read(),'utf-8')
     except: return ''
 
-# detect line ending, return readable string
+# detect line ending types, return a readable string
 def lineEnding(s):
     crlf = s.count('\r\n')
     lf = s.count('\n') - crlf
@@ -62,7 +62,7 @@ def lineEnding(s):
     e = '\\r\\n' if crlf>max(cr,lf) else ('\\n' if cr<lf else '\\r')
     return "Line ending: " + e + q + '\n'
 
-# text extruding main function, return readable message
+# main text extruding function, return readable message
 def checkFile(filename):
     # get code content
     s = readFile(filename)
@@ -106,8 +106,7 @@ def checkFile(filename):
     # initialize a prefix sum array that maps character index to line number
     line = []
     for i in s:
-        if len(line)==0: line.append(1)
-        else: line.append(line[-1]+int(i=='\n'))
+        line.append((line[-1] if len(line) else 1)+int(i=='\n'))
 
     # search comments in code
     comments = []
@@ -137,7 +136,7 @@ def checkFile(filename):
             
             # add the comment
             ss = s[md+len(quo[0]):dd]
-            if quo==['>','<'] and ss.find('‹')!=-1:  # fix html quote overriding
+            if quo==['>','<'] and ss.find('‹')!=-1:  # fix HTML quote overriding
                 lang, quotes = 'iHTML', [['‹!--','--›'],['>','‹'],['›','<']]
                 checkScript(md,dd+1)
                 lang, quotes = 'HTML', QUOTES_X
@@ -149,7 +148,7 @@ def checkFile(filename):
                 DiscardedList.append([line[md],ss.replace('\n','').replace('    ',' ')])
             d0 = dd+len(quo[1])
             
-            # html special (may not always work)
+            # HTML special (may not always work)
             if lang=='HTML':
                 lang, quotes = 'C', QUOTES_C
                 if quo[1]=='<' and s[d0:d0+6]=='script':

@@ -72,7 +72,7 @@ L162	// use for adaptive step
 L183	// helps with rapid curvature change
 
 D:\Coding\Github\DMOJ Render_Main\Render_Main\DMOJ-Render_Main\README.md
-Line ending: \r\n
+Line ending: \n
 L3	Whoever sees the code in this repository will be severely cursed. **CURIOSITY KILLED THE CAT.**
 
 D:\Coding\Github\DMOJ Render_Main\Render_Main\DMOJ-Render_Main\svg.cpp
@@ -80,11 +80,11 @@ Line ending: \r\n
 L1	// Data of DMOJ logo and related operations
 L16	// modified
 L18	// this one is for debug
-L27	// an old code that splits a svg path into cubic arcs
+L27	// an old code that splits an SVG path into cubic arcs
 L120	// doable using least square fitting but the code can be pretty messy
-L133	// an old code that converts a svg shape to a C++ string
+L133	// an old code that converts a list of cubic arcs to an SVG path string
 L171	// copy-pasted from an online integral calculator
-L172	// use Green's formula - note the conditions are important
+L172	// based on divergence theorem - note there are prerequisites for this to work
 L183	// center of mass
 L195	// calculate the line-based center of mass (hollow shape)
 L196	// requires numerical integration
@@ -98,7 +98,7 @@ D:\Coding\Github\DMOJ Render_Main\Render_Main\DMOJ-Render_Main\1pointer\acc4p0.c
 L1	"All Kill"
 
 D:\Coding\Github\DMOJ Render_Main\Render_Main\DMOJ-Render_Main\1pointer\acc4p7.cpp
-Line ending: \r\n
+Line ending: \n
 L3	"Bulbasaur"
 L3	"Ivysaur"
 L3	"Venusaur"
@@ -243,16 +243,16 @@ L17	"Dragonite"
 L17	"Mewtwo"
 
 D:\Coding\Github\DMOJ Render_Main\Render_Main\DMOJ-Render_Main\1pointer\cccjqrp3.cpp
-Line ending: \r\n
+Line ending: \n
 
 D:\Coding\Github\DMOJ Render_Main\Render_Main\DMOJ-Render_Main\1pointer\helloworldhard.py
-Line ending: \r\n
+Line ending: \n
 L1	"Hello, World!"
 L2	"Hello, World!"
 L3	"Hello, World!"
 
 D:\Coding\Github\DMOJ Render_Main\Render_Main\DMOJ-Render_Main\1pointer\miraclesort.c
-Line ending: \r\n
+Line ending: \n
 
 D:\Coding\Github\DMOJ Render_Main\Render_Main\DMOJ-Render_Main\1pointer\piggy.py
 L1	'Moana'
@@ -260,52 +260,104 @@ L1	'Moana'
 D:\Coding\Github\DMOJ Render_Main\Render_Main\DMOJ-Render_Main\1pointer\piggy.txt
 
 D:\Coding\Github\DMOJ Render_Main\Render_Main\DMOJ-Render_Main\1pointer\README.md
-Line ending: \r\n
+Line ending: \n
 L3	## Unofficial explanations for DMOJ “meme” problems:
-L7	The first line is ended with a `\n`, the second line is ended with a `\r`, and the third line is ended with `\r\n`.
-L11	There is only one test case, where ~N=1521~. The inputs followed can be decimal digits, lowercase English words, lowercase French words, or Simplified Chinese characters.
+L7	The first line is ended with a `\n`, the second line is ended with a `\r`, the third line is ended with `\r\n`.
+L11	There is only one test case, where ~N=1521~. The followed inputs can be in decimal digits, lowercase English words, lowercase French words, or Simplified Chinese characters.
 L23	Output the numbers in the input order will make you pass.
 L27	`AK` stands for `All Kill`.
 L31	The function to implement is to return `true` if ~n~ is happy. The definition of happy numbers can be found at https://en.wikipedia.org/wiki/Happy_number.
 L35	If your submission gets partial AC, the grader's feedback will be `(amaze!!1)`. Submitting it in Text will likely make you pass.
 L37	Other full-point short Text submissions include `print('Moana')`, `Unicode`, `:Xyene`, `12`, `KFC`, `youtube`, etc.
 L41	There is no input for this problem. Seems like any non-empty output can pass.
-L49	All inputs can fit into 64-bit unsigned integer. Your task is to output ~A+B+C~, modulo ~42069900169420~.
+L49	All inputs can fit into 64-bit unsigned integers. Your task is to output ~A+B+C~, modulo ~42069900169420~.
 L53	Read the problem statement carefully. It tells you to output the integers from ~1~ to ~N~.
 L57	One can see from existing comments that these characters are not allowed in code: `"'1234567890`.
-L63	This problem asks you to recognize digits from bitmap images. The first line of input contains an integer, ~N~, the number of test images. Followed by ~28N~ lines, each line contains ~28~ real numbers between ~0~ and ~1~, representing ~N~ ~28\times28~ bitmap images, where each image contain a decimal digit. Your program should output ~N~ lines. In each line, output the digit in the image.
+L63	This problem asks you to recognize digits from bitmap images. The first line of input contains an integer, ~N~, the number of test cases. Followed by ~28N~ lines, each line contains ~28~ real numbers between ~0~ and ~1~, representing ~N~ ~28\times28~ bitmap images, each image contains a decimal digit. For each test case, output the digit in the image, followed by a line break.
 L65	The image represented in the sample input can be found in [this comment](https://dmoj.ca/problem/tle18p1#comment-12374).
 L67	This problem contains 10 test cases. In all test cases, ~N=1000~. If your program has a proper output, you will receive feedback for the accuracy of your algorithm.
 L69	The maximum point for this problem is 512. One guesses the point is calculated as ~\lfloor2^{\lfloor20(a-0.5)\rfloor}\rfloor~, where ~a~ is the minimum accuracy of all test cases.
-L73	The input for this problem is a lowercase English letter. When the input is `a`, the answer is `a`. Otherwise, the answer is the answer to the previous letter of the input letter in the English alphabet plus the input letter plus the answer to the previous letter in the English alphabet.
+L73	The input for this problem is a lowercase English letter. When the input is `a`, the answer is `a`. Otherwise, you should output the answer to the previous letter of the input letter in the English alphabet plus the input letter plus the answer to the previous letter in the English alphabet.
 L75	For example, when the input is `b`, your output should be `a`+`b`+`a`=`aba`. When the input is `c`, your output should be `aba`+`c`+`aba`=`abacaba`.
 L77	If the instruction count of your code is greater than or equal to 1000, only 3/4 of points will be given. The grader may return WA even though the output matches.
-L81	The picture in the problem is in SVG format (where all other problem pictures in that contest are PNG). This SVG contains base64-encoded PNG images stacked up, in which the picture contents include doors, ghost faces, emojis, photos, codes, etc. All `<image>` objects have an `id` attribute. It also contains an empty `<defs>`, a `<metadata>`, and an invisible `<g>`.
-L83	There is a base64-encoded image string with a `\n` line break every 76 characters, and all other images use space instead. The content of that image is an instruction to `Write f:`. Other pictures with code include a screenshot of Sample Input 1 of [this problem](https://dmoj.ca/problem/ccc19s3) and an image that looks like a clipped Brain\*\*\*\* code. The order of the pictures may have some meaning.
-L85	As this problem worths 40 points, solving it *may* require some coding skills more than understanding the intention of the problem. This problem has AC submissions in Text and C++, as well as Text TLE submissions.
+L81	The picture of the CS nerd in the problem is in SVG format (where all other problem pictures from that contest are PNG). The SVG contains base64-encoded PNG images layered up, in which the picture contents include doors, ghost faces, emojis, photos, codes, etc. All `<image>` objects have an `id` attribute. The SVG also contains an empty `<defs>`, a `<metadata>`, and an invisible `<g>`.
+L83	There is a base64-encoded image string with a `\n` line break every 76 characters, while all other images use space instead. The content of that image is an instruction to `Write f:`. Other pictures with code include a screenshot of Sample Input 1 of [this problem](https://dmoj.ca/problem/ccc19s3) and an image that looks like a clipped Brain\*\*\*\* code. The order of the pictures may have some meaning.
+L85	Since this problem worths 40 points, solving it *may* require some coding skills more than understanding the statement of the problem. This problem has AC submissions in Text and C++, as well as Text TLE submissions.
 L89	If your program tries to request, it crashes.
 L91	If your program outputs `the following file`, the grader's feedback will be `Nice try, print the actual file`.
-L93	To fail solutions that use data compression, the grader is updated to detect non-ASCII characters.
+L93	To fail solutions that use data compression, the grader has been updated to detect non-ASCII characters.
 L95	Notice problem statement:
 L97	> a hardware token that he has locally... uniformly at random within the range configured...
 L98	> Your score will be inversely correlated to the length of your program...
 L99	> To ensure you have the correct output...
 L117	## Pages that list esoteric problems:
 L134	## Additional note:
-L136	The DMOJ admins have banned user "[Tomorrow](https://dmoj.ca/user/Tomorrow)" from editing profile and posting comments. This page is currently available for updates.
+L136	The DMOJ admins have banned the user "[Tomorrow](https://dmoj.ca/user/Tomorrow)" from editing profile and posting comments. This page is currently available for updates.
 
 D:\Coding\Github\DMOJ Render_Main\Render_Main\DMOJ-Render_Main\1pointer\saoj.py
-Line ending: \r\n
+Line ending: \n
 L1	# Reference solution
-L2	# This problem can be fun for optimization/golfing
+L2	# This problem can be fun for optimization and code-golf
 
 D:\Coding\Github\DMOJ Render_Main\Render_Main\DMOJ-Render_Main\1pointer\scroll.txt
 
 D:\Coding\Github\DMOJ Render_Main\Render_Main\DMOJ-Render_Main\1pointer\thereturnofaplusb.cpp
-Line ending: \r\n
+Line ending: \n
 
 D:\Coding\Github\DMOJ Render_Main\Render_Main\DMOJ-Render_Main\1pointer\tle18p6.svg
 Line ending: \n
+
+D:\Coding\Github\DMOJ Render_Main\Render_Main\DMOJ-Render_Main\ccCCC\driver.cpp
+Line ending: \r\n
+
+D:\Coding\Github\DMOJ Render_Main\Render_Main\DMOJ-Render_Main\ccCCC\Functions.h
+Line ending: \r\n
+L4	// header
+L5	"Ofast"
+L12	// iostream fast io
+L17	// fast integer input
+L22	// faster integer input
+L23	// or some other value
+L27	// initialize
+L66	// debug input
+L67	// use inside main()
+L77	// time recording
+L84	// get memory usage in MB (Windows)
+L99	// large integer
+L106	// greatest common divisor
+L120	// modulo of high-raised number
+L148	// modular multiplicative inverse, signed only
+L165	// combination
+L175	// more integer algorithms: https://euler.stephan-brumme.com/toolbox/
+L177	// Primes
+L180	// simple fraction class
+L209	// return 1: two or three real roots, r, u, v;
+L210	// return 0: one real root r and two complex roots u+vi, u-vi;
+L218	//u = cbrt(q + a), v = cbrt(q - a);
+L240	// hash functions
+L257	// numerical integration for continuous functions
+
+D:\Coding\Github\DMOJ Render_Main\Render_Main\DMOJ-Render_Main\ccCCC\Geometry.h
+Line ending: \r\n
+L4	// necessary header
+L58	// non-standard
+L77	// parametric representation for GeoGebra
+L78	// implicit representation for Desmos
+L91	// test if segment a and b intersect each other
+L92	// change to >0 if collinear is considered intersecting
+L103	// return the point of intersection
+L108	// 3D intersection
+L115	// circle defined by three points, R2 is the SQUARE of the radius
+L137	// test if a point is inside a triangle
+L141	// on the boundary not counted
+L146	// 3d rotation
+L156	// distance to a segment (also work for 3d)
+L161	// distance
+L162	// square of distance
+L165	// fast ray-box intersection (no handling for degenerated cases)
+L172	// consider hitting the vertex a intersecting
+L184	// C should be allocated the same size of memory as P
+L216	// useful for maximum area on convex hull
 
 D:\Coding\Github\DMOJ Render_Main\Render_Main\DMOJ-Render_Main\fit\Fit.h
 Line ending: \r\n
@@ -325,7 +377,7 @@ L1	// Fit a path consisting of splines to a single-variable polynomial
 L29	// print_reverse: reflect at x-axis
 L51	// works bad
 L56	// similar to the trigonometric one
-L75	// the coefficients can be extremly large or small
+L75	// the coefficients can be extremely large or small
 L93	// least square fitting, almost a copy-paste of the one in Fit.h
 L97	// Indefinite integral of xⁿsin(kx)
 L115	// setup linear equations
@@ -340,6 +392,7 @@ L30	// if print_reverse is true, this output will be reflected at x-axis to fit 
 L50	// [slow] angle-based Fourier series - let P be the origin, fit r(θ)
 L62	// test shows accuracy mostly depend on min_dif and performance mostly depend on dif
 L65	//const int dif = 200;
+L66	//const int min_dif = 10000;
 L76	"Time Elapsed: %lfms\n"
 
 D:\Coding\Github\DMOJ Render_Main\Render_Main\DMOJ-Render_Main\Render_Main\dmoj01.cpp
@@ -351,7 +404,7 @@ Line ending: \n
 D:\Coding\Github\Graphics\fitting\#edge_detector.cpp
 Line ending: \r\n
 L8	// image format library, https://github.com/nothings/stb
-L324	// pictures/illustrations/photos/sketchs, found on the internet
+L324	// pictures/illustrations/photos/sketches, found on the internet
 L338	"Error "
 
 D:\Coding\Github\Graphics\fitting\#implicit2bezier.cpp
@@ -405,7 +458,7 @@ L164	// calculate R
 L168	// debug output
 L171	// In the test, this function fails 6 cases in 10000 cases.
 L172	// All failures are caused by the gradient information leading it to infinity.
-L173	// Try to detect failure and restart iteration from a new startpoint when fails.
+L173	// Try to detect failure and restart iteration from a new start point when it fails.
 L178	// This formula gives a better estimate of the Euclidean distance
 L198	// [green] Same formula with some analytical simplifications
 L215	// just too lazy to calculate the analytical derivative of this
@@ -440,13 +493,13 @@ L406	"%lfsecs elapsed\n"
 
 D:\Coding\Github\Graphics\fitting\color fitting.cpp
 Line ending: \r\n
-L16	// Regression, it is not recommand for N > 8
+L16	// Regression, it is not recommend for N > 8
 L79	// cubic interpolation
 L123	"Find a RGB coloring function based on a bitmap image.\nImage decoder from http://nothings.org/stb, support most common image formats.\n\n"
 L132	"Select Image: "
 L140	"Error loading image. Press Enter to exit.\n"
 L160	//return 0;
-L162	"Loading image succeed. ("
+L162	"Image loading succeeds. ("
 
 D:\Coding\Github\Graphics\fitting\Ellipse Fitting.cpp
 Line ending: \r\n
@@ -459,18 +512,18 @@ L5	/* To-do:
 L11	// Ironically, in this file, testing code is longer than fitting code.
 L15	// some modules are organized into the "numerical" folder
 L32	// Ellipse fitting - v contains the coefficients of { x², xy, y², x, y, 1 }, {a,b,c,d,e,f}
-L34	// generate least square fitting matrix, should be positive (semi)definite
+L34	// generate least-square fitting matrix, should be positive (semi)definite
 L48	// Ellipse fitting with quadratic constraints, solve for eigenvalues
 L50	// Minimize vᵀMv, subject to vᵀv=1
 L54	// if not ellipse, check other eigenvalues
 L68	// Minimize vᵀMv, subject to vᵀCv=1
-L69	// To get expected result, C should be non-negative definite
+L69	// To get the expected result, C should be non-negative definite
 L70	// I'm sure there is a bug because it sometimes gets hyperbolas
 L74	// B is not symmetric
 L77	// make sure it is an ellipse
 L92	// Minimize vᵀMv, subject to 4ac-b²=1
 L97	// Minimize vᵀMv, subject to a²+c²=1
-L108	// Minimize vᵀMv/vᵀCv, where C is the sum of magnitude of gradients
+L108	// Minimize vᵀMv/vᵀCv, where C is the sum of the magnitude of gradients
 L109	// doesn't "shrink", visually good but checking hyperbolas makes it horrible
 L123	// Ellipse fitting with linear constraints, solve a linear system
 L125	// Minimize vᵀMv, subject to a+c=1
@@ -635,9 +688,9 @@ L94	// 2x3 matrix, linear transform
 L116	//===================== Cubic Spline Class and Operations =====================//
 L177	// unit arc from angle 0 to theta, 0 < theta < pi, least square fitting
 L219	// visualization for debugging
-L264	// avoid special cases in calculating intersections
+L264	// avoid degenerated cases in intersection calculations
 L278	// construct a ray toward right, return the number of intersections
-L333	// Green's formula, doens't work when two regions have intersections
+L333	// based on divergence theorem, only work with prerequisites
 L400	//============== Conversion between SVG Path Data and Spline Lists ==============//
 L504	// probably have bugs
 L584	//============================== Debug Test Cases ==============================//
@@ -690,8 +743,8 @@ L36	// non-standard
 L38	// non-standard
 L79	// Camera
 L80	// camera ray origin
-L81	// camera ray center direction, modulus represents distance to screen
-L82	// screen scaling, where 1 means the width and height of the screen forms an unit vector
+L81	// camera ray center direction, modulus represents the distance to the screen
+L82	// screen scaling, where 1 means the width and height of the screen forms a unit vector
 L87	// fog, 1-exp(-d) chance of scattering per unit distance
 L128	// rx and ry are uniform sampled random numbers between 0 and 1
 L134	// random direction
@@ -743,13 +796,13 @@ L32	"Error! [eigensystem.h %d] %lg\n"
 L36	"Error! [eigensystem.h %d] %lg\n"
 L56	// find the all eigenpairs of a matrix by solving its characteristic equation
 L57	// eigvec: a matrix of row vectors
-L58	// due to the O(N⁴) complexity and error accumulation in Gaussian elimination, it is not recommend for N>6
+L58	// due to the O(N⁴) complexity and error accumulation in Gaussian elimination, it is not recommended for N>6
 L63	// avoid overflow/precision error
 L72	// expand characteristic polynomial, works in O(n^4)
-L73	// method discribed at https://mathworld.wolfram.com/CharacteristicPolynomial.html
+L73	// method described at https://mathworld.wolfram.com/CharacteristicPolynomial.html
 L87	// find the roots of the characteristic polynomial
 L90	// Newton's iteration method starting at x=0
-L91	// this should success because the matrix is positive definite
+L91	// this should be successful because the matrix is positive definite
 L104	// "refine" the root using the original polynomial
 L116	// divide the root from the polynomial
 L120	// export the eigenvalue
@@ -758,7 +811,7 @@ L143	// idk why this happens
 L158	// try to "refine" the eigenvector using some iterative methods
 L160	// export normalized eigenvector
 L175	// find an eigenpair using power iteration and inverse iteration
-L180	// use power of matrix to make it converge faster
+L180	// use powers of the matrix to make it converge faster
 L181	// sometimes the numbers can get extremely large and cause precision/overflow error
 L193	// power iteration
 L207	// warning: float-point precision
@@ -769,34 +822,34 @@ L232	// keep result eigenvalues and eigenvectors as diagonalized form (unsorted)
 L242	// calculate the rotation matrix
 L244	// idk why this makes it 1.4x faster on my machine
 L247	// apply inverse rotation to the left side of A
-L253	// apply rotation to the right side of A
-L259	// apply rotation to the right side of C
+L253	// apply rotations to the right side of A
+L259	// apply rotations to the right side of C
 
 D:\Coding\Github\Graphics\numerical\geometry.h
 Line ending: \r\n
-L14	// for macros, do not use rand() because it will be called multiple times
-L25	// test: faster in debug mode but not release mode
-L43	// a sketchy planar vector template
-L92	// a more sketchy 3d vector template
-L103	// element wise
-L131	// diagonal matrix
-L135	// diagonal matrix
-L139	// symmetric matrix
-L143	// matrix by column vectors
-L146	// ordered in row-wise
-L161	// sum of square of elements
-L178	// mostly used for debug output
+L15	// for macros, do not use rand() because it will be called multiple times
+L26	// test: faster in debug mode but not release mode
+L44	// a sketchy planar vector template
+L93	// a more sketchy 3d vector template
+L104	// element wise
+L132	// diagonal matrix
+L136	// diagonal matrix
+L140	// symmetric matrix
+L144	// matrix by column vectors
+L147	// ordered in row-wise
+L162	// sum of square of elements
+L179	// mostly used for debug output
 
 D:\Coding\Github\Graphics\numerical\interpolation.h
 Line ending: \r\n
-L6	// linear interpolation
-L13	// cubic interpolation by derivative
-L19	// slerp, second derivative, Bezier, B, Hermite, Catmull-Rom, Lagrange, bicubic, rational, trigonometric, fitting...
+L7	// linear interpolation
+L14	// cubic interpolation by derivative
+L20	// slerp, second derivative, Bezier, B, Hermite, Catmull-Rom, Lagrange, bicubic, rational, trigonometric, fitting...
 
 D:\Coding\Github\Graphics\numerical\linearsystem.h
 Line ending: \r\n
 L1	// seems like hard-coding matrices as static 2d arrays can be 1.2x faster
-L2	// do dirty things when performance really matter
+L2	// do dirty things when performance really matters
 L14	// copy a matrix
 L22	// matrix multiplication, C needs to be different from A B
 L31	// matrix times vector, b needs to be different from x
@@ -815,14 +868,14 @@ L175	// M rows and N columns
 
 D:\Coding\Github\Graphics\numerical\ode.h
 Line ending: \r\n
-L1	// dxdt: given vector and time, calculate the derivative
-L2	//       void dxdt(const double* x, double t, double* dx_dt);
-L3	// x: given vector at time t0, update it to time t1
-L4	// N: length of vector
-L5	// t0: start time
-L6	// dt: last time (end time is t0+dt)
-L7	// temp: initialize to size N, use to avoid memory allocation
-L57	// To-do: implicit method; adaptive step length
+L2	// dxdt: given vector and time, calculate the derivative
+L3	//       void dxdt(const double* x, double t, double* dx_dt);
+L4	// x: given vector at time t0, update it to time t1
+L5	// N: length of vector
+L6	// t0: start time
+L7	// dt: last time (end time is t0+dt)
+L8	// temp: initialize to size N, use to avoid memory allocation
+L58	// To-do: implicit method; adaptive step length
 
 D:\Coding\Github\Graphics\numerical\optimization.h
 Line ending: \r\n
@@ -834,30 +887,30 @@ L7	// Conjugate gradient
 L8	// Downhill simplex
 L9	// Simulated annealing
 L18	// One-dimensional optimization
-L19	// These functions receive parameters as reference instead of returning a number
-L20	// because they are often used in multivariable optimizations and the functions may be expensive to evaluate.
+L19	// These functions receive parameters as references instead of returning a number
+L20	// because they are often used in multivariable optimizations and the function may be expensive to evaluate.
 L22	// before calling this function: evaluate y0=F(x0) and y1=F(x1) and make sure y1<y0
 L23	/* Not Implemented */
-L24	// minimize a 1d function where the minima is bracketed x0 and x1
+L24	// minimize a 1d function where a minimum is bracketed x0 and x1
 L51	// numerical differentiation in 2d
-L52	// not necessary when analytical gradient is given
+L52	// not necessary when the analytical gradient is given
 L69	// Non-standard 2d methods based on Newton's iteration
 L70	// Fails when iterates to a point with discontinuous or zero gradient
-L73	// this method performs Newton's iteration in gradient direction
+L73	// this method performs Newton's iteration in the gradient direction
 L82	// gradient
-L83	// second derivative in gradient direction
-L84	// simply taking an abs prevents it from reaching a maxima
+L83	// second derivative in the gradient direction
+L84	// taking abs prevents it from reaching a maxima
 L86	// break the balance when it reaches a saddle point (doesn't always work)
 L87	// this makes it generally faster but more like to stuck on valleys
-L92	// termination - small step, small difference, or nan
-L108	// this method uses Newton-Raphson method to find a point with zero-gradient
-L109	// it might be a local maxima, a minima, or a saddle point
+L92	// termination - too small step, too small difference, or NAN
+L108	// this method uses the Newton-Raphson method to find a point with zero-gradient
+L109	// it might be a local maximum, a minimum, or a saddle point
 L132	// this version doesn't get maxima and saddle but is slower
 L133	// ideas of improvement include checking signs of eigenvalues and detecting infinite loops
 L139	// numerical differentiation
 L147	// solve the linear system
 L150	// prevent reaching maxima
-L152	// prevent reaching saddle
+L152	// prevent reaching saddle points
 L153	// this may cause it to enter an infinite loop
 L159	// termination
 L175	// same function as Newton_Iteration_2d but uses analytical gradient, faster and more stable
@@ -872,14 +925,14 @@ L208	// numerical differentiation in higher dimensions
 L210	// F: double F(const double *x);
 L211	// 2N samples
 L226	// grad2: standard Hessian matrix
-L227	// 2N²+1 samples - analytical derivative is highly recommend
+L227	// 2N²+1 samples - an analytical derivative is highly recommended
 L233	// gradient
 L237	// second derivative
 L239	// other derivatives
 L257	// Optimization in higher dimensions
 L262	// one iteration: O(N²) samples, O(N³) complexity; quadratic convergence
 L263	// return true when (possible) succeed
-L274	// make sure decent direction
+L274	// make sure it is a decent direction
 L283	// test positive-definiteness (slow)
 L289	// break the balance when it reaches a saddle point
 L297	// termination
@@ -912,9 +965,9 @@ L84	// from Numerical Recipes, not accurate for small xm
 D:\Coding\Github\Graphics\numerical\README.md
 Line ending: \r\n
 L1	Numerical algorithms used in computer graphics.
-L3	Used by code in this repository. Add the `Graphics` folder to additional include directory in compiler settings.
+L3	Used by code in this repository. Add `Graphics` folder in the compiler additional include directory settings.
 L5	Avoid object orientation for simplicity and performance.
-L7	Files started with an underscore are used to debug header files.
+L7	Files started with an underscore are used for debugging header files.
 L11	[rootfinding.h](rootfinding.h): find the roots of functions;
 L13	[optimization.h](optimization.h): find the minimum of functions; numerical differentiation;
 L15	[geometry.h](geometry.h): 2d/3d vector, 3d matrix; misc macros/functions;
@@ -926,89 +979,90 @@ L25	To-do: integral.h, interpolation.h, fft.h, complex.h
 
 D:\Coding\Github\Graphics\numerical\rootfinding.h
 Line ending: \r\n
-L1	// To-do:
-L2	// General polynomial solver
-L3	// Newton's iteration in one dimension
-L4	// Multivariable numerical root-finding
-L6	// Remove debug code in solveTrigPoly() after well-tested
-L7	// Get rid of <algorithm> as it sometimes causes compile error when max and min macros are defined
-L28	// These solvers may be accelerated a lot if manually write them inline and do simplifications according to the circumstance.
-L29	// It is recommended to perform one Newton iteration for analytical solutions when accuracy is required.
-L31	// In all functions: a multiple root is counted as multiple single roots
-L35	// return 1: two or three real roots, r, u, v;
-L36	// return 0: one real root r ~and two complex roots u+vi, u-vi~;
-L42	// 1 root
-L44	// u = cbrt(q + a)
-L45	// v = cbrt(q - a)
-L52	// 3 roots
-L65	// Find all real roots of a quartic equation, return the number of real roots
-L66	// R may not be already sorted
-L77	// 2 roots
-L79	// s = cbrt(r + h)
-L80	// u = cbrt(r - h)
-L93	// 4 or 0 roots
-L110	// Use Newton's iteration once to reduce float-point inaccuracy
-L126	// this one handles the case with zero higher coefficients
-L128	// the numbers become extremely large when dividing by a small coefficient
-L148	// Solve a*cos(x)+b*sin(x)+c=0 in non-degenerated case
-L149	// solutions in [-π,π]; return false if no real solution
-L170	// return the smallest root greater than x_min, NAN if not found
-L171	// numerical solution, sometimes may miss roots; may be optimized further
-L172	// standard quadratic solver
-L185	// degenerated cases
-L211	// split [0,2π] into 32 equal intervals
-L215	// find the interval(s) with roots
-L225	// check these intervals
-L228	// search roots between t0 and t1
-L234	// create a quadratic approximation of the trigonometric part
-L241	// translate trigonometric polynomial and add k
-L248	// solve the quadratic to get an approximation of the root
-L252	// Newton iteration
-L263	// check if the root is legal
-L267	// this one should work
-L286	// Ideas for small w:
-L287	//  - Cubic instead of quartic approximation
-L288	//  - See how quadratic approximation works out
-L289	//  - Implement saperated quadratic, cubic, and quartic solvers
-L290	//     - Should have no problem when passing zero k2 to quadratic solver
-L291	//  - Don't use the substitution solution
-L293	// return the first root greater than x_min; if not found, return NAN
-L295	// original algorithm, may have better ways
-L296	// substitude u = w*x+phi, x=(u-phi)/w
-L309	// least-square fitted quartic polynomial for sine phases
-L310	// splitting [0,2π] into 4 intervals with width π/2, and translate it to fit it to [0,π/2]
-L311	// calculated in Python using 40 decimal places, should have no problem with double
-L327	// find intervals that possibly have roots
-L328	// find intervals that the absolute value of the polynomial is no more than m
-L335	// polynomial is out of range
-L336	// should never happen
-L339	// check these intervals
-L351	// search roots between t0 and t1
-L359	// construct a quartic approximation of the function
-L360	// translate the sine phase by t, and plus polynomial k
-L373	// solve the quartic to get an approximation of the root
-L378	// perform Newton's iteration
-L385	// check if the root is legal
-L388	// this one will work
-L392	// substitude back
-L398	// should not exceed 4
-L403	// not found
-L406	// designed to work for small w; without substitution
-L407	// problem occurs when a small w encounters k4=0
-L408	// test: 0.1x slower than solveTrigPoly()
-L410	// the case when w=0
-L423	// splitting [0,2π] into 8 intervals with width π/4 (a more accurate approximation, hope it works)
-L434	// interval finding
-L454	// search roots between t0 and t1
-L462	// create a quartic approximation of the function using quartic approximations of sin and cos
-L472	// translate trigonometric polynomial and add k
-L482	// solve the quartic to get an approximation of the root
-L486	// get the root
-L494	// check if the root is legal
-L497	// this one should work
-L505	// should not exceed 8
-L510	// not found
-L514	// iter=1 should be enough; default value is 2
+L2	// To-do:
+L3	// General polynomial solver
+L4	// Newton's iteration in one dimension
+L5	// Multivariable numerical root-finding
+L7	// Remove debug code in solveTrigPoly() after well-tested
+L8	// Get rid of <algorithm> as it sometimes causes compile error when max and min macros are defined
+L29	// These solvers may be accelerated a lot if manually write them inline and do simplifications according to the circumstance.
+L30	// It is recommended to perform one Newton iteration for analytical solutions when accuracy is required.
+L32	// In all functions: a multiple root is counted as multiple single roots
+L36	// return 1: two or three real roots, r, u, v;
+L37	// return 0: one real root r ~and two complex roots u+vi, u-vi~;
+L43	// 1 root
+L45	// u = cbrt(q + a)
+L46	// v = cbrt(q - a)
+L53	// 3 roots
+L66	// Find all real roots of a quartic equation, return the number of real roots
+L67	// R may not be already sorted
+L69	// Modified from https://www.shadertoy.com/view/3lj3DW
+L78	// 2 roots
+L80	// s = cbrt(r + h)
+L81	// u = cbrt(r - h)
+L94	// 4 or 0 roots
+L111	// Use Newton's iteration once to reduce float-point inaccuracy
+L127	// this one handles the case with zero higher coefficients
+L129	// the numbers become extremely large when dividing by a small coefficient
+L149	// Solve a*cos(x)+b*sin(x)+c=0 in non-degenerated case
+L150	// solutions in [-π,π]; return false if no real solution
+L171	// return the smallest root greater than x_min, NAN if not found
+L172	// numerical solution, sometimes misses roots; may be optimized further
+L173	// standard quadratic solver
+L186	// degenerated cases
+L212	// split [0,2π] into 32 equal intervals
+L216	// find the interval(s) with roots
+L226	// check these intervals
+L229	// search roots between t0 and t1
+L235	// create a quadratic approximation of the trigonometric part
+L242	// translate trigonometric polynomial and add k
+L249	// solve the quadratic to get an approximation of the root
+L253	// Newton iteration
+L264	// check if the root is legal
+L268	// this one should work
+L287	// Ideas for small w:
+L288	//  - Use cubic approximations instead of quartic
+L289	//  - See how quadratic approximation works out
+L290	//  - Implement separated quadratic, cubic, and quartic solvers
+L291	//     - Should have no problem when passing zero k2 to quadratic solver
+L292	//  - Don't use the substitution solution
+L294	// return the first root greater than x_min; if not found, return NAN
+L296	// original algorithm, may have better ways
+L297	// substitute u = w*x+phi, x=(u-phi)/w
+L310	// least-square fitted quartic polynomial for sine phases
+L311	// splitting [0,2π] into 4 intervals with width π/2, and translate it to fit it to [0,π/2]
+L312	// calculated in Python using 40 decimal places, should have no problem with double
+L328	// find intervals that possibly have roots
+L329	// find intervals that the absolute value of the polynomial is no more than m
+L336	// polynomial is out of range
+L337	// should never happen
+L340	// check these intervals
+L352	// search roots between t0 and t1
+L360	// construct a quartic approximation of the function
+L361	// translate the sine phase by t, and plus polynomial k
+L374	// solve the quartic to get an approximation of the root
+L379	// perform Newton's iteration
+L386	// check if the root is legal
+L389	// this one will work
+L393	// substitute back
+L399	// should not exceed 4
+L404	// not found
+L407	// designed to work for small w; without substitution
+L408	// problem occurs when a small w encounters k4=0
+L409	// test: 0.1x slower than solveTrigPoly()
+L411	// the case when w=0
+L424	// splitting [0,2π] into 8 intervals with width π/4 (a more accurate approximation, hope it works)
+L435	// interval finding
+L455	// search roots between t0 and t1
+L463	// create a quartic approximation of the function using quartic approximations of sin and cos
+L473	// translate trigonometric polynomial and add k
+L483	// solve the quartic to get an approximation of the root
+L487	// get the root
+L495	// check if the root is legal
+L498	// this one should work
+L506	// should not exceed 8
+L511	// not found
+L515	// iter=1 should be enough; default value is 2
 
 D:\Coding\Github\Graphics\numerical\_debug_eigensystem.cpp
 Line ending: \r\n
@@ -1023,28 +1077,28 @@ D:\Coding\Github\Graphics\numerical\_debug_linearsystem.cpp
 Line ending: \r\n
 L1	// linear system solver test
 L11	// standard derivation
-L32	// large arrays as global variable
+L32	// large arrays as global variables
 L37	// conjugate gradient should converge in no more than N iterations
-L38	// but that number seems to be larger for large matrixes due to floatpoint truncation...
+L38	// but that number seems to be larger for large matrices due to floating-point truncation...
 L90	"%lf secs\n"
 
 D:\Coding\Github\Graphics\numerical\_debug_optimization.cpp
 Line ending: \r\n
-L6	// test numerical differentiation
-L7	// this function helped me discovered and killed 3 bugs ;)
-L9	// test function, one should be enough
-L22	// Thank you, WolframAlpha!
-L67	// test numerical differentiation in higher dimensions
-L70	// not standard Rosenbrock function
-L127	// test functions for optimization in arbitrary dimensions
-L193	// one minima at xi=1; one maxima surrounded by a valley and one saddle point inside the valley
-L210	// close to maxima/saddle
+L7	// test numerical differentiation
+L8	// this function helped me discover and kill 3 bugs ;)
+L10	// test function, one should be enough
+L23	// Thank you, WolframAlpha!
+L68	// test numerical differentiation in higher dimensions
+L71	// not standard Rosenbrock function
+L128	// test functions for optimization in arbitrary dimensions
+L194	// one minimum at xi=1; one maximum surrounded by a valley and one saddle point inside the valley
+L211	// close to maxima/saddle
 
 D:\Coding\Github\Graphics\numerical\_debug_optimization_2d.cpp
 Line ending: \r\n
 L2	// Use to test 2d function minimization methods in "optimization.h"
 L3	// Comparing different optimization methods
-L11	// visualization of optimization process and result
+L11	// visualization of the optimization process and result
 L18	// color structs
 L26	// image variables
 L35	// painting functions
@@ -1053,7 +1107,7 @@ L43	// initialize and save image
 L53	// ============================================================== Test Functions ==============================================================
 L56	// optimization header
 L61	// test functions for optimization
-L62	// all functions contain at least one global minimas
+L62	// all functions contain at least one global minima
 L64	// test case id
 L65	// function call count
 L69	// contains 30 test functions
@@ -1076,9 +1130,9 @@ L177	// The original problem needs to minimize a function similar to the square 
 L178	// That function might be the sum of many sqrts
 L188	// ============================================================== Testing ==============================================================
 L191	// test optimization algorithms in a visual way
-L194	// iteration startpoints
+L194	// iteration starting points
 L198	// initialize canvas
-L236	// save rendered image
+L236	// save the rendered image
 L249	// test optimization algorithms with analytical derivative
 L262	// more clear
 L280	// ============================================================== Visualization ==============================================================
@@ -1086,53 +1140,53 @@ L284	// go through all pixels (may be slow)
 L309	// shade by distance to anti-alias
 L312	// naive DDA, no anti-aliasing
 L340	// initialize a value buffer
-L350	// calculate numerical gradient from neighbourhood values
+L350	// calculate numerical gradient from neighborhood values
 L355	// graph the zero-isoline of gradient
 L368	// graph the contour
-L372	// magnitude of gradient
-L373	// divide by gradient to estimate distance
+L372	// magnitude of the gradient
+L373	// divide by gradient to estimate the distance to the isoline
 L375	// colors
 L376	// interval mapping
 L377	// linear interpolation
 L381	// distance estimation has some artifacts at the points with high curvature
 L382	// discontinuities may be stroked
-L383	// zero-isoline stroke will be double-width when using logarithmic scale
+L383	// zero-isoline stroke will be double-width when using a logarithmic scale
 
 D:\Coding\Github\Graphics\numerical\_debug_rootfinding.cpp
 Line ending: \r\n
-L5	// compile error with GCC
-L18	// set up random numbers
-L24	// solve equation
-L38	// check
-L58	// set up random numbers
-L64	// solve equation
-L76	// check
-L96	// there is no guarantee that the solver does not miss a root or find an unintented root
-L99	// set up random numbers
-L109	// solve equation
-L118	// check
-L156	// bisection search
-L166	// Newton's iteration
-L214	"%d %d  %lf  %lf %lf  %lg\n"
-L249	"%d %d  %lf  %lf %lf  %lg\n"
+L6	// compile error with GCC
+L19	// set up random numbers
+L25	// solve equation
+L39	// check
+L59	// set up random numbers
+L65	// solve equation
+L77	// check
+L97	// there is no guarantee that the solver does not miss a root or find an unintended root
+L100	// set up random numbers
+L110	// solve equation
+L119	// check
+L157	// bisection search
+L167	// Newton's iteration
+L215	"%d %d  %lf  %lf %lf  %lg\n"
+L250	"%d %d  %lf  %lf %lf  %lg\n"
 
 D:\Coding\Github\Graphics\numerical\tools\README.md
 Line ending: \r\n
 L1	Temporary tools used for writing scripts in the parent folder.
-L3	As some scripts generate hard-coded data, they may be modified when the requirements changed.
+L3	As some scripts generate hard-coded data, they may be modified when the requirements change.
 
 D:\Coding\Github\Graphics\numerical\tools\sin_cos_2_poly.py
 Line ending: \r\n
 L1	# Python high precision numerical works
 L2	# Still fails in degenerated cases (avoid it)
 L4	# Fitting polynomial to trigonometric functions:
-L5	# Given degree N, starting point a, ending point b, find the coefficients of polynomial of best fit
+L5	# Given degree N, interval [a, b], find the coefficients of the polynomial of best fit
 L64	# Gaussian elimination
 L81	# Polynomials of best fit
-L95	# Polynomials of best fit with boundary constrains
+L95	# Polynomials of best fit with boundary constraints
 L116	# print polynomial coefficients for graphing calculators
 L126	# print coefficients as C++ style initializer list
-L136	# Print result; Split [0,2π] to N equal intervals and fit to quadratic function
+L136	# Print result; Split [0,2π] to N equal intervals and fit to quadratic functions
 L137	# N should be even
 L139	# calculate coefficients
 L142	# graphing calculator output
@@ -1143,21 +1197,21 @@ D:\Coding\Github\Graphics\numerical\tools\sin_cos_2_quartic.py
 Line ending: \r\n
 L1	# Approximate trigonometric functions using quartic polynomials
 L2	# Find the coefficients of the quartic polynomial
-L4	# Multivation:
+L4	# Motivation:
 L5	# Need to solve equations involving trigonometric functions
 L6	# Quartic equations can be solved analytically
-L7	# After finding the approximations of roots, perform Newton's iteration to find numerical solution
+L7	# After finding the approximations of roots, perform Newton's iteration to find a numerical solution
 L9	# Arbitrary precision floating point
 L13	# 100 decimal digits of π and √2
-L17	# Analytical coefficients of polynomial of best fit in [0,pi/2]
+L17	# Analytical coefficients of the polynomial of best fit in [0,pi/2]
 L18	# Thanks Wolfram open access
 L27	# lowest coefficient at first
 L31	# Polynomial of best fit in [0,pi/4]
 L44	# print coefficients as C++ style initializer list
 L52	# print as polynomials for graphing calculators
 L63	# translate a quartic polynomial right by d
-L73	# reflect a polynomial about x axis
-L77	# reflect a polynomial about y axis
+L73	# reflect a polynomial about the x-axis
+L77	# reflect a polynomial about the y-axis
 L84	# Split [0,2π] into 4 and 8 intervals
 L101	# Output for Desmos graphing calculator
 L110	# Output for C++
@@ -1217,7 +1271,7 @@ L4	/* ==================== User Instructions ====================
  *  Scale Polygon:              alt + drag
  *  Move Vertex:                click and drag
  *  Add Vertex:                 ctrl + click
- *  Delete Vertex:              right click
+ *  Delete Vertex:              right-click
  *  Shift Vertex Order:         left / right
  *  Reverse Vertex Order:       space
  *  Hide/Unhide Vertices:       c
@@ -1344,8 +1398,8 @@ L210	// load background image from file
 L220	// flip back: different image coordinates
 L222	// rgb vs bgr
 L241	// call this when alpha changed
-L248	// get backgroud color from screen coordinate
-L302	// uniform distribute parameter
+L248	// get background color from screen coordinate
+L302	// uniform samplings
 L312	// return the average of all control points
 L319	// put this at the end because they contain long string code
 L324	// ============================================ Rendering ============================================
@@ -1401,8 +1455,8 @@ L54	// operator*(vec2): no translation
 L55	// applyTo(vec2): have translation
 L61	//===================== Cubic Spline Class and Operations =====================//
 L121	// fitting, unit arc from angle 0 to a
-L188	// based on Green's formula, doesn't work for unclosed, self-intersecting, and some multiple-connected shapes
-L202	// copied from an online integral calculator and it's pretty unneat
+L188	// based on  divergence theorem, doesn't work for unclosed, self-intersecting, and some multiple-connected shapes
+L202	// copied from an online integral calculator and it's pretty dirty
 L210	// line-based center of mass, works for unclosed and self-intersecting shapes
 L242	//===================== Conversion between SVG Path and Spline Lists =====================//
 L343	// possibly have bugs
@@ -1555,7 +1609,7 @@ L1	// Test numerical integration of ODEs: x"(t) = a
 L2	// In this experiment, integration variables are 3d vectors
 L5	// 2kb simulation code and 30kb debugging code?! oh no...
 L8	// To-do:
-L9	// Find and fix bug in backward Euler's method
+L9	// Find and fix the bug in backward Euler's method
 L10	// * Adaptive step size
 L14	// debug
 L23	// ========================================= Win32 Standard =========================================
@@ -1570,7 +1624,7 @@ L120	//return q * d;
 L136	// ======================================== Data / Parameters ========================================
 L138	// viewport
 L139	// Ctrl/Shift + Drag/Wheel to adjust these variables
-L140	// view center in world coordinate
+L140	// view center in world coordinates
 L141	// yaw, pitch, row, camera distance, scale to screen
 L145	// window parameters
 L146	// window title
@@ -1612,13 +1666,13 @@ L433	// P should have enough keyframes
 L439	// derivative-based cubic interpolation
 L527	// yellow; p: 1/6 h³ p³(t0); v: h³ p⁴(t0) missing some terms
 L551	// red; standard Runge Kutta methods
-L552	// relies on continuous derivative; better when step size is small
+L552	// relies on a continuous derivative; better when step size is small
 L575	// non-standard method, obtains derivative from the previous calculation, accuracy similar to Midpoint method
-L592	// modified, works best when acceleration only depend on the position (eg. static gravity field)
+L592	// modified, works best when acceleration only depends on the position (eg. static gravity field)
 L613	// as an experiment, may not be practical
 L614	// contains a bug as it sometimes changes direction rapidly
 L623	// numerical differentiation
-L634	// solve linear system
+L634	// solve a linear system
 L660	// initialize window
 L665	// axis and grid
 L679	// simulation
@@ -1658,7 +1712,7 @@ L29	// bounding box
 L31	// W is the diameter of the circle
 L32	// bounding box
 L34	// output scaling
-L35	// radius of ball
+L35	// radius of the ball
 L36	// initial state
 L37	// acceleration, or force for unit mass
 L38	// end time
@@ -1729,7 +1783,7 @@ L135	// check energy conservation
 L146	// path calculated using collision law
 L153	// calculate the next event
 L155	// index of collided objects, -1 for boundary
-L156	// change of velocities during collision
+L156	// change of velocities during the collision
 L158	// check collisions with boundary
 L163	// rectangle
 L165	// right
@@ -1768,10 +1822,10 @@ L22	// time
 L23	// position and linear velocity
 L24	// rotation and angular velocity
 L27	// path as quadratic bezier curve
-L31	// with center of mass at origin
+L31	// with center of mass at the origin
 L32	// reciprocal of mass
-L33	// reciprocal of moment of inertia
-L38	// width and height of simulation box;  unit: m
+L33	// reciprocal of the moment of inertia
+L38	// width and height of the simulation box;  unit: m
 L39	// bounding box
 L40	// output scaling
 L41	// main object
@@ -1783,7 +1837,7 @@ L48	// thanks Adobe Illustrator
 L62	// calculate mass, center of mass, and moment of inertia
 L63	// treat the shape as a solid (divergence theorem)
 L76	// translate the shape to the origin
-L81	// uptate calculation
+L81	// update calculation
 L89	// simulating by numerically integrating collision force
 L94	// should be 7
 L103	// a large number
@@ -1805,7 +1859,7 @@ L180	// change of linear momentum (scalar)
 L181	// change of linear velocity
 L182	// change of angular velocity
 L188	// output
-L193	// linear and angular velocities isn't presented in output
+L193	// linear and angular velocities aren't presented in the output
 L197	// collision respond
 L202	// check energy conservation
 L210	// visualization
@@ -1838,9 +1892,9 @@ L25	// time
 L26	// position and linear velocity
 L27	// rotation and angular velocity
 L30	// path as quadratic bezier curve
-L34	// with center of mass at origin
+L34	// with center of mass at the origin
 L35	// reciprocal of mass
-L36	// reciprocal of moment of inertia
+L36	// reciprocal of the moment of inertia
 L37	// radius of bounding sphere and its square
 L42	// width and height of simulation box;  unit: m
 L43	// bounding box
@@ -1853,15 +1907,15 @@ L50	// initial states
 L52	// maximum number of vertices in a polygon
 L55	// content: words "Hello, World!"
 L56	// there is a highly elongated shape that foils the bounding sphere trick
-L76	// bounding box of overall shape
+L76	// bounding box of the overall shape
 L80	// avoid degenerated cases
 L81	// calculate mass, center of mass, and moment of inertia
 L82	// treat the shape as a solid (divergence theorem)
 L94	// make sure the shape is counter-clockwise
 L101	// translate the shape to the origin
 L105	// calculate bounding sphere
-L111	// uptate calculation
-L118	// set initial state
+L111	// update calculation
+L118	// set the initial state
 L125	// simulating by numerically integrating collision force
 L128	// debug code for tracking energy
 L129	// directly write to SVG, should not be visible when placed in HTML <image>
@@ -1881,7 +1935,7 @@ L191	// bounding sphere check
 L193	// go through vertices
 L197	// bounding sphere check
 L198	// calculate the signed distance to a polygon
-L199	// also record the edge that produces minimum absolute distance
+L199	// also records the edge that produces the minimum absolute distance
 L200	// may be optimized as the exact distance is not required
 L215	// penetration: calculate force and torque
 L229	// update
@@ -1911,7 +1965,7 @@ L343	// check energy conservation
 L353	// visualization
 L355	// output format: animated svg
 L358	// decimal to string optimized for size
-L368	// world coordinate to svg coordinate
+L368	// world coordinate to SVG coordinate
 L373	// svg header
 L377	// boundary
 L381	// simulation
@@ -1940,7 +1994,7 @@ L23	// =================== Mesh DS with Continuity ===================
 L33	//                   XX      v     v       X               (different from struct triangle)
 L46	//             X                not sure how it can be helpful
 L59	// this is not a pleasant coding experience...
-L60	// maybe i can do better...
+L60	// maybe I can do better...
 L63	// closed triangular mesh
 L64	// one day, I may move it ↓ to a separate header file
 L68	// index of any connected edge
@@ -2026,7 +2080,7 @@ L600	// triangles
 
 D:\Coding\Github\Graphics\simulation\debug\rigid_test.cpp
 Line ending: \r\n
-L1	// test the correctness of some analytically integrated inertia tensors
+L1	// test the correctness of some analytically integrated inertia tensor
 L3	"Ofast"
 L8	// vector/matrix, random
 L19	// numerical integral in one dimension
@@ -2045,8 +2099,8 @@ L237	// A: surface integral
 L238	// S: volume integral using Gauss divergence theorem
 L239	// V: volume integral
 L298	// signed
-L303	// be careful about the face normal of the triangles
-L388	// must be closed surface with normal facing outside
+L303	// be careful about the face normals of the triangles
+L388	// must be a closed surface with outward normals
 L457	"[%u] WARNING: negative Jacobian\n"
 L489	"%lfs elapsed\n"
 
@@ -2068,13 +2122,14 @@ L64	// should be 0
 L65	// angle, blue/yellow
 L66	// length, green/magenta
 L67	// energy, red/cyan
+L68	"%d %.3lf  %lf %lf  %lf %lf  %lf  %lf\n"
 L75	"incorrect struct size\n"
 
 D:\Coding\Github\Graphics\simulation\experiment\string1d.cpp
 Line ending: \r\n
-L1	// physics: a 2d stretched string satisfying Hook's law
-L2	// position along x-axis is not equilibrium thus the equation is not wave equation
-L3	// I may get its equation wrong according to life experience
+L1	// physics: a 2d stretched string satisfying Hooke's law
+L2	// position along the x-axis is not equilibrium thus the equation is not wave equation
+L3	// I may get its equation wrong according to common sense
 L4	// (stiff equation?? Euler and Midpoint energy increase exponentially)
 L37	// spring constant
 L38	// spring length
@@ -2088,15 +2143,15 @@ Line ending: \r\n
 D:\Coding\Github\Graphics\simulation\experiment\string1d2.cpp
 Line ending: \r\n
 L1	// physics: a 2d stretched string
-L2	// the string is a discretized as a long grid of springs satisfying Hook's law
-L3	// gravity and air resistence (proper to v²) is added to the equation
+L2	// the string is a discretized as a long grid of springs satisfying Hooke's law
+L3	// gravity and air resistance (proper to v²) is added to the equation
 L4	// there are still vibrations even the string turns calm; I assume it can be reduced by adding spring damping
 L38	// spring constant
 L39	// spring length
 L40	// gravity
 L41	// reciprocal of mass
 L46	// return acceleration
-L54	// first derivative equals to velosity
+L54	// first derivative equals to velocity
 L61	// spring force
 L62	// tension of previous calculation
 L71	// damping force (air resistance)
@@ -2105,7 +2160,7 @@ L87	"incorrect struct size\n"
 L94	// initialization
 L111	// simulation with time recording
 L116	// energy
-L118	// velosity
+L118	// velocity
 L121	// "parallel" springs
 L125	// "cross" springs
 L128	// gravity potential
@@ -2148,7 +2203,7 @@ L1	// Batch test
 L5	// Biggest issue: losing accuracy at certain point
 L7	// Note:
 L8	// "⚠" is considered to be unstable as it is caused by "overflow", a difference from EXP001
-L9	// Runge-Kutta's accuracy is highest compare to other methods; this is obvious when setting BatchTest to 0
+L9	// Runge-Kutta's accuracy is highest compared to other methods; this is obvious when setting BatchTest to 0
 L10	// This may not be a good experiment as the reference solution calculates y and t from x instead of x and y from t
 L20	// parameters
 L26	// simulation parameters
@@ -2206,53 +2261,7 @@ Ignored
 D:\Coding\Github\Graphics\simulation\experiment\problems\README.md
 Line ending: \r\n
 L1	Problems from high school physics exercise books regarding differential equations.
-L3	These problems usually have analytical solutions with various difficulty and can be used to test numerical methods.
-
-D:\Coding\Github\Graphics\simulation\old\ball collision 2d.cpp
-Line ending: \n
-L1	// most of code are for rendering not simulating
-L34	// coefficient of restitution
-L71	//double t = (dot(n, p) - d) / dot(n, v);
-L74	//p = p - n * (dot(n, p) - d);    // works worst
-L75	// works best
-L76	//p = p + (v - v0) * t;        // most reasonable but not best
-L78	// two spheres with same mass
-
-D:\Coding\Github\Graphics\simulation\old\balls collision 2d.cpp
-Line ending: \n
-L1	// most of code are for rendering not simulating
-L36	// coefficient of restitution
-L98	//double t = (dot(n, p) - d) / dot(n, v);
-L101	//p = p - n * (dot(n, p) - d);    // most stable
-L102	// works best
-L103	//p = p + (v - v0) * t;        // most reasonable but not best
-L105	// two spheres with same mass
-
-D:\Coding\Github\Graphics\simulation\old\balls collision fast 2d.cpp
-Line ending: \n
-L1	// most of code are for rendering not simulating
-L38	// coefficient of restitution
-L84	// collision detection in O(n·log(n))
-L89	// topleft, topright, bottomleft, bottomright
-L196	// time recording
-L200	// simulation and rendering
-L213	// rendering
-L218	// encoding
-
-D:\Coding\Github\Graphics\simulation\old\simple pendulum 2d.cpp
-Line ending: \n
-
-D:\Coding\Github\Graphics\simulation\old\simple pendulum 3d.cpp
-Line ending: \n
-L1	// most of code are for rendering not simulating
-L35	// a disgusting function
-L39	//if (dot(p, d) >= 0.0) return false;
-L47	// I HATE this axis for polluting the simplicity and efficiency of my source (see how simple it is in the 2d rendering function)
-L105	// slide down
-L111	// debug
-
-D:\Coding\Github\Graphics\simulation\old\simple pendulum.cpp
-Line ending: \n
+L3	These problems usually have analytical solutions with various difficulties and can be used to test numerical methods.
 
 D:\Coding\Github\Graphics\UI\#.cpp
 Line ending: \r\n
@@ -2552,7 +2561,7 @@ L690	/*else if (Alt) {
         double dist0 = dist; dist *= exp(-0.001*_DELTA);
         Center -= (dist0 - dist) * normalize(Center - CamP);
     }*/
-L711	// drag to rotate scene
+L711	// drag to rotate the scene
 L726	// doesn't work very well
 L734	// be careful about coincidence
 L780	// reload file
@@ -2573,7 +2582,7 @@ L1	/*
         Drag to rotate viewpoint;
         Scroll to zoom; (there is a zooming limit)
         Shift + drag vertically to roll camera;
-        Shift + scroll to adjust perspective (move camera without scaling the screen)
+        Shift + scroll to adjust perspective (move the camera without scaling the screen)
         Press . to move view center to the 3D cursor;
 
     Selection:
@@ -2582,10 +2591,10 @@ L1	/*
         You can also click points on time axis window to select/unselect points (no Shift key required);
         Ctrl + A to select all points;
         Ctrl + I is for inverse selection;
-        Click empty space on preview window to unselect all points;
+        Click empty space on the preview window to unselect all points;
 
     3D Cursor:
-        The position of 3D cursor is the average of all selected points;
+        The position of the 3D cursor is the average of all selected points;
         Drag axis to translate points (default)
         [not implemented] Press T to enter translation mode;
         [not implemented] Press R to enter rotation mode;
@@ -2593,29 +2602,29 @@ L1	/*
 
     Time Axis (separated window):
         Vertical lines indicate frame, the lighter one indicates integer second;
-        Right click to pin/unpin window (set/unset window to topmost);
+        Right-click to pin/unpin window (set/unset window to topmost);
         Simple mouse scroll is vertical;
         Ctrl + Scroll to zoom the height of control points;
         Shift + Scroll to zoom the scale of time axis;
-        Alt + Scroll to move view along time axis;
-        Use left/right key to navigate to the previous/next frame;
+        Alt + Scroll to move view along the time axis;
+        Use the left/right key to navigate to the previous/next frame;
         Select a time and move a point to add a keyframe;
         Press Delete/Backspace to delete all selected keyframes;
-        Drag selected points along time axis to switch key frame;
+        Drag selected points along the time axis to switch keyframe;
         Press tab to insert keyframes identical to the previous keyframe;
 
     Animation Preview:
-        Press space key on any window to preview/pause animation.
-        The animation will start from current frame, or from the first if current frame is the last frame.
+        Press the space key on any window to preview/pause the animation.
+        The animation will start from the current frame, or from the first if the current frame is the last.
         When starting preview, all points are unselected.
-        [not implemented] Select start and end frame from time axis as preview range.
+        [not implemented] Select start and end frame from the time axis as preview range.
 
     Save File:
-        Ctrl + S to save file, Ctrl + O to open file.
+        Ctrl + S to save the file, Ctrl + O to open a file.
         Viewport and control point data are saved as text, start with character '#'
-        When saving file, file is opened in append mode.
-        Opening file will replace the current scene with new scene.
-        Due to the lack of error handling, if program crashes due to file format error, restart the program.
+        Files are opened in append mode when saving files.
+        Opening a file will replace the current scene with a new scene.
+        Due to the lack of error handling, if the program crashes due to file format error, restart the program.
 
 */
 L60	// ========================================= Win32 Standard =========================================
@@ -2626,6 +2635,7 @@ L113	// Second Window: Time Axis
 L115	"Time Axis"
 L144	// another forward declaration
 L148	// Win32 Entry
+L183	//WriteImage(); return 0;
 L225	// ================================== Vector Classes/Functions ==================================
 L229	//#define Inline inline
 L231	//#define Inline __forceinline
@@ -2643,7 +2653,7 @@ L363	// Marked as /**/ means I just copy-paste it without understanding how it w
 L364	// All direction vectors should be normalized
 L366	// Intersection functions - return the distance, NAN means no intersection
 L377	// works when p is inside the sphere (and its slightly faster)
-L378	// require d to be normalized
+L378	// requires d to be normalized
 L383	// usually we want it to be positive
 L425	// Normal calculation
 L432	// SDF functions
@@ -2690,7 +2700,7 @@ L697	// side length of one point on screen
 L698	// the object at the bottom of the screen
 L699	// mouse hover object
 L700	// return mouse hover object
-L707	// note that frame is floatpoint
+L707	// note that frame is double
 L711	// user parameters
 L714	//int pointOnMove[NCtrPs];  // points under on time change, the value is its original frame
 L715	// the above variable is moved to the next region
@@ -2744,9 +2754,9 @@ L1085	// Archer orientation
 L1091	// rendering process
 L1113	// intersection
 L1124	// transform ray to archer coordinate
-L1129	// test intersection for the archer - EXTREMLY SLOW!!!
-L1134	// identify if an error have occured (reduce step length after an error occur)
-L1140	// this line might be unneccessary
+L1129	// test intersection for the archer - EXTREMELY SLOW!!!
+L1134	// identify if an error has occurred (reduce step length after an error occur)
+L1140	// this line might be unnecessary
 L1159	// shading
 L1179	// lighting
 L1187	// put the color on the screen
@@ -2759,7 +2769,7 @@ L1251	// scene
 L1264	// 3D cursor
 L1280	// control points
 L1288	// timer
-L1298	// highlight mouse-hower frame
+L1298	// highlight mouse-hover frame
 L1304	// highlight selected points
 L1312	// draw axis and grid
 L1321	// highlight current frame
@@ -2782,13 +2792,13 @@ L1433	// Viewport window
 L1436	// window is minimized
 L1451	// zoom
 L1455	// clamp zooming depth
-L1468	// drag to rotate scene
+L1468	// drag to rotate the scene
 L1480	// mouse hover 3D cursor
 L1483	// dragging 3D cursor
 L1484	// record the displacement of the cursor
 L1491	// update position of points
 L1497	// not necessary just for safe
-L1500	// test if which part the mouse hover 3D cursor
+L1500	// test if which part the mouse hover the 3D cursor
 L1519	// be careful: coincidence
 L1522	// click
 L1524	// click to select/deselect points
@@ -2796,11 +2806,11 @@ L1558	// Time axis window
 L1568	// zoom object axis
 L1575	// zoom time axis
 L1583	// scroll time axis
-L1597	// ready to drag key frames
+L1597	// ready to drag keyframes
 L1611	// drag keyframes
 L1621	// be careful: coincidence
 L1625	// click to select edit frame
-L1628	// select point from time axis
+L1628	// select point from the time axis
 L1634	// stop point dragging
 L1642	// right click to pin/unpin window
 L1651	// Left/Right: previous/next frame
@@ -2816,14 +2826,15 @@ L1685	/*
     keyFrames.size() F P.x P.y P.z ......
     [new line]
 
-    File starts with character '#'
+    Files start with a character '#'
     The program searches for that character after opening the file.
 
     There will be a basic error handling for file open error, but no further handling on file format error.
-    Opening file will clear the current scene. If errors occur or program crashes due to file format error, restart this program.
+    Opening a file will clear the current scene. If errors occur or program crashes due to file format error, restart this program.
 
 */
 L1736	"%lf %lf %lf "
+L1737	"%lf %lf %lf %lf %lf\n"
 L1750	"%lf %lf %lf"
 
 D:\Coding\Github\Graphics\UI\ASM2O\Stick Figure.cpp
@@ -2836,7 +2847,7 @@ L1	/*
         Drag to rotate viewpoint;
         Scroll to zoom; (there is a zooming limit)
         Shift + drag vertically to roll camera;
-        Shift + scroll to adjust perspective (move camera without scaling the screen)
+        Shift + scroll to adjust perspective (move the camera without scaling the screen)
         Press . to move view center to the 3D cursor;
 
     Selection:
@@ -2845,10 +2856,10 @@ L1	/*
         You can also click points on time axis window to select/unselect points (no Shift key required);
         Ctrl + A to select all points;
         Ctrl + I is for inverse selection;
-        Click empty space on preview window to unselect all points;
+        Click empty space on the preview window to unselect all points;
 
     3D Cursor:
-        The position of 3D cursor is the average of all selected points;
+        The position of the 3D cursor is the average of all selected points;
         Drag axis to translate points (default)
         [not implemented] Press T to enter translation mode;
         [not implemented] Press R to enter rotation mode;
@@ -2856,32 +2867,32 @@ L1	/*
 
     Time Axis (separated window):
         Vertical lines indicate frame, the lighter one indicates integer second;
-        Right click to pin/unpin window (set/unset window to topmost);
+        Right-click to pin/unpin window (set/unset window to topmost);
         Simple mouse scroll is vertical;
         Ctrl + Scroll to zoom the height of control points;
         Shift + Scroll to zoom the scale of time axis;
-        Alt + Scroll to move view along time axis;
+        Alt + Scroll to move view along the time axis;
         Select a time and move a point to add a keyframe;
         Press Delete/Backspace to delete all selected keyframes;
-        Drag selected points along time axis to switch key frame;
+        Drag selected points along the time axis to switch keyframe;
         Press tab to insert keyframes identical to the previous keyframe;
 
     Animation Preview:
-        Press space key on any window to preview/pause animation.
-        The animation will start from current frame, or from the first if current frame is the last frame.
+        Press the space key on any window to preview/pause the animation.
+        The animation will start from the current frame, or from the first if the current frame is the last.
         When starting preview, all points are unselected.
-        [not implemented] Select start and end frame from time axis as preview range.
+        [not implemented] Select start and end frame from the time axis as preview range.
 
     Edit History:
         [not implemented]
-        History should include point position change, keyframe change, and selection/unselection
+        History should include point position change, keyframe change, and selection/deselection
 
     Save File:
-        Ctrl + S to save file, Ctrl + O to open file.
+        Ctrl + S to save the file, Ctrl + O to open a file.
         Viewport and control point data are saved as text, start with character '#'
-        When saving file, file is opened in append mode.
-        Opening file will replace the current scene with new scene.
-        Due to the lack of error handling, if program crashes due to file format error, restart the program.
+        Files are opened in append mode when saving files.
+        Opening a file will replace the current scene with a new scene loading from the file.
+        Due to the lack of error handling, if the program crashes due to file format error, restart the program.
 
 */
 L63	// ========================================= Win32 Standard =========================================
@@ -2892,6 +2903,7 @@ L114	// Second Window: Time Axis
 L116	"Time Axis"
 L142	// a forward declaration
 L146	// Win32 Entry
+L181	//WriteImage(); return 0;
 L223	// ================================== Vector Classes/Functions ==================================
 L241	// not standard
 L243	// not standard
@@ -2941,7 +2953,7 @@ L540	// side length of one point on screen
 L541	// the object at the bottom of the screen
 L542	// mouse hover object
 L543	// return mouse hover object
-L550	// note that frame is floatpoint
+L550	// note that frame is double
 L554	// user parameters
 L557	// points under on time change, the value is its original frame
 L566	// control points
@@ -2967,7 +2979,7 @@ L656	// ratio of radius for selecting cursor and selecting cursor axis
 L657	// (approximate) maximum length of cursor axis in screen coordinate
 L658	// not all implemented
 L659	// which part of the cursor is being moved
-L660	// return the # of selected pointss
+L660	// return the # of selected points
 L665	// no point selected -> 0/0=NAN
 L670	// Move viewport center to the location of the cursor
 L679	// Selection
@@ -2997,7 +3009,7 @@ L939	// scene
 L946	// 3D cursor
 L962	// control points
 L968	// timer
-L978	// highlight mouse-hower frame
+L978	// highlight mouse-hover frame
 L984	// highlight selected points
 L992	// draw axis and grid
 L1001	// highlight current frame
@@ -3038,7 +3050,7 @@ L1275	// Time axis window
 L1285	// zoom object axis
 L1292	// zoom time axis
 L1300	// scroll time axis
-L1314	// ready to drag key frames
+L1314	// ready to drag keyframes
 L1328	// drag keyframes
 L1338	// be careful: coincidence
 L1342	// click to select edit frame
@@ -3057,14 +3069,15 @@ L1392	/*
     keyFrames.size() F P.x P.y P.z ......
     [new line]
 
-    File starts with character '#'
+    Files are started with a character '#'
     The program searches for that character after opening the file.
 
     There will be a basic error handling for file open error, but no further handling on file format error.
-    Opening file will clear the current scene. If errors occur or program crashes due to file format error, restart this program.
+    Opening a file will clear the current scene. If errors occur or program crashes due to file format problems, restart the program.
 
 */
 L1443	"%lf %lf %lf "
+L1444	"%lf %lf %lf %lf %lf\n"
 L1456	"%lf %lf %lf"
 
 D:\Coding\Github\Graphics\UI\ASM2O\Stick Figure.txt
@@ -3072,8 +3085,7 @@ Line ending: \r\n
 L1	// hang-man animation ;)
 
 D:\Coding\Github\harry7557558.github.io\debug.html
-UTF-8 BOM detected
-Line ending: \r\n (1,0,22)
+Line ending: \n
 L3	Harry Chen - DEBUG
 L5	"noindex, nofollow"
 L10	This is a list of tools/notes that are currently under debugging.
@@ -3085,7 +3097,6 @@ L19	Contour Grapher (old)
 L20	Contour Grapher (new)
 
 D:\Coding\Github\harry7557558.github.io\index.html
-UTF-8 BOM detected
 Line ending: \n
 L4	Harry Chen
 L7	"noindex, follow"
@@ -3097,13 +3108,13 @@ L76	You can still check some of my tools:
 L77	Matrix visualizer
 L77	: interactive visualization of 2d/3d/4d matrices used for computer graphics, geometry transform, data processing, and others. (doesn't work in Firefox)
 L78	Complex grapher
-L78	: graphing complex-variabled math functions using Javascript.
+L78	: graphing complex-variable math functions using Javascript.
 L79	Chemical equation balancer
 L79	: created for my science homework.
 L80	MathJax tester
 L80	: Latex math tester with real-time preview. (defined some macros)
 L81	SVG path tester
-L81	: visualizing svg path data. A quite sketchy tool.
+L81	: visualizing SVG path data. A quite sketchy tool.
 L82	...and notes:
 L83	Equations in Mathematics (incomplete)
 L83	: a general math note sheet, my favorite part is the trigonometric formulas.
@@ -3139,13 +3150,13 @@ D:\Coding\Github\harry7557558.github.io\notes\substitution.html
 Ignored
 
 D:\Coding\Github\harry7557558.github.io\notes\unlisted\csh.js
-Line ending: \r\n
-L1	// compressing loaded html notes
+Line ending: \n
+L1	// compressing loaded HTML notes
 L2	// intended to heavily compress Mathjax
-L4	// run as Chrome snippet
+L4	// run as a Chrome snippet
 L5	// make sure MathJax are fully-loaded as HTML/CSS
 L6	// right click - Math Settings - Math Renderer - HTML-CSS
-L8	// agressive compression, sometimes hurts normal html
+L8	// aggressive compression, sometimes hurts normal HTML
 L9	// MathJax nobr paddings may be removed
 L11	// TODO: compress style attributes more
 L16	// test if an element should be discarded by tagname
@@ -3156,16 +3167,16 @@ L41	// this sometimes hurts (saves 0.3%)
 L50	// compress attribute strings
 L58	// removing all whitespaces hurts (ex. 2px solid => 2pxsolid)
 L64	// compress css content
-L72	// remove css that override classes
+L72	// remove CSS that override classes
 L75	// remove comments
 L85	// get a list of class names from class attribute string
 L90	// remove unused class names by MathJax
 L91	"MathJax"
-L101	// count the occurence of style attributes
+L101	// count the occurrence of style attributes
 L117	// pass html root element (or document.body) to this function
-L130	// find style attributes that occupies most html length
+L130	// find style attributes that occupy most HTML length
 L134	// may not be a good comparing function
-L140	// use class names with no more than 2 letters to avoid collision
+L140	// use class names with no more than 2 letters to avoid collisions
 L141	// some style attributes are like to come together. maybe...
 L158	// recursively go through html elements
 L169	// discard unwanted elements
@@ -3182,8 +3193,7 @@ L258	// override MathJax frame CSS
 L266	// "<!DOCTYPE html>" affects page appearance??
 
 D:\Coding\Github\harry7557558.github.io\notes\unlisted\Equations.html
-UTF-8 BOM detected
-Line ending: \r\n
+Line ending: \n
 L4	Equations in Mathematics
 L7	<!-- MathJax -->
 L14	"Failed loading MathJax \nCannot display LaTeX formulas"
@@ -3245,6 +3255,12 @@ L691	$\text{L'Hôpital's Rule for other indeterminates: } \quad
 L708	Derivative
 L710	<!-- Basic Identities -->
 L731	<!-- Derivative Table -->
+L762	$\ddx\sinh{x}=\cosh{x}, \quad
+                    \ddx\cosh{x}=\sinh{x}, \quad
+                    \ddx\tanh{x}=\sech^{2}{x}, \quad
+                    \ddx\csch{x}=-\coth{x}\cdot\csch{x}, \quad
+                    \ddx\sech{x}=-\sech{x}\cdot\tanh{x}, \quad
+                    \ddx\coth{x}=-\csch^2{x};$
 L780	Implicit differentiation
                 Jacobian / Multivariable
                 Curvature / Geometry
@@ -3267,6 +3283,8 @@ L846	"homogeneous differential equation"
 L851	"first order linear differential equation"
 L855	"Bernoulli differential equation"
 L861	<!-- Second and higher order differential equations -->
+L877	Solve $y^{(n)}=f\left(x,y^{(n-1)}\right)$:&ensp;
+                    $u(x)=y^{(n-2)} \Longrightarrow u''=f(x,u')$,&ensp; solve using above and repeat;
 L887	<!-- Second order differential equations -->
 L904	$\lambda^2+p\lambda+q$ and $2\lambda+p$ are both zero when $\lambda$ is a multiple root of $\lambda^2+p\lambda+q=0$;
 L907	$P(x)=P_m(x)$ is a degree-$m$ polynomial:&ensp;
@@ -3287,8 +3305,8 @@ L1039	More common indefinite/definite integrals;
                 Multivariable integration; Jacobian, common substitutions; Green/Gauss/Stokes;
                 Application;
                 Special integrals;
-L1046	<!-- Basic of Definate Integral -->
-L1094	<!-- Application of Definate Integral -->
+L1046	<!-- Basic of Definite Integral -->
+L1094	<!-- Application of Definite Integral -->
 L1114	<!-- Non-elementary Functions -->
 L1115	Special Integrals
 L1149	<!-- Fourier Series -->
@@ -3296,10 +3314,10 @@ L1170	<!-- Matrix and Vector -->
 L1172	Matrix
 L1174	<!-- Basic Operations -->
 L1197	<!-- Basic of Determinant -->
-L1202	Interchange two rows/cols: &ensp;$\det{A'}=\det{A}$; &emsp;
+L1202	Swap two rows/cols: &ensp;$\det{A'}=\det{A}$; &emsp;
                     Multiply a row/col by
 L1204	: &ensp;$\det{A'}=k\det{A}$; &emsp;
-                    Add the multiply of a row/col to another row/col: &ensp;$\det{A'}=\det{A}$; &emsp;
+                    Add the multiple of a row/col to another row/col: &ensp;$\det{A'}=\det{A}$; &emsp;
 L1235	column of $A$ by $Y$;
 L1239	<!-- Basic of Rank -->
 L1248	Elementary transforms don’t change rank of a matrix; &emsp;
@@ -3321,6 +3339,13 @@ L1362	<!--<p>
                         $\displaystyle C_\text{ellipse}=4a\cdot\mathrm{E}(e)\approx\pi\left[3(a+b)-\sqrt{(3a+b)(a+3b)}\right]$, &ensp;
                         where $\displaystyle \mathrm{E}(x)=\intabd[\theta]{\sqrt{1-x^2\sin^2\theta}}{0}{\pi/2}$ &ensp;and $e$ is the eccentricity $\displaystyle \sqrt{1-b^2/a^2}$;
                     </p>-->
+L1362	$S_\text{ellipse}=\pi{a}{b}$; &ensp;
+                        $\displaystyle C_\text{ellipse}=4a\cdot\mathrm{E}(e)\approx\pi\left[3(a+b)-\sqrt{(3a+b)(a+3b)}\right]$, &ensp;
+                        where $\displaystyle \mathrm{E}(x)=\intabd[\theta]{\sqrt{1-x^2\sin^2\theta}}{0}{\pi/2}$ &ensp;and $e$ is the eccentricity $\displaystyle \sqrt{1-b^2/a^2}$;
+L1375	In any triangle: &ensp;
+                        $\dfrac{a}{\sin{A}}=\dfrac{b}{\sin{B}}=\dfrac{c}{\sin{C}}=2R$; &ensp;
+                        $c^2=a^2+b^2-2ab\cos{C}$, &ensp;$\cos{A}=\dfrac{b^2+c^2-a^2}{2bc}$; &ensp;
+                        where $R=\dfrac{abc}{4\cdot Area}$ is the circumradius of the triangle; &ensp;
 L1399	<!--(Distance between two parallel lines: Distance from any point on a line to the other line. )-->
 L1411	<!-- Equation of Planar Lines -->
 L1413	Equations of Planar Straight Line
@@ -3349,12 +3374,12 @@ L1532	<!--<p>
                 </p>-->
 L1532	Points of intersection between circles:
                     simultaneous equations and solve. &ensp; (This also work for intersections problems between other objects)
-L1539	<!-- Quadric Curves -->
+L1539	<!-- Quadratic Curves -->
 L1547	ellipse
 L1551	hyperbola
 L1555	parabola
 L1559	hyperbolic
-L1564	Quadric Curves
+L1564	Quadratic Curves
 L1566	Ellipse
 L1570	Hyperbola
 L1574	Parabola
@@ -3386,7 +3411,7 @@ L1761	<!-- Permutation and Combination -->
 L1763	Permutation and Combination
 L1765	$n$ different types, $k$ choices: &ensp;($n$ choose $k$):
 L1767	Number of Orders: &ensp;$n!$; &ensp;
-L1774	Permytations with Repetition: &ensp;$U^n_k=n^k$; &emsp;
+L1774	Permutations with Repetition: &ensp;$U^n_k=n^k$; &emsp;
 L1786	Number of Orders in Circular Permutation: &emsp;$(n-1)!$; &ensp;
 L1790	Circular Permutation without Repetition: &emsp;
                     $Q^n_k=\dfrac{n!}{k\cdot(n-k)!}$; &emsp;&emsp;$Q^n_k=\dfrac{P^n_k}{k}$; &ensp;
@@ -3414,8 +3439,7 @@ L1947	<!-- Function Grapher -->
 L2045	// encode canvas to bitmap
 
 D:\Coding\Github\harry7557558.github.io\notes\unlisted\Inertia.html
-UTF-8 BOM detected
-Line ending: \r\n
+Line ending: \n
 L4	List of Moments of Inertia
 L7	<!-- graph plotter -->
 L9	// math
@@ -3475,7 +3499,7 @@ L399	Rotation about origin
 L400	Representing rotation using orthogonal matrix $\mathbf{R}$ where the columns of $\mathbf{R}$ are $\vec{i}, \vec{j}, \vec{k}$ after rotation.
 L403	Remain unchanged
 L415	Scaling
-L417	Scaling about origin with factor $s>0$.
+L417	Scaling about the origin with factor $s>0$.
 L428	Reference rule 0. for mass change.
 L433	Reflection about
 L434	xOy
@@ -3505,166 +3529,164 @@ L482	plane or other planes perpendicular to
 L482	xOy
 L482	plane about
 L482	-axis
-L482	to form a ring-liked body. The shape should not intersect the
+L482	to form a ring-like body. The shape should not intersect the
 L486	Surface to volume by connecting with
 L487	xOy
 L487	plane
-L487	Orthogonally connecting each point on a surface to
+L487	Orthogonally connect each point on a surface to
 L488	xOy
 L488	plane to form a volume. The surface should be intuitively valid for this transform.
 L492	Surface to volume by connecting with the origin
 L493	Connecting points on a surface/line to the origin to form a volume/surface. A ray from the origin should intersect the surface/line no more than once.
-L496	<!-- This formula is INCORRECT. -->
-L506	If a ray from the origin intersects surface twice, volume under the surfaces is counted twice. Thus this formula does not apply for non-simple regions. (ex. toric shell)
-L515	Description
-L516	Length / Area / Volume
-L517	Moment of inertia / Inertia tensor
-L518	Graph
-L519	Additional notes
-L522	<!-- Rod ... Sector -->
-L524	Rod
-L547	Disk
-L568	Ring
-L589	Ring with width
-L613	Sector
-L638	Arc
-L664	Truncated circle
-L675	<!-- Cylinder ... Torus -->
-L677	Cylinder
-L701	The height of this cylinder is $2h$.
+L502	Description
+L503	Length / Area / Volume
+L504	Moment of inertia / Inertia tensor
+L505	Graph
+L506	Additional notes
+L509	<!-- Rod ... Sector -->
+L511	Rod
+L534	Disk
+L555	Ring
+L576	Ring with width
+L600	Sector
+L625	Arc
+L651	Truncated circle
+L662	<!-- Cylinder ... Torus -->
+L664	Cylinder
+L688	The height of this cylinder is $2h$.
                         For a cylinder with height $h$, change $4h^2$ in the inertia matrix to $h^2$.
-L707	Sphere
-L728	Cone
-L756	Right-oriented cone
-L785	Cone at center of mass
-L808	In the graph the cone has $z$ ranged from $-\frac{1}{4}h$ to $\frac{3}{4}h$.
-L809	Reflection on
-L810	xOy
-L810	plane does not change its inertia.
-L814	Truncated cone
-L854	Solid angle
-L883	Semi-sphere is a special case with $c=0$.
-L888	Truncated sphere
-L893	Torus
-L921	Not implemented torus projection.
-L925	<!-- Ellipse ... Truncated elliptical cone -->
-L927	Planar ellipse
-L950	Planar elliptical ring
-L955	Elliptical cylinder
-L982	Change $4h^2$ to $h^2$ for a cylinder with height $h$.
-L987	Ellipsoid
-L1010	Not implemented ellipsoid projection.
-L1014	Elliptical cone
-L1044	Truncated elliptical cone
-L1079	<!-- Cylindrical shell ... Toric shell -->
-L1081	Cylindrical shell
-L1106	Without base
-L1111	Spherical shell
-L1132	Conical shell
-L1155	Without base
-L1162	Conical shell at center of mass
-L1185	In the graph the cone has $z$ ranged from $-\frac{1}{3}h$ to $\frac{2}{3}h$.
-L1186	Reflection on
-L1187	xOy
-L1187	plane does not change its inertia.
-L1191	Truncated spherical shell
-L1219	Semi-sphere is a special case with $c=0$.
-L1224	Truncated conical shell
-L1258	Without bases
-L1264	Elliptical cylindrical shell
-L1269	Ellipsoidal shell
-L1274	Elliptical conical shell
-L1279	Truncated elliptical conical shell
-L1284	Toric shell
-L1297	<!-- Cylindrical shell with thickness ... Toric shell with thickness -->
-L1299	Cylindrical shell with thickness
-L1332	Change $4h^2$ in the inertia matrix to $h^2$ for a cylinder with height $h$.
-L1337	Spherical shell with thickness
-L1363	Truncated conical shell with thickness
-L1378	Toric shell with thickness
-L1398	Description
-L1399	Length / Area / Volume
-L1400	Centroid /
-L1400	Center of mass
-L1401	Inertia tensor
-L1404	<!-- Segment ... Tetrahedron with one vertex at origin-->
-L1406	Segment defined by endpoints
-L1420	Triangle defined by the origin and vectors $\vec{a}$, $\vec{b}$
-L1434	Triangle defined by vertices
-L1449	Parallelogram defined by point $p$ and vectors
-L1464	Tetrahedron defined by the origin and vectors
-L1484	Description
-L1485	Length / Area / Volume
-L1486	Moment of inertia / Inertia tensor
-L1487	Graph
-L1488	Additional notes
-L1491	<!-- Square ... Border of regular polygon -->
-L1493	Square
-L1504	Rectangle
-L1515	Border of rectangle
-L1526	Equilateral triangle
-L1537	Regular polygon
-L1548	Border of regular polygon
-L1559	<!-- Cube ... Cube shell with thickness-->
-L1561	Cube
-L1572	Box (cuboid)
-L1583	Cube shell
-L1594	Box shell
-L1605	Cube shell with thickness
-L1617	Regular tetrahedron
-L1622	Regular octahedron
-L1627	Regular dodecahedron
-L1632	Regular icosahedron
-L1637	Regular tetrahedron shell
-L1642	Regular octahedron shell
-L1647	Regular dodecahedron shell
-L1652	Regular icosahedron shell
-L1657	Regular polygonal cylinder
-L1662	Regular polygonal cylindrical face
-L1667	Regular polygonal pyramid
-L1672	Regular polygonal pyramidal face
-L1677	Rounded rectangle
-L1682	Rounded box
-L1687	2d capsule
-L1692	3d capsule
-L1697	Rounded cylinder
-L1702	Rounded cone
-L1707	Rounded truncated torus
-L1712	Link
-L1717	Rounded rectangle shell
-L1722	Rounded box shell
-L1727	2d capsule shell
-L1732	3d capsule shell
-L1737	Rounded cylinder shell
-L1742	Rounded cone shell
-L1747	Rounded truncated torus shell
-L1752	Link shell
-L1757	Area from origin to quadratic parametric curve
-L1762	Area from origin to cubic parametric curve
-L1767	Volume from origin to bilinear surface
-L1772	Volume from origin to biquadratic surface
-L1777	Volume from origin to bicubic surface
-L1782	Quadratic parametric curve
-L1787	Bilinear surface
-L1792	More ideas: intersections, helix, bolt, spiral, snail...
-L1800	// add index number
-L1801	// note that some cells are hidden
-L1815	References
-L1816	Moment of inertia - Wikipedia
-L1817	Parallel axis theorem - Wikipedia
-L1818	Perpendicular axis theorem - Wikipedia
-L1819	List of moments of inertia - Wikipedia
-L1822	Additional notes
-L1823	Most integrations are done manually and checked numerically.
-L1824	Formulas are rendered with
-L1825	MathJax
-L1825	. A script has been used to generate latex.
+L694	Sphere
+L715	Cone
+L743	Right-oriented cone
+L772	Cone at center of mass
+L795	In the graph the cone has $z$ ranging from $-\frac{1}{4}h$ to $\frac{3}{4}h$.
+L796	Reflection on
+L797	xOy
+L797	plane does not change its inertia.
+L801	Truncated cone
+L841	Solid angle
+L870	Semi-sphere is a special case with $c=0$.
+L875	Truncated sphere
+L880	Torus
+L908	Not implemented torus projection.
+L912	<!-- Ellipse ... Truncated elliptical cone -->
+L914	Planar ellipse
+L937	Planar elliptical ring
+L942	Elliptical cylinder
+L969	Change $4h^2$ to $h^2$ for a cylinder with height $h$.
+L974	Ellipsoid
+L997	Not implemented ellipsoid projection.
+L1001	Elliptical cone
+L1031	Truncated elliptical cone
+L1066	<!-- Cylindrical shell ... Toric shell -->
+L1068	Cylindrical shell
+L1093	Without base
+L1098	Spherical shell
+L1119	Conical shell
+L1142	Without base
+L1149	Conical shell at center of mass
+L1172	In the graph the cone has $z$ ranging from $-\frac{1}{3}h$ to $\frac{2}{3}h$.
+L1173	Reflection on
+L1174	xOy
+L1174	plane does not change its inertia.
+L1178	Truncated spherical shell
+L1206	Semi-sphere is a special case with $c=0$.
+L1211	Truncated conical shell
+L1245	Without bases
+L1251	Elliptical cylindrical shell
+L1256	Ellipsoidal shell
+L1261	Elliptical conical shell
+L1266	Truncated elliptical conical shell
+L1271	Toric shell
+L1284	<!-- Cylindrical shell with thickness ... Toric shell with thickness -->
+L1286	Cylindrical shell with thickness
+L1319	Change $4h^2$ in the inertia matrix to $h^2$ for a cylinder with height $h$.
+L1324	Spherical shell with thickness
+L1350	Truncated conical shell with thickness
+L1365	Toric shell with thickness
+L1385	Description
+L1386	Length / Area / Volume
+L1387	Centroid /
+L1387	Center of mass
+L1388	Inertia tensor
+L1391	<!-- Segment ... Tetrahedron with one vertex at origin-->
+L1393	Segment defined by endpoints
+L1407	Triangle defined by the origin and vectors $\vec{a}$, $\vec{b}$
+L1421	Triangle defined by vertices
+L1436	Parallelogram defined by point $p$ and vectors
+L1451	Tetrahedron defined by the origin and vectors
+L1471	Description
+L1472	Length / Area / Volume
+L1473	Moment of inertia / Inertia tensor
+L1474	Graph
+L1475	Additional notes
+L1478	<!-- Square ... Border of regular polygon -->
+L1480	Square
+L1491	Rectangle
+L1502	Border of a rectangle
+L1513	Equilateral triangle
+L1524	Regular polygon
+L1535	Border of a regular polygon
+L1546	<!-- Cube ... Cube shell with thickness-->
+L1548	Cube
+L1559	Box (cuboid)
+L1570	Cube shell
+L1581	Box shell
+L1592	Cube shell with thickness
+L1604	Regular tetrahedron
+L1609	Regular octahedron
+L1614	Regular dodecahedron
+L1619	Regular icosahedron
+L1624	Regular tetrahedron shell
+L1629	Regular octahedron shell
+L1634	Regular dodecahedron shell
+L1639	Regular icosahedron shell
+L1644	Regular polygonal cylinder
+L1649	Regular polygonal cylindrical face
+L1654	Regular polygonal pyramid
+L1659	Regular polygonal pyramidal face
+L1664	Rounded rectangle
+L1669	Rounded box
+L1674	2d capsule
+L1679	3d capsule
+L1684	Rounded cylinder
+L1689	Rounded cone
+L1694	Rounded truncated torus
+L1699	Link
+L1704	Rounded rectangle shell
+L1709	Rounded box shell
+L1714	2d capsule shell
+L1719	3d capsule shell
+L1724	Rounded cylinder shell
+L1729	Rounded cone shell
+L1734	Rounded truncated torus shell
+L1739	Link shell
+L1744	Area from origin to a quadratic parametric curve
+L1749	Area from origin to a cubic parametric curve
+L1754	Volume from origin to bilinear surface
+L1759	Volume from origin to biquadratic surface
+L1764	Volume from origin to bicubic surface
+L1769	Quadratic parametric curve
+L1774	Bilinear surface
+L1779	More ideas: intersections, helix, bolt, spiral, snail...
+L1787	// add index number
+L1788	// note that some cells are hidden
+L1802	References
+L1803	Moment of inertia - Wikipedia
+L1804	Parallel axis theorem - Wikipedia
+L1805	Perpendicular axis theorem - Wikipedia
+L1806	List of moments of inertia - Wikipedia
+L1809	Additional notes
+L1810	Most integrations are done manually and checked numerically.
+L1811	Formulas are rendered with
+L1812	MathJax
+L1812	. A script has been used to generate latex.
                     Graphs are generated with Javascript.
-L1828	Please
-L1828	check my math and English
+L1815	Please
+L1815	check my math and English
 
 D:\Coding\Github\harry7557558.github.io\notes\unlisted\latex_desmos.js
-Line ending: \r\n
+Line ending: \n
 L1	// extracting latex expressions from Desmos online calculator
 L3	// clear all expressions
 L12	// convert latex expressions to fit personal preference (might hurt)
@@ -3676,8 +3698,7 @@ D:\Coding\Github\harry7557558.github.io\notes\unlisted\README.md
 L1	Incomplete notes, source files, note creation tools, and contents for personal use.
 
 D:\Coding\Github\harry7557558.github.io\notes\unlisted\Substitution.html
-UTF-8 BOM detected
-Line ending: \r\n
+Line ending: \n
 L4	Multidimensional Integral Substitutions
 L10	"alert('Failed to load MathJax')"
 L26	'Times New Roman'
@@ -3692,7 +3713,7 @@ L95	Additional notes
 L96	Jacobian
 L97	Commonly apply to
 L100	Polar
-L102	$\rho$: distance to origin
+L102	$\rho$: distance to the origin
 L103	$\theta$: polar angle
 L122	Circular integral regions
 L123	Planar regions described by implicit algebraic equations
@@ -3701,7 +3722,7 @@ L129	$a,b$: scaling on
 L130	and
 L130	-axis
 L147	Elliptical integral regions
-L153	Isosceles right triangle formed by axis
+L153	Isosceles right triangle formed by axises
 L154	$u$: distance to origin (Manhattan)
 L155	$v$: linear interpolation coefficient from
 L156	-axis
@@ -3720,7 +3741,7 @@ L231	Additional notes
 L232	Jacobian
 L233	Commonly apply to
 L236	Cylindrical
-L238	$\rho$: distance to origin
+L238	$\rho$: distance to the origin
 L239	$\theta$: polar angle
 L240	$h$: height
 L261	Integral volumes with circular bases
@@ -3730,15 +3751,15 @@ L268	and
 L268	-axis
 L287	Integral volumes with elliptical bases
 L292	Spherical (standard)
-L294	$\rho$: distance to origin
+L294	$\rho$: distance to the origin
 L295	$\theta$: longitude
-L296	$\varphi$: angle to vertical axis
+L296	$\varphi$: angle to the vertical axis
 L318	Spherical (
 L319	) and conical (
 L319	) volumes
 L319	Volumes defined by implicit algebraic equations
 L324	Spherical (latitude)
-L326	$\rho$: distance to origin
+L326	$\rho$: distance to the origin
 L327	$\theta, \varphi$: longitude and latitude
 L349	Spheres
 L354	Generalized spherical
@@ -3747,7 +3768,7 @@ L356	, and
 L356	-axis
 L376	Ellipsoids
 L381	Conical
-L382	$\rho h$: radius of circle at $z=h$
+L382	$\rho h$: radius at $z=h$
 L396	$0\le\rho\le\frac{r}{h_1}$ for integral in a cone with height $h_1$ and base radius $r$
 L402	Cones
 L407	Generalized conical
@@ -3801,20 +3822,19 @@ D:\Coding\Github\harry7557558.github.io\notes\unlisted\UnicodeTable.txt
 Ignored
 
 D:\Coding\Github\harry7557558.github.io\tools\chemequ.html
-UTF-8 BOM detected
 Line ending: \n
 L4	Chemical Equation Balancer
 L105	"The color of this square helps developer diagnose layout problems"
 L107	Chemical Equation Balancer
 L109	By Harry Chen
-L114	"Enter or paste chemical equation there"
+L114	"Enter a chemical equation..."
 L118	Balance
 L127	// Note that the reading of ionic equations and complex compound notations is still debugging
 L182	"Periodic Table of Elements (placeholder)"
 L191	// 119, with a placeholder
-L193	// saperate string of lists of molecular formulas
-L202	"unbalanced brackets"
-L208	"unbalanced brackets"
+L193	// separate string of lists of molecular formulas
+L202	"unbalanced bracket"
+L208	"unbalanced bracket"
 L209	"unexpected bracket ')'"
 L210	"unexpected bracket ']'"
 L211	"unexpected bracket '}'"
@@ -3833,32 +3853,32 @@ L292	// bracket
 L297	// find the matched bracket
 L301	// recursive reading contents inside the bracket
 L306	// add things inside the bracket into the result vector
-L320	"unrecogonized molecular formula "
+L320	"unrecognized molecular formula "
 L327	// read and balance chemical equation in a string
-L334	"unexpexted character \'"
+L334	"unexpected character \'"
 L337	// convert arrow or equal sign to a single "="
 L347	"missing arrow or equal sign"
-L349	// get lists of molecular formulas before and after reaction
+L349	// get lists of molecular formulas before and after the reaction
 L358	"empty side"
 L362	// construct matrix
 L370	// transpose the matrix
 L378	// remove empty rows
-L386	"This chemical equation has more than one ways to balance, or it doesn't exist."
+L386	"This chemical equation has more than one way to balance, or it doesn't exist."
 L388	// Gaussian elimination
+L412	//log("Multiply row " + (r + 1) + " by " + frac2str(k));
 L421	// find the first non-zero number
-L425	// if this happens, problem may occur
+L425	// if this happens, problems may occur
 L427	// add all other values in the same column to zero
 L442	// check the result
-L445	"This chemical equation has more than one ways to balance, or it doesn't exist."
+L445	"This chemical equation has more than one way to balance, or it doesn't exist."
 L449	// output balanced equation
 L451	// gcd
-L454	"Balancing failed! This error may occur due to an inexistent chemical equation, or the chemical equation you entered have more than one ways to balance."
+L454	"Balancing failed! This error may occur due to an inexistent chemical equation, or the chemical equation you entered has more than one way to balance."
 L460	// convert to html
 L492	"display: none"
 L558	Please ignore the numbers below.
 
 D:\Coding\Github\harry7557558.github.io\tools\complex.html
-UTF-8 BOM detected
 Line ending: \n
 L4	The Complex Grapher
 L29	// IE doesn't support hyperbolic functions
@@ -3880,7 +3900,6 @@ L730	"Invalid Expression"
 L783	"Invalid Expression"
 
 D:\Coding\Github\harry7557558.github.io\tools\mathjaxt.html
-UTF-8 BOM detected
 Line ending: \n
 L4	MathJax Tester
 L9	".MathJax nobr"
@@ -3903,7 +3922,6 @@ L242	"Typeset"
 L242	// refresh MathJax
 
 D:\Coding\Github\harry7557558.github.io\tools\matrixv.html
-UTF-8 BOM detected
 Line ending: \n
 L4	Simple 3D Matrix Visualizer
 L7	<!-- vector, matrix, math functions -->
@@ -3921,7 +3939,7 @@ L186	"Symbolic expressions unavailable"
 L191	<!-- canvas events -->
 L195	// if is in 2d view
 L205	"3D view"
-L210	// click and drag to rotate view
+L210	// click and drag to rotate the view
 L222	// doesn't work in IE and Firefox
 L233	<!-- matrix inputs and calculations -->
 L294	Matrix:
@@ -3930,7 +3948,7 @@ L298	det
 L299	det
 L302	"Eigens of 3×3 matrix"
 L315	// characteristic polynomial coefficients
-L317	// calulating determinants
+L317	// calculating determinants
 L325	// calculating eigenvalues and eigenvectors
 L331	// eigenvalues
 L353	// sort in increasing order
@@ -3958,14 +3976,14 @@ L548	// calculate transformation matrix
 L554	// doesn't make it better
 L559	// calculate the position of the origin on screen
 L607	// radius of the cube
-L610	// Axis with arrow
+L610	// Axis with an arrow
 L621	// Cube
 L634	// characteristic polynomial
 L646	// reference cube
 L651	// draw zero eigenvalues there
-L660	// combine both matrixes
+L660	// combine both matrices
 L663	// transformed cube
-L667	// eigen vectors - note that now the matrix is already transformed
+L667	// eigenvectors - note that now the matrix is transformed
 L698	"click to switch view"
 L703	"2D view"
 L703	"3D view"
@@ -3980,7 +3998,6 @@ L64	// doesn't work
 L70	// doesn't work
 
 D:\Coding\Github\harry7557558.github.io\tools\unlisted\Contour Grapher.html
-UTF-8 BOM detected
 Line ending: \n
 L4	The Contour Plotter
 L266	The Contour Plotter
@@ -4016,12 +4033,14 @@ L382	<!--<br /><br />
                     </div>
                 </div>-->
 L383	"ColorFunctionBtn"
+L385	"ColorFunctionBtn_text"
 L385	Select Color Function
 L386	"ColorFunction_Dropdown"
 L387	Default
 L388	Solar − DeepSea
 L395	"Default"
 L397	"ColorFunction"
+L406	// Color functions: https://reference.wolfram.com/language/guide/ColorSchemes.html
 L407	// Analysis RGB components of color gradients and fit using least square method
 L408	// Some color functions don't work well, even they look beautiful in example images
 L410	"DarkGreen"
@@ -4055,16 +4074,16 @@ L808	"Sunset"
 D:\Coding\Github\harry7557558.github.io\tools\unlisted\Contour Grapher (newer)\ColorFunctions.js
 Line ending: \n
 L1	/*
- * This file is auto generated with C++ programming language. 
- * All color functions come from: https://reference.wolfram.com/language/guide/ColorSchemes.html
+ * This file is auto-generated with C++.
+ * All color functions come from https://reference.wolfram.com/language/guide/ColorSchemes.html
  * Analysis RGB components of color gradients and fit using least square method
  * Some color functions don't work well, even they may look beautiful in preview images
  */
 L414	"ColorFunction"
+L519	"_LightTemperatureMap"
 L520	"Invalid Color Function \""
 
 D:\Coding\Github\harry7557558.github.io\tools\unlisted\Contour Grapher (newer)\Contour Grapher.html
-UTF-8 BOM detected
 Line ending: \n
 L4	The Contour Plotter
 L266	The Contour Plotter
@@ -4100,19 +4119,21 @@ L382	<!--<br /><br />
                     </div>
                 </div>-->
 L383	"ColorFunctionBtn"
+L385	"ColorFunctionBtn_text"
 L385	Select Color Function
 L386	"ColorFunction_Dropdown"
 L387	Default
 L388	Solar − DeepSea
 L395	"Default"
 L397	"ColorFunction"
+L406	// Color functions: https://reference.wolfram.com/language/guide/ColorSchemes.html
 L407	// Analysis RGB components of color gradients and fit using least square method
 L408	// Some color functions don't work well, even they look beautiful in example images
 L410	"DarkGreen"
 L493	Draw Graph
 L567	"Gamma"
 L573	// must be 3 lowercase characters, [xye] => [×ƴé]
-L594	// Formally, we type "log(2,sin(2*x)+1)". But when using our cellphone, most of us just type "log2(sin2x+1".
+L594	// Formally, we type "log(2,sin(2*x)+1)". But when using our phone, most of us just type "log2(sin2x+1".
 L616	"Invalid Expression: Decimal Error"
 L620	"Invalid Expression: Unknown Function Name "
 L622	"Invalid Expression: Bracket Missing after a Function"
@@ -4125,7 +4146,7 @@ L741	"Invalid Expression: "
 L743	"Invalid Expression: "
 L746	"Error: Empty stack"
 L756	"Invalid Expression: "
-L764	"Error: Final stack not empty"
+L764	"Error: Final stack is not empty"
 L795	"ColorFunction"
 L801	"Default"
 L802	"SolarDeepSea"
@@ -4148,13 +4169,13 @@ D:\Coding\Github\miscellaneous\Polynomial Regression.cpp
 Line ending: \r\n
 L1	// Polynomial Regression
 L2	// Designed to fit functions that are expensive to calculate
-L3	// It is not recommand to fit a polynomial with degree higher than 6 since they often have high computing error
-L12	// highest degree term comes first (where the highest term is P[0] and constant term is P[n])
+L3	// It is not recommended to fit a polynomial with a degree higher than 6 since they often have high computing error
+L12	// highest degree term comes first (where the highest term is P[0] and the constant term is P[n])
 L20	// translate a polynomial by (x,y) (x right y up)
 L28	// Pascal triangle
-L38	// Gaussian elimination for general situation
+L38	// Gaussian elimination in non-degenerated case
 L55	// repeated parts of the regression function
-L83	// fit to data set
+L83	// fit to a data set
 L99	// fit a function in interval [x0,x1], where dif is the number of samples in numerical integration
 L103	// or intxn, intxny
 L114	// calculate error - spend time!
@@ -4177,34 +4198,33 @@ L32	// return 0: one real root r and two complex roots u+vi, u-vi;
 L34	// now a=1
 L39	//u = cbrt(q + a), v = cbrt(q - a);
 L59	// Four real roots
-L68	// two minimas
-L72	// one minima with value greate 0
+L68	// two minimums
+L72	// one minimum with a positive value
 L74	// fourth derivative equals to zero (Note that this is not always the best point, sometimes trig extreme point
 L79	// finding one root x using Newton's method
-L80	//if (n >= 120) return;        // test shows this situation mostly occurs when no solution, but its minima shows it has solution (negative number with extreme small absolute value)
+L80	//if (n >= 120) return;        // test shows this situation mostly occurs when no solution, but its minima shows it has solutions (negative number with extreme small absolute value)
 L82	// Euclid division
 L88	// Five real roots
-L90	// Note: try Halley's method https://en.wikipedia.org/wiki/Halley%27s_method  Cubic convergence, but more ratio of failture  Also https://en.wikipedia.org/wiki/Householder%27s_method
-L96	// In random-value test: 0.008% fail, average 1.4μs elapsed; switch 1000/2000 to 60/120 reaches an average elapsed time of 1.1μs but 0.10% fail
-L97	// Failture mostly occurs on functions with a root with extreme large absolute value and an extremum with small absolute value. Its solution would be the large root and two small numbers. I don't know why. (There're a few exceptions)
-L108	// All real roots, may be low efficiency
-L121	// solve analytically
-L145	// probably no solution
-L148	// check the existence of solutions
-L149	// extremes
-L152	// at least 2 solutions exist
-L156	// no real solution
-L173	// Euclid division
-L184	// Find all real roots, available for any continuous function with finite roots, may be low efficiency
-L224	//findRoots([](double x) -> double { return exp(x) + sin(x) - pow(x, 3); }, r);
-L225	//findRoots([](double x) -> double { return exp(exp(-x - 4)) + 1 / tgamma(x); }, r);
-L226	//findRoots([](double x) -> double { return acos(erf(x)) - 1; }, r);
-L231	// This function has 58 real roots! Try to graph it and see what it looks like.
-L234	" real roots. "
+L95	// In random-value test: 0.008% fail, average 1.4μs elapsed; switch 1000/2000 to 60/120 reaches an average elapsed time of 1.1μs but 0.10% fail
+L96	// Failures mostly occur on functions with roots with extremely large absolute value and an extremum with small absolute value. Its solution would be the large root and two small numbers. I don't know why. (There're a few exceptions)
+L107	// All real roots, may be slow
+L120	// solve analytically
+L144	// probably no solution
+L147	// check the existence of solutions
+L148	// extremes
+L151	// at least 2 solutions exist
+L155	// no real solution
+L172	// Euclid division
+L183	// Find all real roots, available for any continuous function with finite roots, may be low efficiency
+L223	//findRoots([](double x) -> double { return exp(x) + sin(x) - pow(x, 3); }, r);
+L224	//findRoots([](double x) -> double { return exp(exp(-x - 4)) + 1 / tgamma(x); }, r);
+L225	//findRoots([](double x) -> double { return acos(erf(x)) - 1; }, r);
+L230	// This function has 58 real roots! Try to graph it and see what it looks like.
+L233	" real roots. "
 
 D:\Coding\Github\miscellaneous\code tools\comment_string.py
 Line ending: \r\n
-L1	# get comments/strings from source file
+L1	# get comments/strings from a source file
 L4	"Detect"
 L18	"Error: something wrong happens.\n"
 L37	"Select comment/string style  1 C/C++/Java  2 Python  3 HTML/CSS/JS : "
@@ -4217,20 +4237,20 @@ L1	# Extrude text contents in code directory for spelling/grammar check
 L2	# Requires source files to be UTF-8 encoding
 L4	# classify text and code in comments
 L8	# replace sensitive words in code by very less-used characters
-L9	# should work for most of supported languages
+L9	# should work for most of the supported languages
 L14	# characters ['<','>'] are still used in later code as HTML comment quotes
 L16	# test if a commented string is English text
 L17	# record strings for AI training
 L19	# the two cases: no doubt
-L23	# see commented code near the end if this file
+L23	# see commented code near the end of this file
 L30	# list all files in a directory
 L37	# remove binary/developing files by filtering file extensions
 L38	# VC can sometimes be ****
-L47	# read utf-8 file, preserves BOM and line ending
+L47	# read a UTF-8 file, preserves BOM and line ending
 L49	# 1MB size limit
-L54	# detect line ending, return readable string
+L54	# detect line ending types, return a readable string
 L63	"Line ending: "
-L65	# text extruding main function, return readable message
+L65	# main text extruding function, return readable message
 L67	# get code content
 L75	# distinguish from tab after line number
 L77	# guess comment quotes from file extension
@@ -4239,22 +4259,21 @@ L88	'Python'
 L92	# record discarded texts for debug purpose
 L95	# treat unsupported languages as plain text
 L106	# initialize a prefix sum array that maps character index to line number
-L112	# search comments in code
-L120	# find the next comment
-L131	# find the closed comment pair
-L138	# add the comment
-L140	# fix html quote overriding
-L152	# html special (may not always work)
-L191	# write training data in a random order
+L111	# search comments in code
+L119	# find the next comment
+L130	# find the closed comment pair
+L137	# add the comment
+L139	# fix HTML quote overriding
+L151	# HTML special (may not always work)
+L190	# write training data in a random order
 
 D:\Coding\Github\miscellaneous\code tools\comment_string_test.py
 Line ending: \r\n
-L1	# Text/code classfication for comment_string_directory.py
-L2	# Based on machine learning and SVM
+L1	# SVM based Text/code classification for comment_string_directory.py
 L8	# convert a string to a number array for SVM
-L10	# may affect accuracy but I assume it depends on coding habit
+L10	# may affect the accuracy but I assume it depends on coding habit
 L12	# manually handle "unusual" cases
-L15	# count occurences of characters
+L15	# count occurrences of characters
 L18	# string length
 L19	# space count
 L20	#C.append(s.count('\n'))  # line break count
@@ -4264,7 +4283,7 @@ L23	# digit count
 L26	#C.append(sum([ord(c)>127 for c in s]))  # non-ascii count
 L30	# print a string, and I tell the program if it is text or code
 L40	# text or code
-L49	# test if a string is text by syntax
+L49	# test if a string is text by rules
 L61	# new method using SVM, requires clf to be initialized
 L64	# handy cases
 L78	# half data for training and the rest for testing
@@ -4274,7 +4293,6 @@ D:\Coding\Github\miscellaneous\code tools\__init__.py
 Ignored
 
 D:\Coding\Github\miscellaneous\explore\Google Docs Anonymous Animals.html
-UTF-8 BOM detected
 Line ending: \r\n
 L2	Total 82 Viewers/Animals
 L3	Anonymous Alligator
@@ -4362,11 +4380,11 @@ L84	Anonymous Wombat
 
 D:\Coding\Github\miscellaneous\explore\Google Docs Anonymous Animals.js
 Line ending: \r\n
-L1	// get all viewers/animals in a Google Docs document as an html
+L1	// get all viewers/animals in a Google Docs document as an HTML
 
-D:\Coding\Github\miscellaneous\explore\sth_use_to_hack_Google_Classroom.js
+D:\Coding\Github\miscellaneous\explore\sth_uses_to_hack_Google_Classroom.js
 Line ending: \r\n
-L1	// something use to hack Google Classroom
+L1	// something uses to hack Google Classroom
 L7	"There are "
 L7	" teacher(s) in this classroom."
 L8	"They are: \n"
@@ -4388,13 +4406,13 @@ L222	// error also occur when file size greater than 4GB, but not notice
 
 D:\Coding\Github\miscellaneous\user scripts\dmoj.js
 Line ending: \r\n
-L7	// show problem type on problem page
-L14	// add "view raw source" botton on submission page
+L7	// show problem type on problem pages
+L14	// add "view raw source" button on submissions page
 L21	'View raw source'
 L26	// show hidden comments
 L41	// get the username on the current page
 L56	// Customize user table
-L57	// Addd a scale to Points and Problems in user table,
+L57	// Add a scale to Points and Problems in user tables,
 L58	// and add an Average Point Per Problem column.
 L64	// calculate scale upper bound
 L78	"Average Point Per Problem"
@@ -4438,679 +4456,4 @@ L96	// comments, blue
 L100	// status, yellow
 L104	"% like"
 L112	"onKeydown"
-
-D:\Coding\Github\Notes\Equations.html
-UTF-8 BOM detected
-Line ending: \r\n
-L4	Equations in Mathematics
-L7	<!-- MathJax -->
-L14	"Failed loading MathJax \nCannot display LaTeX formulas"
-L32	'Times New Roman'
-L71	/*cursor: crosshair;*/
-L92	// set this to non-empty when editing for faster loading
-L93	// pages without keyword will not be loaded
-L94	// case sensitive
-L99	<!-- LaTeX Macros -->
-L157	<!-- Trigonometric Functions -->
-L159	Trigonometric Functions
-L169	<!-- Graph -->
-L194	<!-- Special Values -->
-L213	<!-- Basic Identities -->
-L240	<!-- Sum, Double-angle, and Half-angle formulas -->
-L271	<!-- Sum to Prod, Prod to Sum -->
-L291	Inverse Trigonometric Functions
-L302	<!-- Graph -->
-L335	<!-- Combined trigonometric and inverse -->
-L352	<!-- Combined inverse and trigonometric -->
-L390	<!-- Combined trigonometric and multiple of inverse -->
-L390	<!-- Consider to remove or keep in a separated file -->
-L439	<!-- Exponential and Logarithm -->
-L441	Power, Exponential, and Logarithm
-L443	<!-- Graph of exp and ln -->
-L454	<!-- Complex square root -->
-L461	<!-- Exponent and Power basics -->
-L477	<!-- Logarithm basics -->
-L495	<!-- Graphs of Power, Exponent and Logarithm -->
-L529	<!-- Hyperbolic Functions -->
-L531	Hyperbolic Functions
-L533	<!-- Definitions -->
-L553	<!-- Graphs of hyperbolic functions -->
-L576	<!-- Trigonometric/hyperbolic on imagery axis -->
-L578	$\sin(ix)=i\cdot\sinh{x}, \quad
-                    \cos(ix)=\cosh{x}, \quad
-                    \tan(ix)=i\cdot\tanh{x}; \quad
-                    \sinh(ix)=i\cdot\sin{x}, \quad
-                    \cosh(ix)=\cos{x}, \quad
-                    \tanh(ix)=i\cdot\tan{x};$
-L594	<!-- Basic Identities -->
-L605	<!-- Hyperbolic function identities -->
-L613	<!-- Double & Triple -->
-L624	<!-- Prod to Sum -->
-L635	<!-- Sum to Prod -->
-L643	<!-- Combined hyperbolic and inverse -->
-L659	<!-- Limit, Derivative, and Differential equations -->
-L662	Limit
-L665	<!-- Basic Identity -->
-L676	<!-- Calculation Strategies -->
-L691	$\text{L'Hôpital's Rule for other indeterminates: } \quad
-                        \lim{0\cdot\infty}\Rightarrow\lim{\dfrac{0}{1/\infty}}, \quad
-                        \lim{\infty_1-\infty_2}\Rightarrow\lim\dfrac{1/\infty_1-1/\infty_2}{1/(\infty_1\infty_2)}, \quad
-                        \lim{\infty^0}\Rightarrow\exp\left(\lim\dfrac{0}{1/\ln\infty}\right), \\\qquad
-                        \lim{1^\infty}\Rightarrow\exp\left(\lim\dfrac{\ln1}{1/\infty}\right), \quad
-                        \lim{ (0^+)^{0} }\Rightarrow \exp\left(\lim\dfrac{0}{1/\ln0^+}\right), \quad
-                        \lim{\log_{0}{0}}\Rightarrow \lim\dfrac{\ln0}{\ln0}, \quad
-                        \lim{\log_{1}{1}}\Rightarrow \lim\dfrac{\ln1}{\ln1};$
-L708	Derivative
-L710	<!-- Basic Identities -->
-L731	<!-- Derivative Table -->
-L780	Implicit differentiation
-                Jacobian / Multivariable
-                Curvature / Geometry
-L786	<!-- Taylor Series -->
-L796	<!-- Curvature -->
-L808	<!-- Kinematics -->
-L816	Velocity and acceleration in polar coordinate $\begin{cases}r=r(t)\\\theta=\theta(t)\end{cases}$:&ensp;
-                    $\vec{p}=r\vec{e_r}$,&ensp;
-                    $\vec{v}=\dot{r}\vec{e_r}+r\dot{\theta}\vec{e_\theta}$,&ensp;
-                    $\vec{a}=(\ddot{r}-r\dot{\theta}^2)\vec{e_r}+(2\dot{r}\dot{\theta}+r\ddot{\theta})\vec{e_\theta}$;
-L822	Velocity and acceleration in eigen coordinate:&ensp;
-                    $\vec{v}=v\vec{e_t}$,&ensp;
-                    $\vec{a}=\dfrac{\d{v}}{\d{t}}\vec{e_t}+\dfrac{v^2}{R}\vec{e_n}$,&ensp;
-                    $R$ is the curvature radius;
-L826	&emsp;($\vec{a}$ can also be calculated by projecting acceleration vector in $\vec{e_t}$ and $\vec{e_n}$ directions)
-L834	Differential equations
-L836	<!-- First order differential equations -->
-L842	"separable differential equation"
-L846	"homogeneous differential equation"
-L851	"first order linear differential equation"
-L855	"Bernoulli differential equation"
-L861	<!-- Second and higher order differential equations -->
-L887	<!-- Second order differential equations -->
-L904	$\lambda^2+p\lambda+q$ and $2\lambda+p$ are both zero when $\lambda$ is a multiple root of $\lambda^2+p\lambda+q=0$;
-L907	$P(x)=P_m(x)$ is a degree-$m$ polynomial:&ensp;
-                        $Q(x)=\begin{cases}
-                        Q_m(x), &\lambda^2+p\lambda+q\ne0\\
-                        xQ_m(x), &\lambda^2+p\lambda+q=0,\ 2\lambda+p\ne0\\
-                        x^2Q_m(x), &\lambda^2+p\lambda+q=2\lambda+p=0\\
-                        \end{cases}$,&ensp; where $Q_m(x)$ is a polynomial of degree $m$;
-L922	"second order linear homogeneous differential equation"
-L927	"second order linear nonhomogeneous differential equation"
-L937	"Euler differential equation"
-L947	<!-- Integral -->
-L949	Integral
-L952	<!-- Basic of Integral -->
-L966	Log / Inverse trig − Algebraic − Trigonometric − Exp
-L971	<!-- Integral Table -->
-L1039	More common indefinite/definite integrals;
-                Multivariable integration; Jacobian, common substitutions; Green/Gauss/Stokes;
-                Application;
-                Special integrals;
-L1046	<!-- Basic of Definate Integral -->
-L1094	<!-- Application of Definate Integral -->
-L1114	<!-- Non-elementary Functions -->
-L1115	Special Integrals
-L1149	<!-- Fourier Series -->
-L1170	<!-- Matrix and Vector -->
-L1172	Matrix
-L1174	<!-- Basic Operations -->
-L1197	<!-- Basic of Determinant -->
-L1202	Interchange two rows/cols: &ensp;$\det{A'}=\det{A}$; &emsp;
-                    Multiply a row/col by
-L1204	: &ensp;$\det{A'}=k\det{A}$; &emsp;
-                    Add the multiply of a row/col to another row/col: &ensp;$\det{A'}=\det{A}$; &emsp;
-L1235	column of $A$ by $Y$;
-L1239	<!-- Basic of Rank -->
-L1248	Elementary transforms don’t change rank of a matrix; &emsp;
-                    $A_{m\times{n}} \cong \bmat{I_{R(A)}&O\\O&O}_{m\times{n}}$; &ensp;
-L1267	Vector
-L1269	<!-- Basic Operations -->
-L1271	<!-- Linear Operations -->
-L1278	<!-- Modulus and Projection -->
-L1287	<!-- Direction Cosine -->
-L1295	<!-- Dot Product -->
-L1317	<!-- Cross Product -->
-L1337	<!-- Triple Product -->
-L1350	<!-- Analytic Geometry -->
-L1352	Analytic Geometry
-L1354	<!-- Basic Equations -->
-L1356	Basic Equations
-L1362	<!--<p>
-                        $S_\text{ellipse}=\pi{a}{b}$; &ensp;
-                        $\displaystyle C_\text{ellipse}=4a\cdot\mathrm{E}(e)\approx\pi\left[3(a+b)-\sqrt{(3a+b)(a+3b)}\right]$, &ensp;
-                        where $\displaystyle \mathrm{E}(x)=\intabd[\theta]{\sqrt{1-x^2\sin^2\theta}}{0}{\pi/2}$ &ensp;and $e$ is the eccentricity $\displaystyle \sqrt{1-b^2/a^2}$;
-                    </p>-->
-L1399	<!--(Distance between two parallel lines: Distance from any point on a line to the other line. )-->
-L1411	<!-- Equation of Planar Lines -->
-L1413	Equations of Planar Straight Line
-L1432	General
-L1438	Slope $m$ and
-L1438	-intercept $b$
-L1456	and
-L1456	intercepts $a$, $b$
-L1464	Note:
-L1464	&ensp; Different countries use different notations for slope and
-L1464	-intercept of a straight line.
-L1464	&emsp; &emsp; &ensp; Common representations are
-L1467	In this document,
-L1468	is slope and
-L1468	are
-L1468	and
-L1486	<!-- Equation of Circle -->
-L1488	Equations of Circle
-L1507	Center $C(a,b)$ and radius $r$
-L1513	General
-L1522	Equation #2 is very convenient to determine the equation of a circle through 3 given points.
-                    (Since just need to solve systems of linear equations. )
-L1532	<!--<p>
-                    Points of intersection between circles:
-                    simultaneous equations and solve. &ensp; (This also work for intersections problems between other objects)
-                </p>-->
-L1532	Points of intersection between circles:
-                    simultaneous equations and solve. &ensp; (This also work for intersections problems between other objects)
-L1539	<!-- Quadric Curves -->
-L1547	ellipse
-L1551	hyperbola
-L1555	parabola
-L1559	hyperbolic
-L1564	Quadric Curves
-L1566	Ellipse
-L1570	Hyperbola
-L1574	Parabola
-L1578	Ellipse: &ensp;also &ensp;$\rho(\theta)=\dfrac{ab}{\displaystyle\sqrt{(b\cos\theta)^2+(a\sin\theta)^2}}$
-                    or &ensp;$\equd{x=a\cdot\cos{t}}{y=b\cdot\sin{t}} \, 0 \leq t \leq 2\pi$; &emsp;
-                    and $\equd{x=a\cdot\sec{t}}{y=b\cdot\tan{t}}$ is hyperbola; &ensp;
-L1587	<!-- Equation of Plane -->
-L1589	Equations of Plane
-L1609	General
-L1627	and
-L1627	intercepts $a$, $b$, $c$
-L1633	-axis; &ensp;
-                    $A=B=0$: &ensp;parallel to $xOy$ plane; &ensp;
-                    $D=0$: &ensp;through Origin; &ensp;
-L1645	<!-- Equation of Spatial Line -->
-L1647	Equations of Spatial Straight Line
-L1668	If $a$,$b$,or $c$ occurs as 0, then the numerator is also 0
-L1678	Parameter
-L1681	Usually for solving equations
-L1687	Intersection of two planes
-L1705	$l\parallel\pi\iff\vec{s}\cdot\vec{n}=0$, &ensp;
-                    $l\subset\pi\iff\vec{s}\cdot\vec{n}=0\>\land\>Ax_0+By_0+Cz_0+D=0$; &emsp;
-                    $l\text{ intersect }\pi\iff\vec{s}\cdot\vec{n}\ne0$, &ensp;
-                    $\left
-L1715	&emsp;&emsp; then all planes through $l$ is given by: &ensp;$A_1x+B_1y+C_1z+D_1+\lambda\left(A_2x+B_2y+C_2z+D_2\right)=0$, &ensp;
-                    except #2 &ensp;$(\lambda\rightarrow\infty)$; &emsp;
-L1727	<!-- Miscellaneous -->
-L1761	<!-- Permutation and Combination -->
-L1763	Permutation and Combination
-L1765	$n$ different types, $k$ choices: &ensp;($n$ choose $k$):
-L1767	Number of Orders: &ensp;$n!$; &ensp;
-L1774	Permytations with Repetition: &ensp;$U^n_k=n^k$; &emsp;
-L1786	Number of Orders in Circular Permutation: &emsp;$(n-1)!$; &ensp;
-L1790	Circular Permutation without Repetition: &emsp;
-                    $Q^n_k=\dfrac{n!}{k\cdot(n-k)!}$; &emsp;&emsp;$Q^n_k=\dfrac{P^n_k}{k}$; &ensp;
-L1794	Circular Permutation with Repetition: &emsp;
-                    $\dfrac{\sum_{r|k}(r\cdot\varphi(r)\cdot{n^{\frac{k}{r}}})}{k}$; &ensp;
-L1809	Normal Distribution
-L1820	Statistics
-L1829	Linear Regression: &ensp;
-                    $\displaystyle{\equd{
-                    m=\dfrac{n\sum{xy}-\sum{x}\sum{xy}}{n\sum{x^2}-(\sum{x})^2}
-                    =\dfrac{\sum{xy-n\overline{x}\overline{y}}}{\sum{x^2-n\overline{x}^2}}}
-                    {b=\overline{y}-m\overline{x}}
-                    }$ , &ensp;
-                    $y=mx+b$;
-L1836	Strength of linear relationship in Linear Regression: &ensp;
-                    $ \displaystyle{r = \dfrac{
-                    \sum{(x_i-\overline{x})(y_i-\overline{y})}}{
-                    \sqrt{\sum{(x_i-\overline{x})^2}\sum{(y_i-\overline{y})^2}}
-                    } \in (0,1]}$ ; &ensp;
-L1866	<!-- For Easier Editing -->
-L1928	"6px solid SaddleBrown"
-L1929	"BurlyWood"
-L1931	"Consolas"
-L1947	<!-- Function Grapher -->
-L2045	// encode canvas to bitmap
-
-D:\Coding\Github\Notes\Inertia.html
-UTF-8 BOM detected
-Line ending: \r\n
-L4	List of Moments of Inertia
-L7	<!-- graph plotter -->
-L9	// math
-L22	// cubic solver least-square magic
-L25	// graph rendering function
-L27	// rotation about x-axis
-L28	// rotation about z-axis
-L29	// scaling factor
-L30	// translation in world coordinate
-L31	// translation in screen coordinate
-L40	// graphics
-L41	// text
-L43	// viewport settings
-L59	// projection information
-L61	// tell where to connect lines when drawing cylinders
-L67	// tell where to connect lines when drawing cones
-L75	// graphing functions
-L110	// recursively fit elliptic arc to piecewise Bezier splines
-L157	// graphing
-L168	// renderer calling function
-L173	// interactive graph, available in debug mode
-L208	// debug mode: change MathJax script tag to something else
-L229	/* graphs with issues:
-             * Solid angle
-             * Torus
-             * Ellipsoid
-             * Cylindrical shell with thickness
-             */
-L235	/* blank graphs:
-             * Toric shell
-             * Toric shell with thickness
-             */
-L256	'Times New Roman'
-L320	<!-- Mathjax -->
-L325	"alert('Failed to load MathJax')"
-L329	<!-- hacking MathJax-->
-L337	/*outline-width: 0px;
-            outline-style: none;*/
-L346	List of moments of inertia
-L351	Description
-L352	Length / Area / Volume
-L353	Centroid /
-L353	Center of mass
-L354	Inertia tensor
-L355	Additional notes
-L358	<!-- The correctness of this part is to be determined -->
-L360	Mass change
-L361	Multiplying the density of a body by
-L364	Remain unchanged
-L367	Remain unchanged
-L373	For the rest of this table, assume the mass of the body remains unchanged after transformation.
-L378	Translation
-L379	Translating a body by displacement $d$.
-L382	Remain unchanged
-L394	Bold $\mathbf{I}$ represents the 3×3 identity matrix.
-L399	Rotation about origin
-L400	Representing rotation using orthogonal matrix $\mathbf{R}$ where the columns of $\mathbf{R}$ are $\vec{i}, \vec{j}, \vec{k}$ after rotation.
-L403	Remain unchanged
-L415	Scaling
-L417	Scaling about origin with factor $s>0$.
-L428	Reference rule 0. for mass change.
-L433	Reflection about
-L434	xOy
-L434	plane
-L434	Reversing the signs of $z$ components of points in a body.
-L437	Remain unchanged
-L440	Reflected about
-L441	xOy
-L441	plane
-L443	Remain unchanged
-L449	Reflection
-L450	Reflection about a plane through the origin with unit normal $\mathbf{n}.$
-L453	Remain unchanged
-L461	Extrusion from 2D
-L462	Extruding a shape on
-L463	xOy
-L463	plane on both positive and negative directions of
-L463	-axis
-L463	by length $h$.
-                        (the result is a cylinder with height $2h$.)
-L469	Remain unchanged
-L475	$m$ represents the mass of the body before and after transformation. Reference rule 0. for mass change.
-L480	Revolution from 2D
-L481	Rotate a shape on
-L482	xOz
-L482	plane or other planes perpendicular to
-L482	xOy
-L482	plane about
-L482	-axis
-L482	to form a ring-liked body. The shape should not intersect the
-L486	Surface to volume by connecting with
-L487	xOy
-L487	plane
-L487	Orthogonally connecting each point on a surface to
-L488	xOy
-L488	plane to form a volume. The surface should be intuitively valid for this transform.
-L492	Surface to volume by connecting with the origin
-L493	Connecting points on a surface/line to the origin to form a volume/surface. A ray from the origin should intersect the surface/line no more than once.
-L496	<!-- This formula is INCORRECT. -->
-L506	If a ray from the origin intersects surface twice, volume under the surfaces is counted twice. Thus this formula does not apply for non-simple regions. (ex. toric shell)
-L515	Description
-L516	Length / Area / Volume
-L517	Moment of inertia / Inertia tensor
-L518	Graph
-L519	Additional notes
-L522	<!-- Rod ... Sector -->
-L524	Rod
-L547	Disk
-L568	Ring
-L589	Ring with width
-L613	Sector
-L638	Arc
-L664	Truncated circle
-L675	<!-- Cylinder ... Torus -->
-L677	Cylinder
-L701	The height of this cylinder is $2h$.
-                        For a cylinder with height $h$, change $4h^2$ in the inertia matrix to $h^2$.
-L707	Sphere
-L728	Cone
-L756	Right-oriented cone
-L785	Cone at center of mass
-L808	In the graph the cone has $z$ ranged from $-\frac{1}{4}h$ to $\frac{3}{4}h$.
-L809	Reflection on
-L810	xOy
-L810	plane does not change its inertia.
-L814	Truncated cone
-L854	Solid angle
-L883	Semi-sphere is a special case with $c=0$.
-L888	Truncated sphere
-L893	Torus
-L921	Not implemented torus projection.
-L925	<!-- Ellipse ... Truncated elliptical cone -->
-L927	Planar ellipse
-L950	Planar elliptical ring
-L955	Elliptical cylinder
-L982	Change $4h^2$ to $h^2$ for a cylinder with height $h$.
-L987	Ellipsoid
-L1010	Not implemented ellipsoid projection.
-L1014	Elliptical cone
-L1044	Truncated elliptical cone
-L1079	<!-- Cylindrical shell ... Toric shell -->
-L1081	Cylindrical shell
-L1106	Without base
-L1111	Spherical shell
-L1132	Conical shell
-L1155	Without base
-L1162	Conical shell at center of mass
-L1185	In the graph the cone has $z$ ranged from $-\frac{1}{3}h$ to $\frac{2}{3}h$.
-L1186	Reflection on
-L1187	xOy
-L1187	plane does not change its inertia.
-L1191	Truncated spherical shell
-L1219	Semi-sphere is a special case with $c=0$.
-L1224	Truncated conical shell
-L1258	Without bases
-L1264	Elliptical cylindrical shell
-L1269	Ellipsoidal shell
-L1274	Elliptical conical shell
-L1279	Truncated elliptical conical shell
-L1284	Toric shell
-L1297	<!-- Cylindrical shell with thickness ... Toric shell with thickness -->
-L1299	Cylindrical shell with thickness
-L1332	Change $4h^2$ in the inertia matrix to $h^2$ for a cylinder with height $h$.
-L1337	Spherical shell with thickness
-L1363	Truncated conical shell with thickness
-L1378	Toric shell with thickness
-L1398	Description
-L1399	Length / Area / Volume
-L1400	Centroid /
-L1400	Center of mass
-L1401	Inertia tensor
-L1404	<!-- Segment ... Tetrahedron with one vertex at origin-->
-L1406	Segment defined by endpoints
-L1420	Triangle defined by the origin and vectors $\vec{a}$, $\vec{b}$
-L1434	Triangle defined by vertices
-L1449	Parallelogram defined by point $p$ and vectors
-L1464	Tetrahedron defined by the origin and vectors
-L1484	Description
-L1485	Length / Area / Volume
-L1486	Moment of inertia / Inertia tensor
-L1487	Graph
-L1488	Additional notes
-L1491	<!-- Square ... Border of regular polygon -->
-L1493	Square
-L1504	Rectangle
-L1515	Border of rectangle
-L1526	Equilateral triangle
-L1537	Regular polygon
-L1548	Border of regular polygon
-L1559	<!-- Cube ... Cube shell with thickness-->
-L1561	Cube
-L1572	Box (cuboid)
-L1583	Cube shell
-L1594	Box shell
-L1605	Cube shell with thickness
-L1617	Regular tetrahedron
-L1622	Regular octahedron
-L1627	Regular dodecahedron
-L1632	Regular icosahedron
-L1637	Regular tetrahedron shell
-L1642	Regular octahedron shell
-L1647	Regular dodecahedron shell
-L1652	Regular icosahedron shell
-L1657	Regular polygonal cylinder
-L1662	Regular polygonal cylindrical face
-L1667	Regular polygonal pyramid
-L1672	Regular polygonal pyramidal face
-L1677	Rounded rectangle
-L1682	Rounded box
-L1687	2d capsule
-L1692	3d capsule
-L1697	Rounded cylinder
-L1702	Rounded cone
-L1707	Rounded truncated torus
-L1712	Link
-L1717	Rounded rectangle shell
-L1722	Rounded box shell
-L1727	2d capsule shell
-L1732	3d capsule shell
-L1737	Rounded cylinder shell
-L1742	Rounded cone shell
-L1747	Rounded truncated torus shell
-L1752	Link shell
-L1757	Area from origin to quadratic parametric curve
-L1762	Area from origin to cubic parametric curve
-L1767	Volume from origin to bilinear surface
-L1772	Volume from origin to biquadratic surface
-L1777	Volume from origin to bicubic surface
-L1782	Quadratic parametric curve
-L1787	Bilinear surface
-L1792	More ideas: intersections, helix, bolt, spiral, snail...
-L1800	// add index number
-L1801	// note that some cells are hidden
-L1815	References
-L1816	Moment of inertia - Wikipedia
-L1817	Parallel axis theorem - Wikipedia
-L1818	Perpendicular axis theorem - Wikipedia
-L1819	List of moments of inertia - Wikipedia
-L1822	Additional notes
-L1823	Most integrations are done manually and checked numerically.
-L1824	Formulas are rendered with
-L1825	MathJax
-L1825	. A script has been used to generate latex.
-                    Graphs are generated with Javascript.
-L1828	Please
-L1828	check my math and English
-
-D:\Coding\Github\Notes\README.md
-Line ending: \r\n
-
-D:\Coding\Github\Notes\Substitution.html
-UTF-8 BOM detected
-Line ending: \r\n
-L4	Multidimensional Integral Substitutions
-L10	"alert('Failed to load MathJax')"
-L26	'Times New Roman'
-L62	/* use to make table column widths straight */
-L68	<!-- hacking MathJax -->
-L88	2-dimensional integral substitutions
-L92	Description
-L93	Transform
-L94	Inverse transform
-L95	Other properties /
-L95	Additional notes
-L96	Jacobian
-L97	Commonly apply to
-L100	Polar
-L102	$\rho$: distance to origin
-L103	$\theta$: polar angle
-L122	Circular integral regions
-L123	Planar regions described by implicit algebraic equations
-L128	Generalized polar
-L129	$a,b$: scaling on
-L130	and
-L130	-axis
-L147	Elliptical integral regions
-L153	Isosceles right triangle formed by axis
-L154	$u$: distance to origin (Manhattan)
-L155	$v$: linear interpolation coefficient from
-L156	-axis
-L174	Region in the first quadrant defined by $x+y\le a$
-L179	Triangle defined by origin and two vectors $\vec{a}, \vec{b}$
-L195	Triangular integral regions
-L196	Green formula for regions inside polygons
-L201	Matrix
-L214	Parallelogram / Triangle
-L224	3-dimensional integral substitutions
-L228	Description
-L229	Transform
-L230	Inverse transform
-L231	Other properties /
-L231	Additional notes
-L232	Jacobian
-L233	Commonly apply to
-L236	Cylindrical
-L238	$\rho$: distance to origin
-L239	$\theta$: polar angle
-L240	$h$: height
-L261	Integral volumes with circular bases
-L266	Generalized cylindrical
-L267	$a,b$: scaling on
-L268	and
-L268	-axis
-L287	Integral volumes with elliptical bases
-L292	Spherical (standard)
-L294	$\rho$: distance to origin
-L295	$\theta$: longitude
-L296	$\varphi$: angle to vertical axis
-L318	Spherical (
-L319	) and conical (
-L319	) volumes
-L319	Volumes defined by implicit algebraic equations
-L324	Spherical (latitude)
-L326	$\rho$: distance to origin
-L327	$\theta, \varphi$: longitude and latitude
-L349	Spheres
-L354	Generalized spherical
-L355	$a,b,c$: scaling on
-L356	, and
-L356	-axis
-L376	Ellipsoids
-L381	Conical
-L382	$\rho h$: radius of circle at $z=h$
-L396	$0\le\rho\le\frac{r}{h_1}$ for integral in a cone with height $h_1$ and base radius $r$
-L402	Cones
-L407	Generalized conical
-L408	$a,b,c$ are scaling factors on
-L409	x, y, z
-L409	axis
-L428	Elliptic cones with base radius $a,b$ and height $c$
-L433	Toric
-L435	$u$: longitude
-L436	$v$: latitude
-L437	$\rho$: radius of small circle
-L438	$R$: radius of large circle
-L460	Toruses
-L465	Tetrahedron formed by coordinate planes and a plane with $\vec{n}=(1,1,1)$
-L468	xOy
-L468	-axis
-L469	xOz
-L469	yOz
-L470	x + y + z
-L490	Volume in the first octant defined by $x+y+z\le a$
-L495	Tetrahedron defined by origin and three vectors $\vec{a}, \vec{b}, \vec{c}$
-L503	Transform $\vec{p}$ using $[\vec{a},\vec{b},\vec{c}]^{-1}$ and apply the formula in the above cell
-L514	Gauss divergence theorem for integrals inside polyhedrons
-L524	3-dimensional areal elements
-L530	Description
-L531	Parametric equation
-L532	Directional derivatives
-L533	Normal vector
-L534	Areal element
-L537	Triangle defined by point $p$ and vectors $\vec{a},\vec{b}$
-L557	Parallelogram defined by point $p$ and vectors $\vec{a},\vec{b}$
-L576	Cylinder with base
-L577	radius $r$
-L597	Standard sphere with radius&nbsp;$r$
-L618	Sphere with radius $r$ parametrized on latitude
-L639	Cone with $k$ equals to the tangent of one half of the opening angle
-L659	Cone with base radius $r$ and height $h$
-L679	Torus with major radius $R$ and minor radius $r$
-L700	Elliptic cylinder with scaling factor $a,b$ on
-L701	x, y
-L701	axis
-L720	Ellipsoid with radius $a,b,c$ on
-L721	x, y, z
-L721	axis
-L744	Elliptic cone with radius $a,b$ on cross section with $z=1$
-L770	Bilinear surface
-L786	Biquadratic surface
-L799	Bicubic surface
-
-D:\Coding\Github\Notes\UnicodeTable.txt
-Ignored
-
-D:\Coding\Github\Notes\Equations Tools\csh.cpp
-Line ending: \r\n
-L1	// Processing equation htmls generated by browser after Mathjax finished rendering
-L2	// The result file can be quite large but loads faster
-L16	"Error: incorrect number of parameters. (%d)\n"
-L20	// read file (max 16MB)
-L31	// start timer
-L34	// erase html <script> element and comments
-L51	// replace date substring
-L65	// write file
-L73	// skip line breaks and consecutive spaces
-L81	// sometimes hurts normal text
-
-D:\Coding\Github\Notes\Equations Tools\csh.js
-Line ending: \r\n
-L1	// compressing loaded html notes
-L2	// intended to heavily compress Mathjax
-L4	// run as Chrome snippet
-L5	// make sure MathJax are fully-loaded as HTML/CSS
-L6	// right click - Math Settings - Math Renderer - HTML-CSS
-L8	// agressive compression, sometimes hurts normal html
-L9	// MathJax nobr paddings may be removed
-L11	// TODO: compress style attributes more
-L16	// test if an element should be discarded by tagname
-L23	// test if an element should be discarded by style
-L31	// test if an element should be discarded by attributes
-L38	// compress text node type value
-L41	// this sometimes hurts (saves 0.3%)
-L50	// compress attribute strings
-L58	// removing all whitespaces hurts (ex. 2px solid => 2pxsolid)
-L64	// compress css content
-L72	// remove css that override classes
-L75	// remove comments
-L85	// get a list of class names from class attribute string
-L90	// remove unused class names by MathJax
-L91	"MathJax"
-L101	// count the occurence of style attributes
-L117	// pass html root element (or document.body) to this function
-L130	// find style attributes that occupies most html length
-L134	// may not be a good comparing function
-L140	// use class names with no more than 2 letters to avoid collision
-L141	// some style attributes are like to come together. maybe...
-L158	// recursively go through html elements
-L169	// discard unwanted elements
-L178	// "style" tagname, attributes are discarded
-L181	// be careful not to get normal css removed
-L189	// recursion
-L196	// get element attributes
-L202	// compress class attribute
-L221	// convert most occured styles to classes
-L230	// add attributes back
-L242	"MathJax"
-L252	// add a stylesheet
-L258	// override MathJax frame CSS
-L266	// "<!DOCTYPE html>" affects page appearance??
-
-D:\Coding\Github\Notes\Equations Tools\latex_desmos.js
-Line ending: \r\n
-L1	// extracting latex expressions from Desmos online calculator
-L3	// clear all expressions
-L12	// convert latex expressions to fit personal preference (might hurt)
-L13	// set d0 to 1 for not converting \frac
-L34	// extract all expressions as a string
-L43	// extract first 9 elements as a 3x3 matrix
 

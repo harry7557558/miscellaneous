@@ -1,6 +1,6 @@
 // Polynomial Regression
 // Designed to fit functions that are expensive to calculate
-// It is not recommand to fit a polynomial with degree higher than 6 since they often have high computing error
+// It is not recommended to fit a polynomial with a degree higher than 6 since they often have high computing error
 
 
 #include <cmath>
@@ -9,7 +9,7 @@
 #define PI 3.1415926535897932384626
 
 
-// highest degree term comes first (where the highest term is P[0] and constant term is P[n])
+// highest degree term comes first (where the highest term is P[0] and the constant term is P[n])
 double evalPolynomial(const double *P, int N, double x) {
 	double r = P[0];
 	for (int i = 1; i <= N; i++) r = r * x + P[i];
@@ -35,7 +35,7 @@ void translatePolynomial(double *P, int N, double x, double y) {
 	delete xn; delete M;
 }
 
-// Gaussian elimination for general situation
+// Gaussian elimination in non-degenerated case
 void Eliminate(double* M, double *X, int N) {
 	for (int i = 0; i < N; i++) for (int j = i + 1; j < N; j++) {
 		double d = M[j*N + i] / M[i*N + i];
@@ -80,7 +80,7 @@ void Eliminate(double* M, double *X, int N) {
 
 
 
-// fit to data set
+// fit to a data set
 void fitDataSet(double *x, double *y, int n, double *P, int N) {
 	int L = N + 1;
 	double *sumxn = new double[2 * N + 1], *sumxny = new double[L];

@@ -1,4 +1,4 @@
-# get comments/strings from source file
+# get comments/strings from a source file
 
 def extractText(s, PC):
     print("Detect", PC, '\n')

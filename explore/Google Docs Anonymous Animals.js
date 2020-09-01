@@ -1,4 +1,4 @@
-// get all viewers/animals in a Google Docs document as an html
+// get all viewers/animals in a Google Docs document as an HTML
 function GetAnonymousAnimals() {
     var ctr = document.getElementsByClassName("docs-presence-plus-widget-overflow-menu")[0];
     ctr = ctr.getElementsByClassName("goog-menuitem");
