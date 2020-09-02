@@ -36,6 +36,11 @@ $(document).ready(function() {
     $(".new-comments .gravatar-main").css({
         height: 'min-content'
     });
+
+    // https://github.com/DMOJ/online-judge/commit/396df0ebfeadcc3e20da9167d69c8c9d1d15fd63#commitcomment-41962688
+    $(".contest-sort-link").css({
+        color: 'white'
+    });
 });
 
 // get the username on the current page
