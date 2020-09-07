@@ -1,94 +1,173 @@
-$(document).ready(function() {
-    // https://github.com/DMOJ/online-judge/blob/master/judge/comments.py#L47
+/*
+ * My (handle:[secret]) DMOJ user script
+ * You are free to use it with or without the author's knowledge
+ * If you are a developer of DMOJ, you are free to implement/improve a feature that has already been implemented here
+ 
+ * One note:
+ * If you just want to copy-paste all of the following,
+ * you may Google "Javascript minifier"
+ 
+ * Enjoy ~~
+ 
+*/
+
+"use strict";
+
+// so you can fix when something goes wrong
+if (document.URL.match('/edit/profile') && document.URL.match('#')) {
+    throw new Error("User script aborted.");
+}
+
+// hmmm...
+$(function() {
+    if (document.URL.match('/edit/profile')) {
+        document.getElementById('id_about').oninput = function() {
+            // this shows a pop-up when you click "update profile"
+            // if you cancel it, that button will stop working
+            // may be fixed by making that button invisible and use a controllable one instead
+            window.onbeforeunload = function(e) {
+                return e;
+            }
+        }
+    }
+});
+
+// small UI modifications
+
+// being quiet is good
+$(function() {
     var s = document.getElementById("new-comment");
     if (s != null)
         s.remove();
+});
 
-    // show problem type on problem pages
-    if (document.URL.match("problem/")) {
-        s = document.getElementById("problem-types");
-        if (s != null)
-            s.childNodes[1].click();
+// automatically expand problem type on problem pages
+$(function() {
+    var s = document.getElementById("problem-types");
+    if (s != null) {
+        s.childNodes[1].click();
+        console.log(s.innerText.replace('\n', ': '));
     }
+});
 
-    // add "view raw source" button on submissions page
+// add a "view raw source" button on submission pages
+$(function() {
     if (document.URL.match("submission/")) {
-        s = document.getElementById("content-body");
+        var s = document.getElementById("content-body");
         if (s != null) {
             var raw = document.createElement('div');
             raw.innerHTML = s.children[1].innerHTML;
-            raw.getElementsByTagName('a')[0].href += '/raw';
-            raw.getElementsByTagName('a')[0].innerText = 'View raw source';
+            var a = raw.getElementsByTagName('a')[0];
+            a.href += '/raw';
+            a.innerText = 'View raw source';
             s.insertBefore(raw, s.children[2]);
+            console.log("Raw source: " + a.href);
         }
     }
+});
 
-    // show hidden comments
-    s = document.getElementsByClassName("bad-comment");
-    for (var i = 0; i < s.length; i++) {
-        s[i].getElementsByClassName("comment-body")[0].style.display = "";
-        s[i].getElementsByClassName("bad-comment-body")[0].style.display = "none";
+// show hidden comments, use at own risk
+$(function() {
+    var bc = document.getElementsByClassName("bad-comment");
+    var count = 0;
+    for (var i = 0; i < bc.length; i++) {
+        var id = bc[i].getElementsByClassName('comment-link')[0].hash.replace(/[^0-9]/g, '');
+        comment_show_content(Number(id));
+        count++;
     }
+    if (count != 0)
+        console.log(count + " comment(s) unhid.");
     $(".bad-comment").css({
         opacity: "0.5",
         color: "#555"
     });
-    $(".new-comments .gravatar-main").css({
+    // prevents unintentionally clicking user profile photo link
+    // may not work in some browsers
+    $(".gravatar-main").css({
         height: 'min-content'
     });
+});
 
-    // https://github.com/DMOJ/online-judge/commit/396df0ebfeadcc3e20da9167d69c8c9d1d15fd63#commitcomment-41962688
+// https://github.com/DMOJ/online-judge/commit/396df0ebfeadcc3e20da9167d69c8c9d1d15fd63#commitcomment-41962688
+$(function() {
     $(".contest-sort-link").css({
         color: 'white'
     });
 });
 
-// get the username on the current page
-function getUsername() {
-    var url = window.location.href
-      , username = "";
-    if (url.match("https://dmoj.ca/user/"))
-        username = url.substring(21, url.length);
-    if (url.match("https://dmoj.ca/submissions/user/"))
-        username = url.substring(33, url.length);
-    if (username.length == 0)
-        username = document.getElementById("user-links").getElementsByTagName("b")[0].innerText;
-    if (username.match("\/"))
-        username = username.substring(0, username.search("\/"));
-    return username;
-}
-
-// Customize user table
-// Add a scale to Points and Problems in user tables,
-// and add an Average Point Per Problem column.
+// refer an user on contest ranking page when clicking a contest link on the rating history chart of a user's profile
 $(function() {
+    // the chart on users' profiles is an HTML5 canvas (seems to be rendered with a third-party tool)
+    // change the URL hash on contest rating page instead
+    if (document.URL.match('/contest') && document.URL.match('/ranking')) {
+        var s = document.referrer;
+        var d = s.indexOf('/user/');
+        if (d != -1) {
+            s = s.substring(d + 6, s.length);
+            console.log(s);
+            window.location.hash = '!' + s;
+            console.log("Refer user " + s);
+        }
+    }
+    // on profile pages: a small English language bug
+    var s = document.getElementsByClassName('user-sidebar')[0];
+    if (s != null) {
+        s.innerHTML = s.innerHTML.replace("1 contests written", "1 contest written");
+    }
+});
+
+// For point/ranking fanciers
+
+// a sketchy function that returns the user handle on the current page
+function getUsername() {
+    var path = window.location.pathname;
+    var paths = path.split('/').filter(value=>value !== '');
+    var d = paths.indexOf('user');
+    if (d != -1 && d + 1 < paths.length)
+        return paths[d + 1];
+    d = paths.indexOf('submissions');
+    if (d != -1 && d + 1 < paths.length)
+        return paths[d + 1];
+    return document.getElementById("user-links").getElementsByTagName("b")[0].innerText;
+}
+$(function() {
+    console.warn(getUsername());
+});
+
+// User table tools
+// Add a graphics scale to Points and Problems in user lists/tables,
+// and add an Average Point Per Problem (APPP) column.
+$(function() {
+    // there are 2 user tables on DMOJ: leaderboard and organization user list
+    // columns: rank, rating, username, points, problems, [APPP]
     var table = document.getElementById("users-table");
     if (table == null)
         return;
+    var trs = table.rows;
+    if (trs[0].cells.length > 6)
+        return;
 
-    // calculate scale upper bound
+    // modify stuffs + calculate scale upper bounds
     var maxpnt = 0
       , maxprb = 0
       , maxppp = 0;
-    if (table.rows[0].cells.length > 6)
-        return;
-    for (var i = 0; i < table.rows.length; i++) {
-        if (table.rows[i].cells.length < 6)
-            table.rows[i].insertCell(table.rows[i].cells.length);
-        var k = table.rows[i].cells;
+    for (var i = 0; i < trs.length; i++) {
+        if (trs[i].cells.length < 6)
+            trs[i].insertCell(trs[i].cells.length);
+        var k = trs[i].cells;
         if (i == 0) {
             k[3].style.minWidth = k[4].style.minWidth = k[5].style.minWidth = "80px";
-            k[5].outerHTML = k[5].outerHTML.replace(/td/g, "th");
-            k[5].innerText = "APPP";
-            k[5].title = "Average Point Per Problem";
+            k[5].outerHTML = k[5].outerHTML.replace("td", "th");
+            k[5].innerHTML = "APPP";
+            k[5].title = "Average Points Per Problem";
         } else {
             var points = Number(k[3].title);
-            var problems = Number(k[4].innerText);
+            var problems = Number(k[4].textContent);
             var ratio = points / problems;
             if (isNaN(ratio)) {
-                k[5].innerText = "#";
+                k[5].innerHTML = "#";
             } else {
-                k[5].innerText = ratio.toFixed(2);
+                k[5].innerHTML = ratio.toFixed(2);
                 k[5].title = ratio.toFixed(3);
                 maxpnt = Math.max(maxpnt, points);
                 maxprb = Math.max(maxprb, problems);
@@ -97,34 +176,76 @@ $(function() {
         }
     }
 
-    // set table element style
-    var toString = function(r, g, b, a) {
+    // add the graphics scale to table cells
+    function toString(r, g, b, a) {
         return "rgba(" + Math.floor(255 * r) + "," + Math.floor(255 * g) + "," + Math.floor(255 * b) + "," + a + ")";
     }
-      , gradientToString = function(c1, c2) {
-        return "linear-gradient(to right, " + c1 + ", " + c2 + ")";
+    function gradientToString(c1, c2) {
+        return "linear-gradient(to right," + c1 + "," + c2 + ")";
     }
-      , stepToString = function(c1, c2, a) {
-        var al = " " + 100 * a + "%, ";
+    function stepToString(c1, c2, a) {
+        var al = 100 * a + "%,";
         return "repeating-linear-gradient(to right, " + c1 + "," + c1 + al + c2 + al + c2 + "100%)";
-    };
+    }
     for (var i = 1; i < table.rows.length; i++) {
         var k = table.rows[i].cells;
         var points = Number(k[3].title);
-        var problems = Number(k[4].innerText);
+        var problems = Number(k[4].textContent);
         var ratio = points / problems;
-
-        col = toString(1, 0.2, 0.2, 1.0 - Math.exp(-0.001 * points));
+        // points column, red
+        var col = toString(1, .2, .2, 1 - Math.exp(-.001 * points));
         k[3].style.backgroundColor = col;
         k[3].style.backgroundImage = stepToString(col, "rgba(0,0,0,0)", points / maxpnt);
-
-        col = toString(0.2, 1, 0.2, 1.0 - Math.exp(-0.001 * problems));
+        // problems column, green
+        col = toString(.2, 1, .2, 1 - Math.exp(-.001 * problems));
         k[4].style.backgroundColor = col;
         k[4].style.backgroundImage = stepToString(col, "rgba(0,0,0,0)", problems / maxprb);
-
-        col = toString(0.2, 0.2, 1, 1.0 - Math.exp(-0.08 * ratio));
+        // APPP column, blue
+        col = toString(.2, .2, 1, 1 - Math.exp(-.08 * ratio));
         k[5].style.backgroundColor = col;
         k[5].style.backgroundImage = stepToString(col, "rgba(0,0,0,0)", ratio / maxppp);
+    }
+
+    // use Javascript sorting when database sorting is not available (eg. organization user list)
+    if (trs[0].getElementsByTagName('a').length == 0) {
+        // https://stackoverflow.com/a/19947532
+        var s = table.tHead.getElementsByTagName('th');
+        for (var i = 1; i < s.length; i++) {
+            if (i != 2) {
+                s[i].style.cursor = 'pointer';
+            }
+        }
+        $('th').click(function() {
+            var id = $(this).index();
+            if (id == 0 || id == 2)
+                return;
+            var table = $(this).parents('table').eq(0);
+            var rows = table.find('tr:gt(0)').toArray().sort(comparer(id));
+            this.asc = this.asc == null ? false : !this.asc;
+            if (!this.asc)
+                rows = rows.reverse();
+            for (var i = 0; i < rows.length; i++) {
+                rows[i].firstElementChild.textContent = String(i + 1);
+                table.append(rows[i]);
+            }
+            var s = table[0].tHead.getElementsByTagName('th');
+            for (var i = 1; i < s.length; i++) {
+                s[i].innerHTML = s[i].innerHTML.replace(/[▴▾]/, '').trim();
+                if (i == id)
+                    s[i].innerHTML += this.asc ? ' ▴' : ' ▾';
+            }
+        })
+        function comparer(index) {
+            return function(a, b) {
+                var valA = getCellValue(a, index)
+                  , valB = getCellValue(b, index)
+                return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
+            }
+        }
+        function getCellValue(row, index) {
+            var ele = $(row).children('td').eq(index)[0];
+            return ele.title ? ele.title : ele.innerText;
+        }
     }
 });
 
