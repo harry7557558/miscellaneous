@@ -66,6 +66,14 @@ $(function() {
     }
 });
 
+// making links look different from normal text
+$(function() {
+    var s = document.getElementsByClassName("rate-none");
+    for (var i = 0; i < s.length; i++) {
+        s[i].style.textDecoration = "underline";
+    }
+});
+
 // show hidden comments, use at own risk
 $(function() {
     var bc = document.getElementsByClassName("bad-comment");
@@ -116,7 +124,7 @@ $(function() {
     }
 });
 
-// For point/ranking fanciers
+// point/ranking related
 
 // a sketchy function that returns the user handle on the current page
 function getUsername() {
@@ -130,6 +138,7 @@ function getUsername() {
         return paths[d + 1];
     return document.getElementById("user-links").getElementsByTagName("b")[0].innerText;
 }
+// debug
 $(function() {
     console.warn(getUsername());
 });
@@ -158,8 +167,8 @@ $(function() {
         if (i == 0) {
             k[3].style.minWidth = k[4].style.minWidth = k[5].style.minWidth = "80px";
             k[5].outerHTML = k[5].outerHTML.replace("td", "th");
-            k[5].innerHTML = "APPP";
-            k[5].title = "Average Points Per Problem";
+            k[5].innerHTML = "Average";
+            k[5].title = "Average point earned for each problem solved";
         } else {
             var points = Number(k[3].title);
             var problems = Number(k[4].textContent);
@@ -399,41 +408,65 @@ $(function() {
 
 });
 
-// hack (potentially) malicious links
+// modify links on the current page based on personal preference
+// without explicit UI change
 $(function() {
-    var whitelist = ["javascript", "dmoj.ca", "github.com", ".github.io", ".wikipedia.org", "keybase.io", "codeforces.com", "wcipeg.com", ".uwaterloo.ca", ".algome.me"];
-    var blacklist = ["youtube", "goo.gl", "bit.ly", "gg.gg", "vimeo", "mailto:", "olympiads.ca", "www.timeanddate.com"];
-    var s = document.getElementsByTagName("a");
-    for (var i = 0; i < s.length; i++) {
-        var url = s[i].href;
-        if (url == "" || url == "#")
-            continue;
-        var ok = false;
-        for (var j = 0; j < whitelist.length; j++)
-            if (url.match(whitelist[j]))
-                ok = true;
-        var bad = false;
-        for (var j = 0; j < blacklist.length; j++)
-            if (url.match(blacklist[j]))
-                bad = true;
-        //if (s[i].firstElementChild != null && s[i].firstElementChild.tagName == "IMG") ok = false;
-        if (!ok && url[0] != '/') {
-            s[i].style.color = bad ? "red" : "blue";
-            s[i].style.fontWeight = 600;
-            s[i].style.textDecoration = "underline";
-            if (bad) {
-                s[i].href = "javascript:alert('" + url + "')";
-                console.log("Link blocked: " + url);
-            } else {
-                s[i].target = "_blank";
-                console.log("Link suspected: " + url);
+    function modifyLink(ele) {
+        // potentially "malicious" domains (eg. rickrolling link)
+        // and "unnecessary" links that are often clicked unintentionally
+        var disablelist = ["youtube", "goo.gl", "bit.ly", "vimeo", "www.timeanddate.com", "www.facebook.com", "translate.dmoj.ca"];
+
+        var message = [];
+        var s = ele.getElementsByTagName("a");
+        for (var i = 0; i < s.length; i++) {
+            var proto = s[i].protocol;
+            if (typeof (proto) != 'string' || proto.indexOf('http') != 0)
+                continue;
+            var domain = s[i].host;
+            var url = s[i].href;
+            // disable links with matched domain
+            // or links with only image contents
+            for (var j = 0; j < disablelist.length; j++) {
+                var children = Array.from(s[i].childNodes).filter(function(e) {
+                    return e.nodeType == 1 || (e.nodeType == 3 && e.textContent.trim() != '');
+                });
+                var imgLink = (children.length == 1 && String(children[0].tagName).toLocaleLowerCase() == 'img');
+                if (domain.match(disablelist[j]) || (imgLink && !(domain.match("dmoj.ca")))) {
+                    s[i].setAttribute("onclick", "return confirm('Are you sure you want to open this link?\\n" + url + "')");
+                    message.push(url);
+                    break;
+                }
+            }
+            // optional: open all non-DMOJ links in new tab
+            if (!(domain.match("dmoj.ca") || domain.match('.algome.me'))) {
+                s[i].setAttribute("target", "_blank");
             }
         }
+        if (message.length > 0)
+            console.log("disabled links:\n" + message.join('\n'));
     }
 
-    // highlight natural-looking links inside text
-    s = document.getElementsByClassName("rate-none");
-    for (var i = 0; i < s.length; i++) {
-        s[i].style.textDecoration = "underline";
+    modifyLink(document);
+
+    // link modification should be applies to comment history
+    // not sure if this makes slower
+    var comment_area = document.getElementById("comments");
+    if (comment_area != null) {
+        const observer = new MutationObserver(list=>{
+            const evt = new CustomEvent('dom-changed',{
+                detail: list
+            });
+            comment_area.dispatchEvent(evt)
+        }
+        );
+        observer.observe(comment_area, {
+            attributes: false,
+            childList: true,
+            subtree: true
+        });
+        comment_area.addEventListener("dom-changed", function() {
+            modifyLink(comment_area);
+        });
     }
+
 });
