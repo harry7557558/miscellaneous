@@ -138,7 +138,7 @@ void fitFunction(double(*f)(double), double x0, double x1, double y0, int dif, d
 
 // find the polynomial of best fit P(x) such that P[k(x)] ≈ f(x)
 void fitFunctionComp(double(*f)(double), double(*k)(double), double x0, double x1, int dif, double *P, int N, double *RMSE, double *ERR) {
-	// It is best to integrate analytically if the interval contains indifferentiable point
+	// It is best to integrate analytically if the interval contains non-differentiable points
 	int L = N + 1, n = dif * 2;
 	double u = (x1 - x0) / n, x, kx, xp;
 	double *sumxn = new double[2 * N + 1], *sumxny = new double[L];

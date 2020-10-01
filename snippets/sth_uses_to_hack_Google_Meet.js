@@ -1,5 +1,5 @@
 // get all chat messages in a Google meet
-// open Google meet sidebar, execute this script, and copy HTML from debug console
+// open Google meet sidebar, execute this script and copy HTML from debug console
 
 "use strict";
 

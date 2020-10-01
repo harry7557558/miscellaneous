@@ -1,5 +1,5 @@
 // something uses to hack Google Classroom
-// refresh page before running this
+// refresh the page before running this
 
 (function() {
     var teachers = document.getElementsByClassName("ycbm1d");

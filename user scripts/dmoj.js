@@ -103,10 +103,10 @@ $(function() {
     });
 });
 
-// refer an user on contest ranking page when clicking a contest link on the rating history chart of a user's profile
+// refer the user on the contest ranking page when clicking a contest link on the rating history chart of a user's profile
 $(function() {
     // the chart on users' profiles is an HTML5 canvas (seems to be rendered with a third-party tool)
-    // change the URL hash on contest rating page instead
+    // change the URL hash on the contest rating page instead
     if (document.URL.match('/contest') && document.URL.match('/ranking')) {
         var s = document.referrer;
         var d = s.indexOf('/user/');
@@ -201,15 +201,15 @@ $(function() {
         var points = Number(k[3].title);
         var problems = Number(k[4].textContent);
         var ratio = points / problems;
-        // points column, red
+        // Points column, red
         var col = toString(1, .2, .2, 1 - Math.exp(-.001 * points));
         k[3].style.backgroundColor = col;
         k[3].style.backgroundImage = stepToString(col, "rgba(0,0,0,0)", points / maxpnt);
-        // problems column, green
+        // Problems column, green
         col = toString(.2, 1, .2, 1 - Math.exp(-.001 * problems));
         k[4].style.backgroundColor = col;
         k[4].style.backgroundImage = stepToString(col, "rgba(0,0,0,0)", problems / maxprb);
-        // APPP column, blue
+        // Average column, blue
         col = toString(.2, .2, 1, 1 - Math.exp(-.08 * ratio));
         k[5].style.backgroundColor = col;
         k[5].style.backgroundImage = stepToString(col, "rgba(0,0,0,0)", ratio / maxppp);
@@ -282,7 +282,7 @@ $(function() {
 });
 
 // DMOJ Point Calculator
-// Press F1 to calculate the points your earned points after solving certain problem(s)
+// Press F1 to calculate the points your earned points after solving some problem(s)
 // Press F2 to generate a table
 $(function() {
 
@@ -380,7 +380,7 @@ $(function() {
             var dif = newpoint - oldpoint;
             alert("Current Point: " + oldpoint.toFixed(2) + "\nAfter Solving: " + newpoint.toFixed(2) + "\nPoint Earned: " + dif.toFixed(2));
         } else if (event.keyCode == 113) {
-            // F2: Output a table and an svg graph
+            // F2: Output a table and an SVG graph
             const pc = [1, 3, 4, 5, 6, 7, 8, 10, 12, 15, 17, 20, 25, 30, 35, 40, 50];
             var p0 = calcPoint()
               , p1 = [];
@@ -448,7 +448,7 @@ $(function() {
 
     modifyLink(document);
 
-    // link modification should be applies to comment history
+    // link modification should be applied to comment history
     // not sure if this makes slower
     var comment_area = document.getElementById("comments");
     if (comment_area != null) {
