@@ -1,0 +1,36 @@
+﻿<!doctype html>
+<html>
+<head>
+    <title>test</title>
+    <meta charset="utf-8" />
+    <script src="./plaintext.js"></script>
+</head>
+<body>
+    <pre id="source">
+sin(\theta)*cos(\phi) + 1
+A={x|x\notin\R}
+sin(30\deg)
+\oiint_0^\infty
+\pm\sqrt{b^2-4ac}\div 2a
+x\le1, y\ge-1
+\uparrow
+v_1^2=v_0^2+2ad
+x_ps
+2m/s^2
+e^x2
+F_Ng=F_ng=mgsin\theta
+(\mu\mgsin\theta)/m=\mu\gsin\theta
+x^4-2x^3+x^2-x+1
+\sqrt32=4\sqrt2
+R={y\in\R,y\ge\10}
+\Delta{y}/\Delta{x}
+</pre>
+    <pre id="formatted"></pre>
+    <script>
+        window.onload = function () {
+            document.querySelector('#formatted').innerHTML =
+                formatPlainText(document.querySelector('#source').innerHTML);
+        };
+    </script>
+</body>
+</html>
