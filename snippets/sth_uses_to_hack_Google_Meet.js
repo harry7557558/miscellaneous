@@ -33,7 +33,7 @@
     function escapeHTML(str) {
         var p = document.createElement("p");
         p.appendChild(document.createTextNode(str));
-        return p.innerHTML.replace(/\n/g,'<br/>');
+        return p.innerHTML.replace(/\n/g, '<br/>');
     }
     function getMessage(msg) {
         var nodes = msg.childNodes;
@@ -69,10 +69,10 @@
         html += getMessage(messages[i]);
 
     // write html
-    var before = "<!doctype html><html><head><title>" + document.title + " Chats</title></head>";
-    before += "<body id='" + window.location.pathname.replace('/', '') + "'>";
-    // modified Google's stylesheet
+    var before = "<!doctype html><html><head><meta charset='utf-8'><title>" + document.title + " Chats</title>";
     before += "<style>.chat{display:block;padding:10px;font-family:'Roboto',arial,sans-serif;}.info{display:block;}.user{color:#202124;display:inline-block;font-size:13px;font-weight:500;line-height:19px;padding-right:8px;}.time{color:#5f6368;display:inline-block;font-size:12px;}.messages{display:inline-block;max-width:100%;}.text{color:#202124;font-size:13px;line-height:20px;padding-top:0;white-space:pre-wrap;}a{color:#3367d6;font-size:13px;text-decoration:underline;}</style>";
+    before += "</head><body id='" + window.location.pathname.replace('/', '') + "'>";
+    // modified Google's stylesheet
     var after = "</body></html>";
     console.log(before + html + after);
 }

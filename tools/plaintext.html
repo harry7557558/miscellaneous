@@ -6,7 +6,27 @@
     <script src="./plaintext.js"></script>
 </head>
 <body>
-    <pre id="source">
+    <script>
+        var render = function () {
+            document.querySelector('#formatted').innerHTML =
+                formatPlainText(document.querySelector('#source').innerHTML);
+        };
+        window.onload = function () {
+            render();
+            document.querySelector('#source').addEventListener("input", render, false);
+        };
+    </script>
+    <style>
+        pre {
+            margin: 20px 10px;
+            min-height: 100px;
+            border: 2px solid gray;
+            padding: 10px;
+            font-family: Arial;
+            white-space: pre-wrap;
+        }
+    </style>
+    <pre id="source" contenteditable="true">
 sin(\theta)*cos(\phi) + 1
 A={x|x\notin\R,x\ne0}
 sin(30\deg)
@@ -26,11 +46,5 @@ R={y\in\R,y\ge\10}
 \Delta{y}/\Delta{x}
 </pre>
     <pre id="formatted"></pre>
-    <script>
-        window.onload = function () {
-            document.querySelector('#formatted').innerHTML =
-                formatPlainText(document.querySelector('#source').innerHTML);
-        };
-    </script>
 </body>
 </html>

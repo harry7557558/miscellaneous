@@ -31,7 +31,7 @@ function formatPlainText(src) {
         // https://katex.org/docs/supported.html
         // agressively "crawled", some are duplicated or not formatted
         const latex_list = [
-            ['deg', '°'], ['sqrt', '√'], ['cbrt', '∛'], ['phi', 'φ'], ['stdphi', 'ϕ'], ['der', '∂'], ['dot', '⋅'], ['cross', '×'], ['left', '←'], ['right', '→'], ['up', '↑'], ['down', '↓'],  // overriding latex standard
+            ['deg', '°'], ['sqrt', '√'], ['cbrt', '∛'], ['phi', 'φ'], ['stdphi', 'ϕ'], ['der', '∂'], ['dot', '⋅'], ['cross', '×'], ['left', '←'], ['right', '→'], ['up', '↑'], ['down', '↓'], ['celsius', '℃'], ['fahrenheit', '℉'], ['\\', '\n'],  // overriding latex standard
             ['Alpha', 'A'], ['Beta', 'B'], ['Gamma', 'Γ'], ['Delta', 'Δ'], ['Epsilon', 'E'], ['Zeta', 'Z'], ['Eta', 'H'], ['Theta', 'Θ'], ['Iota', 'I'], ['Kappa', 'K'], ['Lambda', 'Λ'], ['Mu', 'M'], ['Nu', 'N'], ['Xi', 'Ξ'], ['Omicron', 'O'], ['Pi', 'Π'], ['Rho', 'P'], ['Sigma', 'Σ'], ['Tau', 'T'], ['Upsilon', 'Υ'], ['Phi', 'Φ'], ['Chi', 'X'], ['Psi', 'Ψ'], ['Omega', 'Ω'], ['varGamma', 'Γ'], ['varDelta', 'Δ'], ['varTheta', 'Θ'], ['varLambda', 'Λ'], ['varXi', 'Ξ'], ['varPi', 'Π'], ['varSigma', 'Σ'], ['varUpsilon', 'Υ'], ['varPhi', 'Φ'], ['varPsi', 'Ψ'], ['varOmega', 'Ω'], ['alpha', 'α'], ['beta', 'β'], ['gamma', 'γ'], ['delta', 'δ'], ['epsilon', 'ϵ'], ['zeta', 'ζ'], ['eta', 'η'], ['theta', 'θ'], ['iota', 'ι'], ['kappa', 'κ'], ['lambda', 'λ'], ['mu', 'μ'], ['nu', 'ν'], ['xi', 'ξ'], ['omicron', 'ο'], ['pi', 'π'], ['rho', 'ρ'], ['sigma', 'σ'], ['tau', 'τ'], ['upsilon', 'υ'], ['phi', 'ϕ'], ['chi', 'χ'], ['psi', 'ψ'], ['omega', 'ω'], ['varepsilon', 'ε'], ['varkappa', 'ϰ'], ['vartheta', 'ϑ'], ['thetasym', 'ϑ'], ['varpi', 'ϖ'], ['varrho', 'ϱ'], ['varsigma', 'ς'], ['varphi', 'φ'], ['digamma', 'ϝ'],
             ['imath', ''], ['nabla', '∇'], ['Im', 'ℑ'], ['Reals', 'R'], ['jmath', ''], ['partial', '∂'], ['image', 'ℑ'], ['wp', '℘'], ['aleph', 'ℵ'], ['Game', '⅁'], ['Bbbk', 'k'], ['weierp', '℘'], ['alef', 'ℵ'], ['Finv', 'Ⅎ'], ['N', 'N'], ['Z', 'Z'], ['alefsym', 'ℵ'], ['cnums', 'C'], ['natnums', 'N'], ['beth', 'ℶ'], ['Complex', 'C'], ['R', 'R'], ['gimel', 'ℷ'], ['ell', 'ℓ'], ['Re', 'ℜ'], ['daleth', 'ℸ'], ['hbar', 'ℏ'], ['real', 'ℜ'], ['eth', 'ð'], ['hslash', 'ℏ'], ['reals', 'R'],
             ['forall', '∀'], ['complement', '∁'], ['therefore', '∴'], ['emptyset', '∅'], ['exists', '∃'], ['subset', '⊂'], ['because', '∵'], ['empty', '∅'], ['exist', '∃'], ['supset', '⊃'], ['mapsto', '↦'], ['varnothing', '∅'], ['nexists', '∄'], ['mid', '∣'], ['to', '→'], ['implies', '⟹'], ['in', '∈'], ['land', '∧'], ['gets', '←'], ['impliedby', '⟸'], ['isin', '∈'], ['lor', '∨'], ['leftrightarrow', '↔'], ['iff', '⟺'], ['notin', '∉'], ['ni', '∋'], ['notni', '∌'], ['neg', '¬'], ['lnot', '¬'],
@@ -81,12 +81,12 @@ function formatPlainText(src) {
     }
 
     return arr.join('').replace(/\n$/, '');
-};
+}
 
 
 (window.onclick = function () {
     var s = document.getElementsByTagName('textarea')[0];
-    if (s != undefined) {
+    if (s !== undefined) {
         s.onkeydown = function (e) {
             if (e.keyCode == 9) {
                 e.preventDefault();
@@ -96,6 +96,5 @@ function formatPlainText(src) {
             }
         }
     }
-}
-)();
+});
 
