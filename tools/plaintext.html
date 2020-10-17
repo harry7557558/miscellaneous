@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <script src="./plaintext.js"></script>
 </head>
-<body>
+<body onbeforeunload="return 'oops'">
     <script>
         var render = function () {
             document.querySelector('#formatted').innerHTML =
@@ -27,6 +27,7 @@
         }
     </style>
     <pre id="source" contenteditable="true">
+Examples:
 sin(\theta)*cos(\phi) + 1
 A={x|x\notin\R,x\ne0}
 sin(30\deg)

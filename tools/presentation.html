@@ -1,0 +1,20 @@
+<script>
+    var h = 0;
+    var lock = false;
+    function keydown(event) {
+        if (event.keyCode == 112 && lock) {
+            event.preventDefault();
+            h = 0; window.scrollTo(0, 0);
+        }
+        if (event.keyCode == 119) {
+            event.preventDefault();
+            if (lock) lock = false, document.body.style.overflow = "scroll";
+            else lock = true, h = 0, window.scrollTo(0, 0), document.body.style.overflow = "hidden";
+        }
+    }
+</script>
+<body contentEditable=true style="font-family:Arial;overflow:scroll" onbeforeunload="return 'Warning';"
+      oncontextmenu="if (lock) { event.preventDefault(); h += 30; window.scrollTo(0, h); }"
+      onscroll="if (lock) { window.scrollTo(0, h); }"
+      onkeydown="keydown(event);">
+</body>
