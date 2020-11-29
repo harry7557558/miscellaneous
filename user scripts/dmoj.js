@@ -18,22 +18,6 @@ if (document.URL.match('/edit/profile') && document.URL.match('#')) {
     throw new Error("User script aborted.");
 }
 
-// hmmm...
-// https://github.com/DMOJ/online-judge/issues/1543
-// https://github.com/DMOJ/online-judge/issues/1544
-$(function() {
-    if (document.URL.match('/edit/profile')) {
-        document.getElementById('id_about').oninput = function() {
-            // this shows a pop-up when you click "update profile"
-            // if you cancel it, that button will stop working
-            // may be fixed by making that button invisible and use a controllable one instead
-            window.onbeforeunload = function(e) {
-                return e;
-            }
-        }
-    }
-});
-
 // small UI modifications
 
 // being quiet is good
@@ -97,34 +81,6 @@ $(function() {
     $(".gravatar-main").css({
         height: 'min-content'
     });
-});
-
-// https://github.com/DMOJ/online-judge/commit/396df0ebfeadcc3e20da9167d69c8c9d1d15fd63#commitcomment-41962688
-$(function() {
-    $(".contest-sort-link").css({
-        color: 'white'
-    });
-});
-
-// refer an user on contest ranking page when clicking a contest link on the rating history chart of a user's profile
-$(function() {
-    // the chart on users' profiles is an HTML5 canvas (seems to be rendered with a third-party tool)
-    // change the URL hash on contest rating page instead
-    if (document.URL.match('/contest') && document.URL.match('/ranking')) {
-        var s = document.referrer;
-        var d = s.indexOf('/user/');
-        if (d != -1) {
-            s = s.substring(d + 6, s.length);
-            console.log(s);
-            window.location.hash = '!' + s;
-            console.log("Refer user " + s);
-        }
-    }
-    // on profile pages: a small English language bug
-    var s = document.getElementsByClassName('user-sidebar')[0];
-    if (s != null) {
-        s.innerHTML = s.innerHTML.replace("1 contests written", "1 contest written");
-    }
 });
 
 // point/ranking related
