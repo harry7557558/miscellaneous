@@ -1,0 +1,74 @@
+<html>
+<head>
+    <title>compare</title>
+    <meta charset="utf-8" />
+    <style>
+        .input {
+            margin: 10px;
+            border: 1.5px solid gray;
+            padding: 10px;
+            width: 90%;
+            font-family: Consolas;
+            word-break: break-all;
+            font-size: 12px;
+        }
+
+        .result {
+            margin: 10px;
+            border: 1.5px solid gray;
+            padding: 10px;
+            width: 90%;
+            font-family: Consolas;
+            word-break: break-all;
+            font-size: 12px;
+        }
+
+        .nm {
+            color: gray;
+            background-color: white;
+        }
+
+        .df {
+            color: black;
+            background-color: lightgreen;
+        }
+
+        .ls {
+            background-color: red;
+        }
+
+        .mr {
+            background-color: yellow;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="input" id="old" contenteditable spellcheck=false oninput="update();" ></div>
+    <div class="input" id="new" contenteditable spellcheck=false oninput="update();" ></div>
+    <div class="result" id="res"></div>
+    <script>
+        function cvc(c) {
+            if (c == ' ') return "&ensp;"
+            if (c == '\n') return "<br>";
+            return c;
+        }
+        function update() {
+            var c0 = document.getElementById("old").innerText;
+            var c1 = document.getElementById("new").innerText;
+            var n0 = c0.length, n1 = c1.length, n = n0 < n1 ? n0 : n1;
+            var res = "";
+            for (var i = 0; i < n; i++) {
+                var tp;
+                if (c0[i] == c1[i]) tp = "nm";
+                else tp = 'df';
+                res += "<span class='" + tp + "'>" + cvc(c1[i]) + "</span>";
+            }
+            if (n1 < n0) res += "<span class='ls'>&nbsp;</span>";
+            if (n0 < n1) res += "<span class='mr'>" + c1.substring(n, n1) + "</span>";
+            document.getElementById("res").innerHTML = res;
+            console.log(c0, c1);
+        }
+    </script>
+</body>
+</html>

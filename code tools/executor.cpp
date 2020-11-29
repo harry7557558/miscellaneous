@@ -5,6 +5,8 @@
 #define main __main
 #endif
 
+#pragma warning(disable: 4010)
+
 #include "source.cpp"
 //#include "source1.cpp"
 
@@ -15,9 +17,6 @@
 #define _EXE_ARGC 0
 #define _EXE_ARGV { __FILE__, "" }
 
-
-// IF YOU OFTEN TEST TEMPRARY SOURCES AND ARE TIRED OF CREATING NEW PROJECTS IN YOUR IDE,
-// THIS **WINDOWS ONLY??** SCRIPT MAY BE A GOOD TOOL FOR YOU.
 
 
 #if _EXE_RELEASE
