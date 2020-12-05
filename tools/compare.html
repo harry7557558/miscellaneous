@@ -1,3 +1,4 @@
+﻿<!doctype html>
 <html>
 <head>
     <title>compare</title>
@@ -41,15 +42,54 @@
             background-color: yellow;
             text-decoration: underline;
         }
+
+        #lcs_checkbox_container {
+            position: fixed;
+            top: 0px;
+            right: 0px;
+            margin: 5px 10px;
+            background-color: white;
+        }
     </style>
 </head>
 <body>
-    <div class="input" id="old" contenteditable spellcheck=false oninput="update();" ></div>
-    <div class="input" id="new" contenteditable spellcheck=false oninput="update();" ></div>
+    <div id="lcs_checkbox_container"><input id="lcs_checkbox" type="checkbox" oninput="update();" />LCS</div>
+    <div class="input" id="old" contenteditable spellcheck=false oninput="update();"></div>
+    <div class="input" id="new" contenteditable spellcheck=false oninput="update();"></div>
     <div class="result" id="res"></div>
     <script>
+        function LCS(A, B) {
+            // longest common substring, dp solution in O(|A|×|B|)
+            var AN = A.length, BN = B.length;
+            if (AN == 0 || BN == 0) return "";
+            var G = new Array(AN).fill(0).map(() => new Array(BN).fill(0));
+            G[0][0] = A[0] == B[0] ? 1 : 0;
+            for (var i = 1; i < AN; i++) G[i][0] = (A[i] == B[0]) | G[i - 1][0];
+            for (var i = 1; i < BN; i++) G[0][i] = (B[i] == A[0]) | G[0][i - 1];
+            for (var i = 1; i < AN; i++) {
+                for (var j = 1; j < BN; j++) {
+                    if (A[i] == B[j]) G[i][j] = G[i - 1][j - 1] + 1;
+                    else G[i][j] = Math.max(G[i - 1][j], G[i][j - 1]);
+                }
+            }
+            var i = AN - 1, j = BN - 1;
+            var L = G[i][j];
+            S = "";
+            while (i > 0 && j > 0) {
+                if (A[i] == B[j]) S = A[i] + S, L-- , i-- , j--;
+                else if (G[i][j] == G[i - 1][j]) i--;
+                else if (G[i][j] == G[i][j - 1]) j--;
+                else;  // bug
+            }
+            if (L == 1) {
+                if (i == 0) S = A[0] + S;
+                else if (j == 0) S = B[0] + S;
+            }
+            else if (L > 0);  // bug
+            return S;
+        }
         function cvc(c) {
-            if (c == ' ') return "&ensp;"
+            if (c == ' ') return "&nbsp;"
             if (c == '\n') return "<br>";
             return c;
         }
@@ -58,17 +98,47 @@
             var c1 = document.getElementById("new").innerText;
             var n0 = c0.length, n1 = c1.length, n = n0 < n1 ? n0 : n1;
             var res = "";
-            for (var i = 0; i < n; i++) {
-                var tp;
-                if (c0[i] == c1[i]) tp = "nm";
-                else tp = 'df';
-                res += "<span class='" + tp + "'>" + cvc(c1[i]) + "</span>";
+            const LCS_Enabled = document.getElementById('lcs_checkbox').checked;
+            if (LCS_Enabled) {
+                var lcs = LCS(c0, c1);
+                console.log(lcs);
+                var d0 = 0, d1 = 0;
+                for (var i = 0; i < lcs.length;) {
+                    // correct but not very conventional
+                    var c = lcs[i];
+                    if (c0[d0] == c && c1[d1] == c) {
+                        res += "<span class='nm'>" + cvc(c) + "</span>";
+                        d0++; d1++; i++;
+                    }
+                    else if (c0[d0] == c && c1[d1] != c) {
+                        res += "<span class='mr'>" + cvc(c1[d1]) + "</span>";
+                        d1++;
+                    }
+                    else if (c0[d0] != c && c1[d1] == c) {
+                        res += "<span class='ls'>" + cvc(c0[d0]) + "</span>";
+                        d0++;
+                    }
+                    else if (c0[d0] != c && c1[d1] != c) {
+                        res += "<span class='df'>" + cvc(c1[d1]) + "</span>";
+                        d0++; d1++;
+                    }
+                }
+                if (d1 < n) res += "<span class='df'>" + c1.substring(d1, n) + "</span>", d1 = n;
+                if (d1 < n1) res += "<span class='mr'>" + c1.substring(d1, n1) + "</span>";
             }
-            if (n1 < n0) res += "<span class='ls'>&nbsp;</span>";
-            if (n0 < n1) res += "<span class='mr'>" + c1.substring(n, n1) + "</span>";
+            else {
+                for (var i = 0; i < n; i++) {
+                    var tp;
+                    if (c0[i] == c1[i]) tp = "nm";
+                    else tp = 'df';
+                    res += "<span class='" + tp + "'>" + cvc(c1[i]) + "</span>";
+                }
+                if (n1 < n0) res += "<span class='ls'>&nbsp;</span>";
+                if (n0 < n1) res += "<span class='mr'>" + c1.substring(n, n1) + "</span>";
+            }
             document.getElementById("res").innerHTML = res;
-            console.log(c0, c1);
         }
+        update();
     </script>
 </body>
 </html>
