@@ -1,0 +1,336 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Web Safe Colors</title>
+    <style>
+        div {
+            display: inline;
+        }
+
+        .hex {
+            min-width: 80px;
+        }
+
+        .name {
+            min-width: 200px;
+        }
+
+        body {
+            font-size: 16px;
+            font-family: consolas;
+        }
+
+        #table td {
+            text-align: center;
+            height: 25px;
+        }
+    </style>
+</head>
+<body>
+    <table id="table" border="0" cellpadding="10" cellspacing="1" bgcolor="#cccccc">
+        <thead>
+            <tr>
+                <td>Color Name</td>
+                <td>RGB (hex)</td>
+                <td>RGB (bytes)</td>
+                <td>RGB (decimal)</td>
+                <td>HSL</td>
+                <td>HSV/HSB</td>
+                <td>HWB</td>
+                <td>CMYK</td>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            <tr><td>AliceBlue</td><td>#F0F8FF</td></tr>
+            <tr><td>AntiqueWhite</td><td>#FAEBD7</td></tr>
+            <tr><td>Aqua</td><td>#00FFFF</td></tr>
+            <tr><td>Aquamarine</td><td>#7FFFD4</td></tr>
+            <tr><td>Azure</td><td>#F0FFFF</td></tr>
+            <tr><td>Beige</td><td>#F5F5DC</td></tr>
+            <tr><td>Bisque</td><td>#FFE4C4</td></tr>
+            <tr><td>Black</td><td>#000000</td></tr>
+            <tr><td>BlanchedAlmond</td><td>#FFEBCD</td></tr>
+            <tr><td>Blue</td><td>#0000FF</td></tr>
+            <tr><td>BlueViolet</td><td>#8A2BE2</td></tr>
+            <tr><td>Brown</td><td>#A52A2A</td></tr>
+            <tr><td>BurlyWood</td><td>#DEB887</td></tr>
+            <tr><td>CadetBlue</td><td>#5F9EA0</td></tr>
+            <tr><td>Chartreuse</td><td>#7FFF00</td></tr>
+            <tr><td>Chocolate</td><td>#D2691E</td></tr>
+            <tr><td>Coral</td><td>#FF7F50</td></tr>
+            <tr><td>CornflowerBlue</td><td>#6495ED</td></tr>
+            <tr><td>Cornsilk</td><td>#FFF8DC</td></tr>
+            <tr><td>Crimson</td><td>#DC143C</td></tr>
+            <tr><td>Cyan</td><td>#00FFFF</td></tr>
+            <tr><td>DarkBlue</td><td>#00008B</td></tr>
+            <tr><td>DarkCyan</td><td>#008B8B</td></tr>
+            <tr><td>DarkGoldenRod</td><td>#B8860B</td></tr>
+            <tr><td>DarkGray</td><td>#A9A9A9</td></tr>
+            <tr><td>DarkGrey</td><td>#A9A9A9</td></tr>
+            <tr><td>DarkGreen</td><td>#006400</td></tr>
+            <tr><td>DarkKhaki</td><td>#BDB76B</td></tr>
+            <tr><td>DarkMagenta</td><td>#8B008B</td></tr>
+            <tr><td>DarkOliveGreen</td><td>#556B2F</td></tr>
+            <tr><td>DarkOrange</td><td>#FF8C00</td></tr>
+            <tr><td>DarkOrchid</td><td>#9932CC</td></tr>
+            <tr><td>DarkRed</td><td>#8B0000</td></tr>
+            <tr><td>DarkSalmon</td><td>#E9967A</td></tr>
+            <tr><td>DarkSeaGreen</td><td>#8FBC8F</td></tr>
+            <tr><td>DarkSlateBlue</td><td>#483D8B</td></tr>
+            <tr><td>DarkSlateGray</td><td>#2F4F4F</td></tr>
+            <tr><td>DarkSlateGrey</td><td>#2F4F4F</td></tr>
+            <tr><td>DarkTurquoise</td><td>#00CED1</td></tr>
+            <tr><td>DarkViolet</td><td>#9400D3</td></tr>
+            <tr><td>DeepPink</td><td>#FF1493</td></tr>
+            <tr><td>DeepSkyBlue</td><td>#00BFFF</td></tr>
+            <tr><td>DimGray</td><td>#696969</td></tr>
+            <tr><td>DimGrey</td><td>#696969</td></tr>
+            <tr><td>DodgerBlue</td><td>#1E90FF</td></tr>
+            <tr><td>FireBrick</td><td>#B22222</td></tr>
+            <tr><td>FloralWhite</td><td>#FFFAF0</td></tr>
+            <tr><td>ForestGreen</td><td>#228B22</td></tr>
+            <tr><td>Fuchsia</td><td>#FF00FF</td></tr>
+            <tr><td>Gainsboro</td><td>#DCDCDC</td></tr>
+            <tr><td>GhostWhite</td><td>#F8F8FF</td></tr>
+            <tr><td>Gold</td><td>#FFD700</td></tr>
+            <tr><td>GoldenRod</td><td>#DAA520</td></tr>
+            <tr><td>Gray</td><td>#808080</td></tr>
+            <tr><td>Grey</td><td>#808080</td></tr>
+            <tr><td>Green</td><td>#008000</td></tr>
+            <tr><td>GreenYellow</td><td>#ADFF2F</td></tr>
+            <tr><td>HoneyDew</td><td>#F0FFF0</td></tr>
+            <tr><td>HotPink</td><td>#FF69B4</td></tr>
+            <tr><td>IndianRed</td><td>#CD5C5C</td></tr>
+            <tr><td>Indigo</td><td>#4B0082</td></tr>
+            <tr><td>Ivory</td><td>#FFFFF0</td></tr>
+            <tr><td>Khaki</td><td>#F0E68C</td></tr>
+            <tr><td>Lavender</td><td>#E6E6FA</td></tr>
+            <tr><td>LavenderBlush</td><td>#FFF0F5</td></tr>
+            <tr><td>LawnGreen</td><td>#7CFC00</td></tr>
+            <tr><td>LemonChiffon</td><td>#FFFACD</td></tr>
+            <tr><td>LightBlue</td><td>#ADD8E6</td></tr>
+            <tr><td>LightCoral</td><td>#F08080</td></tr>
+            <tr><td>LightCyan</td><td>#E0FFFF</td></tr>
+            <tr><td>LightGoldenRodYellow</td><td>#FAFAD2</td></tr>
+            <tr><td>LightGray</td><td>#D3D3D3</td></tr>
+            <tr><td>LightGrey</td><td>#D3D3D3</td></tr>
+            <tr><td>LightGreen</td><td>#90EE90</td></tr>
+            <tr><td>LightPink</td><td>#FFB6C1</td></tr>
+            <tr><td>LightSalmon</td><td>#FFA07A</td></tr>
+            <tr><td>LightSeaGreen</td><td>#20B2AA</td></tr>
+            <tr><td>LightSkyBlue</td><td>#87CEFA</td></tr>
+            <tr><td>LightSlateGray</td><td>#778899</td></tr>
+            <tr><td>LightSlateGrey</td><td>#778899</td></tr>
+            <tr><td>LightSteelBlue</td><td>#B0C4DE</td></tr>
+            <tr><td>LightYellow</td><td>#FFFFE0</td></tr>
+            <tr><td>Lime</td><td>#00FF00</td></tr>
+            <tr><td>LimeGreen</td><td>#32CD32</td></tr>
+            <tr><td>Linen</td><td>#FAF0E6</td></tr>
+            <tr><td>Magenta</td><td>#FF00FF</td></tr>
+            <tr><td>Maroon</td><td>#800000</td></tr>
+            <tr><td>MediumAquaMarine</td><td>#66CDAA</td></tr>
+            <tr><td>MediumBlue</td><td>#0000CD</td></tr>
+            <tr><td>MediumOrchid</td><td>#BA55D3</td></tr>
+            <tr><td>MediumPurple</td><td>#9370DB</td></tr>
+            <tr><td>MediumSeaGreen</td><td>#3CB371</td></tr>
+            <tr><td>MediumSlateBlue</td><td>#7B68EE</td></tr>
+            <tr><td>MediumSpringGreen</td><td>#00FA9A</td></tr>
+            <tr><td>MediumTurquoise</td><td>#48D1CC</td></tr>
+            <tr><td>MediumVioletRed</td><td>#C71585</td></tr>
+            <tr><td>MidnightBlue</td><td>#191970</td></tr>
+            <tr><td>MintCream</td><td>#F5FFFA</td></tr>
+            <tr><td>MistyRose</td><td>#FFE4E1</td></tr>
+            <tr><td>Moccasin</td><td>#FFE4B5</td></tr>
+            <tr><td>NavajoWhite</td><td>#FFDEAD</td></tr>
+            <tr><td>Navy</td><td>#000080</td></tr>
+            <tr><td>OldLace</td><td>#FDF5E6</td></tr>
+            <tr><td>Olive</td><td>#808000</td></tr>
+            <tr><td>OliveDrab</td><td>#6B8E23</td></tr>
+            <tr><td>Orange</td><td>#FFA500</td></tr>
+            <tr><td>OrangeRed</td><td>#FF4500</td></tr>
+            <tr><td>Orchid</td><td>#DA70D6</td></tr>
+            <tr><td>PaleGoldenRod</td><td>#EEE8AA</td></tr>
+            <tr><td>PaleGreen</td><td>#98FB98</td></tr>
+            <tr><td>PaleTurquoise</td><td>#AFEEEE</td></tr>
+            <tr><td>PaleVioletRed</td><td>#DB7093</td></tr>
+            <tr><td>PapayaWhip</td><td>#FFEFD5</td></tr>
+            <tr><td>PeachPuff</td><td>#FFDAB9</td></tr>
+            <tr><td>Peru</td><td>#CD853F</td></tr>
+            <tr><td>Pink</td><td>#FFC0CB</td></tr>
+            <tr><td>Plum</td><td>#DDA0DD</td></tr>
+            <tr><td>PowderBlue</td><td>#B0E0E6</td></tr>
+            <tr><td>Purple</td><td>#800080</td></tr>
+            <tr><td>RebeccaPurple</td><td>#663399</td></tr>
+            <tr><td>Red</td><td>#FF0000</td></tr>
+            <tr><td>RosyBrown</td><td>#BC8F8F</td></tr>
+            <tr><td>RoyalBlue</td><td>#4169E1</td></tr>
+            <tr><td>SaddleBrown</td><td>#8B4513</td></tr>
+            <tr><td>Salmon</td><td>#FA8072</td></tr>
+            <tr><td>SandyBrown</td><td>#F4A460</td></tr>
+            <tr><td>SeaGreen</td><td>#2E8B57</td></tr>
+            <tr><td>SeaShell</td><td>#FFF5EE</td></tr>
+            <tr><td>Sienna</td><td>#A0522D</td></tr>
+            <tr><td>Silver</td><td>#C0C0C0</td></tr>
+            <tr><td>SkyBlue</td><td>#87CEEB</td></tr>
+            <tr><td>SlateBlue</td><td>#6A5ACD</td></tr>
+            <tr><td>SlateGray</td><td>#708090</td></tr>
+            <tr><td>SlateGrey</td><td>#708090</td></tr>
+            <tr><td>Snow</td><td>#FFFAFA</td></tr>
+            <tr><td>SpringGreen</td><td>#00FF7F</td></tr>
+            <tr><td>SteelBlue</td><td>#4682B4</td></tr>
+            <tr><td>Tan</td><td>#D2B48C</td></tr>
+            <tr><td>Teal</td><td>#008080</td></tr>
+            <tr><td>Thistle</td><td>#D8BFD8</td></tr>
+            <tr><td>Tomato</td><td>#FF6347</td></tr>
+            <tr><td>Turquoise</td><td>#40E0D0</td></tr>
+            <tr><td>Violet</td><td>#EE82EE</td></tr>
+            <tr><td>Wheat</td><td>#F5DEB3</td></tr>
+            <tr><td>White</td><td>#FFFFFF</td></tr>
+            <tr><td>WhiteSmoke</td><td>#F5F5F5</td></tr>
+            <tr><td>Yellow</td><td>#FFFF00</td></tr>
+            <tr><td>YellowGreen</td><td>#9ACD32</td></tr>
+        </tbody>
+    </table>
+    <script>
+        // Reference: https://www.w3schools.com/lib/w3color.js
+        const round = Math.round, abs = Math.abs;
+        function hue2rgb(t) {
+            // NOT A COLOR CONVERSION FUNCTION
+            // a periodic function in the form /¯¯\__
+            // r(h) = ¯\__/¯, g(h) = /¯¯\__, b(h) = __/¯¯\
+            // r=hue2rgb(h+2), g=hue2rgb(h), b=hue2rgb(h-2)
+            while (t < 0) t += 6;
+            while (t > 6) t -= 6;
+            if (t < 1) return t;
+            if (t < 3) return 1;
+            if (t < 4) return 4 - t;
+            return 0;
+        }
+        function rgb2hsl(rgb) {
+            var r = rgb[0] / 255, g = rgb[1] / 255, b = rgb[2] / 255;
+            var max = Math.max(r, g, b), min = Math.min(r, g, b);
+            var h, s, l = (max + min) / 2;  // lightness: mid of max and min
+            if (max == min)
+                h = s = 0;  // grayscale: only brightness matters
+            else {
+                // calculate hue
+                var range = max - min;  // called "chroma"
+                if (max == r) h = (g - b) / range + (g < b ? 6 : 0);  // must be positive
+                else if (max == g) h = (b - r) / range + 2;
+                else if (max == b) h = (r - g) / range + 4;
+                h *= 60;
+                // calculate saturation
+                // let x,y=max,min, function s(x,y) is symmetric about x+y=1,
+                // equals to zero at min==max and one at min==0 and max==1
+                s = l > 0.5 ?  // max+min>1. ?
+                    range / (2 - max - min) :  // (x-y)/(2-(x+y))
+                    range / (max + min);  // (x-y)/(x+y)
+            }
+            return [h, s, l];
+        }
+        function hsl2rgb(hsl) {
+            var h = hsl[0] / 60, s = hsl[1], l = hsl[2];
+            var max = l <= 0.5 ? l * (s + 1) : l + s - l * s;
+            var min = 2 * l - max;
+            r = min + (max - min) * hue2rgb(h + 2);
+            g = min + (max - min) * hue2rgb(h);
+            b = min + (max - min) * hue2rgb(h - 2);
+            return [r * 255, g * 255, b * 255];
+        }
+        function rgb2hsv(rgb) {
+            var r = rgb[0] / 255, g = rgb[1] / 255, b = rgb[2] / 255;
+            var max = Math.max(r, g, b), min = Math.min(r, g, b);
+            var h, s, v = max;  // value: max of r/g/b
+            var range = max - min;
+            // saturation: range/max
+            s = max == 0 ? 0 : range / max;
+            // hue calculation: same as HSL
+            if (max == min) h = 0;
+            else if (max == r) h = (g - b) / range + (g < b ? 6 : 0);
+            else if (max == g) h = (b - r) / range + 2;
+            else if (max == b) h = (r - g) / range + 4;
+            h *= 60;
+            return [h, s, v];
+        }
+        function hsv2rgb(hsv) {
+            var h = hsv[0] / 60, s = hsv[1], v = hsv[2];
+            if (v == 0) return [0, 0, 0];
+            var max = v, min = max - s * max;
+            r = min + (max - min) * hue2rgb(h + 2);
+            g = min + (max - min) * hue2rgb(h);
+            b = min + (max - min) * hue2rgb(h - 2);
+            return [r * 255, g * 255, b * 255];
+        }
+        function rgb2hwb(rgb) {
+            var r = rgb[0] / 255, g = rgb[1] / 255, b = rgb[2] / 255;
+            var max = Math.max(r, g, b), min = Math.min(r, g, b);
+            var range = max - min;
+            // hue calculation: same as HSL and HSB
+            var hue = 60 * (
+                max == min ? 0 :
+                    max == r ? (g - b) / range + (g < b ? 6 : 0) :
+                        max == g ? (b - r) / range + 2 :
+                            max == b ? (r - g) / range + 4 : 0);
+            // white and black calculation
+            var white = min;
+            var black = 1 - max;
+            return [hue, white, black];
+        }
+        function hwb2rgb(hwb) {
+            var h = hwb[0] / 60, white = hwb[1], black = hwb[2];
+            var min = white, max = 1 - black;
+            r = min + (max - min) * hue2rgb(h + 2);
+            g = min + (max - min) * hue2rgb(h);
+            b = min + (max - min) * hue2rgb(h - 2);
+            return [r * 255, g * 255, b * 255];
+        }
+        function rgb2cmyk(rgb) {
+            var r = rgb[0] / 255, g = rgb[1] / 255, b = rgb[2] / 255;
+            if (r == 0 && g == 0 && b == 0) return [0, 0, 0, 1];
+            var c = 1 - r;
+            var m = 1 - g;
+            var y = 1 - b;
+            // set k to as large as possible
+            var k = Math.min(c, m, y);
+            c = (c - k) / (1 - k);
+            m = (m - k) / (1 - k);
+            y = (y - k) / (1 - k);
+            return [c, m, y, k];
+        }
+        function cmyk2rgb(cmyk) {
+            c = cmyk[0], m = cmyk[1], y = cmyk[2], k = cmyk[3];
+            // multiply blend mode
+            var r = (1 - c) * (1 - k);
+            var g = (1 - m) * (1 - k);
+            var b = (1 - y) * (1 - k);
+            return [255 * r, 255 * g, 255 * b];
+        }
+    </script>
+    <script>
+        var rows = document.getElementById("table").tBodies[0].rows;
+        for (var i = 0; i < rows.length; i++) {
+            var hex_ele = rows[i].children[1];
+            var hex = hex_ele.innerHTML = hex_ele.innerHTML.toLowerCase();
+            rows[i].style.backgroundColor = hex;
+            col = Number(hex.replace('#', '0x'));
+            b = col & 255;
+            g = (col >> 8) & 255;
+            r = (col >> 16) & 255;
+            rows[i].style.color = r * 0.299 + g * 0.587 + b * 0.114 < 128 ? "white" : "black";
+            var bytes = "rgb(" + r + "," + g + "," + b + ")";
+            var decimal = "vec3(" + [r, g, b].map(x => (x / 255.).toFixed(2).replace(/0+$/, '')) + ")";  // vec3: GLSL
+            var hsl = rgb2hsl([r, g, b]); hsl = "hsl(" + round(hsl[0]) + ',' + round(hsl[1] * 100) + '%,' + round(hsl[2] * 100) + "%)";
+            var hsv = rgb2hsv([r, g, b]); hsv = "hsv(" + round(hsv[0]) + ',' + round(hsv[1] * 100) + '%,' + round(hsv[2] * 100) + "%)";
+            var hwb = rgb2hwb([r, g, b]); hwb = "hwb(" + round(hwb[0]) + ',' + round(hwb[1] * 100) + '%,' + round(hwb[2] * 100) + "%)";
+            var cmyk = "cmyk(" + rgb2cmyk([r, g, b]).map(x => round(100 * x) + '%') + ")";
+            rows[i].innerHTML
+                += "<td>" + bytes + "</td>"
+                + "<td>" + decimal + "</td>"
+                + "<td>" + hsl + "</td>"
+                + "<td>" + hsv + "</td>"
+                + "<td>" + hwb + "</td>"
+                + "<td>" + cmyk + "</td>";
+        }
+    </script>
+</body>
+</html>

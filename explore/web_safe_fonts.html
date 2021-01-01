@@ -1,0 +1,120 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <title>Web Safe Fonts</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+
+    <div class="fontbox">
+        <h1 class="fontname">Arial</h1>
+        <div class="fontview"></div>
+    </div>
+    <hr />
+
+    <div class="fontbox">
+        <h1 class="fontname">Helvetica</h1>
+        <div class="fontview"></div>
+    </div>
+    <hr />
+
+    <div class="fontbox">
+        <h1 class="fontname">Trebuchet MS</h1>
+        <div class="fontview"></div>
+    </div>
+    <hr />
+
+    <div class="fontbox">
+        <h1 class="fontname">Verdana</h1>
+        <div class="fontview"></div>
+    </div>
+    <hr />
+
+    <div class="fontbox">
+        <h1 class="fontname">Tahoma</h1>
+        <div class="fontview"></div>
+    </div>
+    <hr />
+
+    <div class="fontbox">
+        <h1 class="fontname">Times New Roman</h1>
+        <div class="fontview">
+        </div>
+    </div>
+    <hr />
+
+    <div class="fontbox">
+        <h1 class="fontname">Georgia</h1>
+        <div class="fontview"></div>
+    </div>
+    <hr />
+
+    <div class="fontbox">
+        <h1 class="fontname">Calibri</h1>
+        <div class="fontview"></div>
+    </div>
+    <hr />
+
+    <div class="fontbox">
+        <h1 class="fontname">Consolas</h1>
+        <div class="fontview"></div>
+    </div>
+    <hr />
+
+    <div class="fontbox">
+        <h1 class="fontname">Courier New</h1>
+        <div class="fontview"></div>
+    </div>
+    <hr />
+
+    <div class="fontbox">
+        <h1 class="fontname">Comic Sans MS</h1>
+        <div class="fontview"></div>
+    </div>
+    <hr />
+
+    <div class="fontbox">
+        <h1 class="fontname">Impact</h1>
+        <div class="fontview"></div>
+    </div>
+    <hr />
+
+
+
+    <script>
+        function $(name) {
+            return document.getElementById(name);
+        }
+        var fb = document.getElementsByClassName("fontbox");
+        var fv = document.getElementsByClassName("fontview");
+        var fn = document.getElementsByClassName("fontname");
+        for (var i = 0; i < fv.length; i++) {
+            fv[i].innerHTML = `
+<p>
+<span>Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm Nn Oo Pp Qq Rr Ss Tt Uu Vv Ww Xx Yy Zz </span><br />
+<span>! " # $ % & ' ( ) * + , - . / : ; < = > ? @ 0 1 2 3 4 5 6 7 8 9 [ \ ] ^ _ \` { | } ~ </span > <br />
+</p><p>
+<i>Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm Nn Oo Pp Qq Rr Ss Tt Uu Vv Ww Xx Yy Zz </i><br />
+<i>! " # $ % & ' ( ) * + , - . / : ; < = > ? @ 0 1 2 3 4 5 6 7 8 9 [ \ ] ^ _ \` { | } ~ </i><br />
+</p><p>
+<b>Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm Nn Oo Pp Qq Rr Ss Tt Uu Vv Ww Xx Yy Zz </b><br />
+<b>! " # $ % & ' ( ) * + , - . / : ; < = > ? @ 0 1 2 3 4 5 6 7 8 9 [ \ ] ^ _ \` { | } ~ </b><br />
+</p><p>
+<b><i>Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm Nn Oo Pp Qq Rr Ss Tt Uu Vv Ww Xx Yy Zz </i></b><br />
+<b><i>! " # $ % & ' ( ) * + , - . / : ; < = > ? @ 0 1 2 3 4 5 6 7 8 9 [ \ ] ^ _ \` { | } ~ </i></b><br />
+</p>
+<div><br></div><p>
+<span style='font-size:28px;'>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
+</p><p style='max-width:800px;'>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas condimentum sollicitudin lorem, vitae semper neque venenatis vitae. Donec nisi nunc, mollis ac vestibulum at, luctus vitae augue. Mauris a pharetra justo. Nulla facilisi. Maecenas feugiat lorem quam, ac convallis metus hendrerit quis. Vestibulum nec rutrum magna. In imperdiet risus at nisi posuere posuere. Proin non blandit turpis. Sed sed pellentesque libero. Curabitur eget sodales eros. Quisque tempor lacus in ultricies pharetra. Proin non nunc sed leo dapibus scelerisque. Nam eget velit volutpat, accumsan augue vehicula, pharetra erat. Fusce commodo mauris nulla, in malesuada nisi dictum nec. Vestibulum convallis et orci nec blandit.
+</p><div><br></div>`;
+        }
+        for (var i = 0; i < fb.length; i++) {
+            fb[i].style.fontFamily = fn[i].innerHTML;
+        }
+    </script>
+
+    <div style="height:400px;"></div>
+
+</body>
+</html>
