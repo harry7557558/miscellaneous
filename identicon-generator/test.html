@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Identicon Generator Test</title>
+    <script src='identicon.js'></script>
+
+    <style>
+        img {
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id='canvas'></canvas>
+
+    <script>
+        "use strict";
+
+        // an integer with many factors to avoid anti-aliasing effect
+        const WIDTH = 120;
+
+        function randomTest(Generator) {
+            const canvas = document.getElementById("canvas");
+            canvas.width = canvas.height = WIDTH;
+            canvas.style.width = canvas.style.height = WIDTH + "px";
+            canvas.style.display = "none";
+
+            for (var seed = 0; seed < 60; seed++) {
+                var bitBuffer = new BitBuffer(new Random(seed).randBinaryString(1024));
+                var identicon = new Generator(bitBuffer);
+
+                identicon.renderCanvas(canvas, 0, 0, WIDTH, WIDTH);
+
+                document.body.innerHTML += "<img src='" + canvas.toDataURL("png") + "'/>";
+            }
+        }
+
+        window.onload = function () {
+            //randomTest(IdenticonGithub);
+            randomTest(IdenticonGravatar);
+        }
+    </script>
+
+</body>
+
+
+</html>

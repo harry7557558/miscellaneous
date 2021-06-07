@@ -26,7 +26,7 @@ def visualize_color(imgs):
 
 def is_equal(a0, b0):
     """ consider rotation and flip effects """
-    threshold = 0.05*a0.size
+    threshold = 0.06*a0.size
     ca = np.count_nonzero(a0) / a0.size
     cb = np.count_nonzero(b0) / b0.size
     if min(abs(ca-cb),
@@ -63,27 +63,35 @@ def is_equal(a0, b0):
 
 def block_types(imgs):
     types = []
+    counts = []
     for img in imgs:
         occurred = False
-        for tp in types:
-            if is_equal(tp, img):
+        for i in range(len(types)):
+            if is_equal(types[i], img):
                 occurred = True
+                counts[i] += 1
                 break
         if not occurred:
             types.append(img)
-    return types
+            counts.append(1)
+    res = [[types[i],counts[i]] for i in range(len(types))]
+    return sorted(res, key=lambda x: -x[1])
 
 
 if __name__ == "__main__":
     imgs_bin = np.array(imgs_bin)
-    types = block_types(imgs_bin[:,64:128,64:128])  # 14
-    types = block_types(imgs_bin[:,0:64,64:128])  # 45
-    types = block_types(imgs_bin[:,0:64,0:64])  # 45
+    blocks = imgs_bin[:,64:128,64:128]  # 7
+    blocks = imgs_bin[:,0:64,64:128]  # 44
+    blocks = imgs_bin[:,0:64,0:64]  # 44
+    blocks = np.concatenate((imgs_bin[:,0:64,64:128], imgs_bin[:,0:64,0:64]))
+    types = block_types(blocks)
     print(len(types))
-    plt.clf()
-    figsize = (10, 8)
-    fig = plt.figure(figsize=figsize)
+    figsize = (6, 8)
+    fig = plt.figure(figsize=(10, 9), dpi=80)
     for i in range(0, min(len(types),np.prod(figsize))):
-        fig.add_subplot(*figsize, i+1)
-        plt.imshow(types[i])
+        ax = fig.add_subplot(*figsize, i+1)
+        plt.imshow(types[i][0])
+        ax.set_yticklabels([])
+        ax.set_xticklabels([])
+        ax.set_xlabel(str(types[i][1]))
     plt.show()

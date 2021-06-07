@@ -1,49 +1,91 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html>
 
 <head>
     <meta charset="utf-8" />
-    <title>Identicon Generator Test</title>
-    <script src='identicon.js'></script>
+    <title>Identicon Generator Demo</title>
+    <script src="identicon.js"></script>
 
     <style>
-        img {
-            margin: 5px;
+        body {
+            background-color: rgb(30, 30, 30);
+        }
+
+        #canvas {
+            width: 240px;
+            height: 240px;
+        }
+
+        #input {
+            width: 220px;
+            height: 80px;
+            padding: 9px;
+            border: 1px solid gray;
+            background-color: transparent;
+            color: white;
+        }
+
+        #type-select {
+            margin: 5px 0px;
         }
     </style>
 </head>
 
 <body>
 
-    <canvas id='canvas'></canvas>
+    <canvas id="canvas" width="240" height="240"></canvas>
+    <br />
+
+    <textarea id="input"></textarea>
+    <br />
+
+    <select id="type-select">
+        <option selected>Github style</option>
+        <option>Gravatar style</option>
+    </select>
 
     <script>
-        "use strict";
-
-        const WIDTH = 128;
-
-        function randomTest(Generator) {
-            const canvas = document.getElementById("canvas");
-            canvas.width = canvas.height = WIDTH;
-            canvas.style.width = canvas.style.height = WIDTH + "px";
-            canvas.style.display = "none";
-
-            for (var seed = 0; seed < 60; seed++) {
-                var stringBuffer = new BitBuffer(new Random(seed).randBinaryString(1024));
-                var identicon = new Generator(stringBuffer);
-
-                identicon.renderCanvas(canvas, 0, 0, WIDTH, WIDTH);
-
-                document.body.innerHTML += "<img src='" + canvas.toDataURL("png") + "'/>";
+        async function render(Generator, canvas, text) {
+            var msgBuffer = new TextEncoder().encode(text);
+            var hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+            var hashArray = Array.from(new Uint8Array(hashBuffer));
+            var binstr = "";
+            for (var i = 0; i < 32; i++) {
+                var x = hashArray[i];
+                for (var t = 0; t < 8; t++) {
+                    binstr += x & 1;
+                    x >>= 1;
+                }
             }
+            const bitBuffer = new BitBuffer(binstr);
+            var identicon = new Generator(bitBuffer);
+            identicon.renderCanvas(canvas, 0, 0, 240, 240);
         }
 
         window.onload = function () {
-            randomTest(IdenticonGithub);
+            const canvas = document.getElementById("canvas");
+            const input = document.getElementById("input");
+            const type_select = document.getElementById("type-select");
+
+            var Generator = IdenticonGithub;
+            input.value = "Hello, World!";
+            render(Generator, canvas, input.value);
+
+            input.addEventListener("input", function () {
+                render(Generator, canvas, input.value);
+            });
+            type_select.addEventListener("input", function () {
+                var option = type_select.selectedIndex;
+                Generator =
+                    option == 0 ? IdenticonGithub :
+                        option == 1 ? IdenticonGravatar : null;
+                render(Generator, canvas, input.value);
+            })
+
+
         }
     </script>
 
 </body>
-
 
 </html>
