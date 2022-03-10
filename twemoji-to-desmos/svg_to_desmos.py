@@ -1,5 +1,9 @@
+from distutils.command.clean import clean
 from pygame import Vector2
 from spline import Ellipse, BezierCurve, BezierSpline, clean_spline
+from trig_spline import TrigSpline
+from float_to_str import join_curves
+from copy import deepcopy
 import math
 import xml.dom.minidom
 import re
@@ -171,9 +175,11 @@ def load_svg_shapes(filename: str):
     svg = doc.firstChild
     assert svg.nodeName == "svg"
 
-    def parse_node(node):
-        nodeName = child.nodeName
-        attributes = dict(child.attributes.items())
+    def parse_node(node, existing_attributes={}):
+        nodeName = node.nodeName
+        attributes = existing_attributes
+        for (attrib, value) in dict(node.attributes.items()).items():
+            attributes[attrib] = value
 
         if 'fill' not in attributes:
             raise AttributeError(
@@ -181,6 +187,12 @@ def load_svg_shapes(filename: str):
         if 'transform' in attributes:
             raise NotImplementedError(
                 "SVG `transform` attribute is not supported.")
+
+        if nodeName == "g":
+            shapes = []
+            for child in node.childNodes:
+                shapes += parse_node(child, attributes)
+            return shapes
 
         if nodeName == "path":
             spline = parse_path(attributes['d'])
@@ -198,51 +210,87 @@ def load_svg_shapes(filename: str):
                 f"Unsupported node name {nodeName} in {filename}")
 
         shape.reverse_y()
-        return {
+        return [{
             'fill': attributes['fill'],
             'curve': shape
-        }
+        }]
 
     shapes = []
     errors = []
     for child in svg.childNodes:
         try:
-            shape = parse_node(child)
-            shapes.append(shape)
+            shapes += parse_node(child)
         except BaseException as err:
             errors.append(err)
     return (shapes, errors)
 
 
+def compress_shape_fft_to_desmos(curve, decimals: int) -> dict:
+    polygons = []
+    if type(curve) == BezierSpline:
+        for spline in clean_spline(curve):
+            polygons.append(spline.evaluate_n(256))
+    else:
+        polygons.append(curve.evaluate_n(256))
+    curves = []
+    for polygon in polygons:
+        tsp = TrigSpline(polygon)
+        tsp.phase_shift_xs1()
+        latex = tsp.to_latex(decimals)
+        curves.append({
+            'latex': latex,
+            "parametricDomain": {"max": "1"},
+        })
+    return join_curves(curves)
+
+
 def shapes_to_desmos(shapes: list[dict]) -> dict:
+
+    FFT_COMPRESS = True  # enable lossy compression
+    DECIMALS = -math.log10(0.25)  # number of decimal places
+
     expressions = [
-        {
-            "type": "expression",
-            "id": "f",
-            "color": "#000",
-            "latex": "f=\\operatorname{mod}(t,1)",
-            "hidden": True
-        },
         {
             "type": "expression",
             "id": "c",
             "color": "#000",
-            "latex": "c(t)=\\cos(t)",
+            "latex": "c(t)=\\cos(2t\\pi)",
             "hidden": True
         },
         {
             "type": "expression",
             "id": "s",
             "color": "#000",
-            "latex": "s(t)=\\sin(t)",
+            "latex": "s(t)=\\sin(2t\\pi)",
             "hidden": True
-        }
+        },
     ]
+    if not FFT_COMPRESS:
+        # Bezier curve terms
+        expressions.append({
+            "type": "expression",
+            "id": "f",
+            "color": "#000",
+            "latex": "f=\\operatorname{mod}(t,1)",
+            "hidden": True
+        })
+        expressions.append({
+            "type": "expression",
+            "id": "b",
+            "color": "#000",
+            "latex": "b(x,y,x_1,y_1,x_2,y_2,x_3,y_3,t)=(x,y)(1-t)^3+(x+x_1,y+y_1)3t(1-t)^2+(x+x_2,y+y_2)3t^2(1-t)+(x+x_3,y+y_3)t^3",
+            "hidden": True
+        })
+
     for i in range(len(shapes)):
         shape = shapes[i]
-        expression = shape['curve'].to_desmos(decimals=3)
+        if FFT_COMPRESS:
+            expression = compress_shape_fft_to_desmos(shape['curve'], DECIMALS)
+        else:
+            expression = shape['curve'].to_desmos(DECIMALS)
         expression['parametricDomain']['min'] = ''
         expression['domain'] = {
+            # deprecated ?! still adding up bytes
             'min': '0',
             'max': expression['parametricDomain']['max']
         }
@@ -252,9 +300,14 @@ def shapes_to_desmos(shapes: list[dict]) -> dict:
         expression['type'] = "expression"
         expression['id'] = str(i+1)
         expressions.append(expression)
-    print(json.dumps(expressions))
+    return json.dumps(expressions).replace(' ', '')
 
 
-shapes, errors = load_svg_shapes("f7b3f6b926cb31a17d4928d076febab4.svg")
-print(errors)
-shapes_to_desmos(shapes)
+sob = "f7b3f6b926cb31a17d4928d076febab4.svg"
+sushi = "a3fdf36792c57acefbd11c5cf628a617.svg"
+
+shapes, errors = load_svg_shapes(sushi)
+print(*errors, sep='\n')
+expressions = shapes_to_desmos(shapes)
+print("Calc.setExpressions(", expressions, ")")
+print(len(expressions))

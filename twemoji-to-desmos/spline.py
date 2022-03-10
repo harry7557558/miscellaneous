@@ -1,13 +1,11 @@
+from distutils.command.clean import clean
 import math
 from pygame import Vector2
 import time
 from copy import deepcopy
-from float_to_str import float_to_str, join_terms
 
-
-def lerp(p: Vector2, q: Vector2, t: float) -> Vector2:
-    """Linear interpolation between two points"""
-    return p * (1.0-t) + q * t
+from sympy import true
+from float_to_str import float_to_str, join_terms, join_curves
 
 
 class Ellipse():
@@ -43,7 +41,7 @@ class Ellipse():
         latex = f"({x},{y})"
         return {
             "latex": latex,
-            "parametricDomain": {"max": "2\\pi"},
+            "parametricDomain": {"max": "1"},
         }
 
 
@@ -58,6 +56,8 @@ class BezierCurve():
         Args:
             control_points: a tuple/list of control points
         """
+        def lerp(p, q, t: float):
+            return p * (1.0-t) + q * t
         if len(control_points) == 1:
             p = Vector2(control_points[0])
             self._p0 = p
@@ -117,16 +117,39 @@ class BezierCurve():
         self._p2 = Vector2(self._p2.x, -self._p2.y)
         self._p3 = Vector2(self._p3.x, -self._p3.y)
 
-    def to_latex(self, decimals: int) -> str:
-        p0 = self._p0
-        p1 = self._p1*3.0 - self._p0*3.0
-        p2 = self._p2*3.0 - self._p1*6.0 + self._p0*3.0
-        p3 = self._p3 - self._p2*3.0 + self._p1*3.0 - self._p0
-        latex = join_terms([
-            float_to_str(p0, decimals),
-            (float_to_str(p1, decimals), 'f'),
-            (float_to_str(p2, decimals), 'f^2'),
-            (float_to_str(p3, decimals), 'f^3')])
+    def to_latex(self, decimals: int, scale: float = 1.0) -> str:
+        if decimals > 2:
+            # compresses quadratics
+            p0 = self._p0
+            p1 = self._p1*3.0 - self._p0*3.0
+            p2 = self._p2*3.0 - self._p1*6.0 + self._p0*3.0
+            p3 = self._p3 - self._p2*3.0 + self._p1*3.0 - self._p0
+            latex = join_terms([
+                float_to_str(scale*p0, decimals),
+                (float_to_str(scale*p1, decimals), 'f'),
+                (float_to_str(scale*p2, decimals), 'f^2'),
+                (float_to_str(scale*p3, decimals), 'f^3')])
+        else:
+            # requires less decimal places
+            p0 = float_to_str(scale*self._p0, decimals)
+            p1 = float_to_str(scale*self._p1, decimals)
+            p2 = float_to_str(scale*self._p2, decimals)
+            p3 = float_to_str(scale*self._p3, decimals)
+            p0 = eval(p0.replace('(', 'Vector2('))
+            p1 = eval(p1.replace('(', 'Vector2(')) - p0
+            p2 = eval(p2.replace('(', 'Vector2(')) - p0
+            p3 = eval(p3.replace('(', 'Vector2(')) - p0
+            latex = 'b('+','.join([
+                float_to_str(p0.x, decimals).lstrip('+'),
+                float_to_str(p0.y, decimals).lstrip('+'),
+                float_to_str(p1.x, decimals).lstrip('+'),
+                float_to_str(p1.y, decimals).lstrip('+'),
+                float_to_str(p2.x, decimals).lstrip('+'),
+                float_to_str(p2.y, decimals).lstrip('+'),
+                float_to_str(p3.x, decimals).lstrip('+'),
+                float_to_str(p3.y, decimals).lstrip('+'),
+                'f'
+            ])+')'
         return latex
 
 
@@ -161,8 +184,9 @@ class BezierSpline():
         ti = math.floor(it)
         return self._curves[ti].evaluate(it-ti)
 
-    def evaluate_n(self, n: int) -> list[Vector2]:
-        """Evaluate the curve at n points with evenly-spaced parameter values"""
+    def evaluate_n(self, n: int, alp: bool = True) -> list[Vector2]:
+        if alp:
+            return self.evaluate_n_alp(n, False)
         return [self.evaluate(i/n) for i in range(n)]
 
     def evaluate_n_alp(self, n: int, verbose: bool = True) -> list[Vector2]:
@@ -244,18 +268,32 @@ class BezierSpline():
         """
         return len(self._curves) == 0
 
+    def _to_expression(self, decimals: int, factor: bool) -> str:
+        pieces = []
+        for curve in self._curves:
+            if factor:
+                latex = curve.to_latex(decimals=0, scale=10**decimals)
+            else:
+                latex = curve.to_latex(decimals=decimals)
+            pieces.append({
+                "latex": latex,
+                "parametricDomain": {"max": "1"}
+            })
+        expr = join_curves(pieces)
+        if factor and decimals != 0:
+            sc = float_to_str(0.1**decimals, 16).lstrip('+')
+            expr['latex'] = sc + expr['latex']
+        return expr
+
     def to_desmos(self, decimals: int) -> str:
-        texes = []
-        t1 = len(self._curves)
-        for i in range(t1):
-            cond = f"t<{i+1}:" if i+1 < t1 else ''
-            tex_t = self._curves[i].to_latex(decimals=decimals)
-            texes.append(cond+tex_t)
-        latex = f"\\{{{','.join(texes)}\\}}"
-        return {
-            "latex": latex,
-            "parametricDomain": {"max": str(t1)},
-        }
+        spline = BezierSpline()
+        for splinet in clean_spline(self):
+            spline._curves += splinet._curves
+        expr1 = spline._to_expression(decimals, False)
+        expr2 = spline._to_expression(decimals, True)
+        if len(expr1['latex']) < len(expr2['latex']):
+            return expr1
+        return expr2
 
     @staticmethod
     def n_integrate(fun, x0: float, x1: float) -> float:
@@ -267,7 +305,8 @@ class BezierSpline():
         Returns:
             The numerical integral of the given function in the given interval
         """
-        GLN = 4  # n_integrate(math.sin, 0.0, 0.5*PI) => 0.999999977197115
+        # n_integrate(math.sin, 0.0, 0.5*PI) => 0.999999977197115
+        GLN = 4
         GLT = [.06943184420297371238, .33000947820757186759,
                .66999052179242813240, .93056815579702628761]
         GLW = [.17392742256872692868, .32607257743127307131,
@@ -300,12 +339,11 @@ class BezierSpline():
         return x2
 
 
-def clean_spline(spline: BezierSpline, epsilon: float = 1e-8, reverse_y: bool = False) -> list[BezierSpline]:
+def clean_spline(spline: BezierSpline, epsilon: float = 1e-8) -> list[BezierSpline]:
     """Split the spline into a list of continuous splines of non-degenerate points
     Args:
         spline: the Bézier spline to clean
         epsilon: two values are considered equal if their difference is less than this
-        reverse_y: whether to reflect the shape about the x-axis to reverse SVG coordinates
     Returns:
         a list of "good-quality" Bézier splines.
     """
@@ -317,12 +355,6 @@ def clean_spline(spline: BezierSpline, epsilon: float = 1e-8, reverse_y: bool = 
     for curve in spline._curves:
         if curve.is_degenerated(epsilon):
             continue
-        if reverse_y:
-            curve = BezierCurve(
-                (Vector2(curve._p0.x, -curve._p0.y),
-                 Vector2(curve._p1.x, -curve._p1.y),
-                 Vector2(curve._p2.x, -curve._p2.y),
-                 Vector2(curve._p3.x, -curve._p3.y)))
         if not (curve._p0-prev_p).length() < epsilon:
             if len(temp_spline._curves) != 0:
                 splines.append(temp_spline)

@@ -1,7 +1,9 @@
+# Compress a curve represented by a list of points using FFT
+
 from pygame import Vector2
 import math
 import numpy as np
-import re
+from float_to_str import float_to_str, join_terms
 
 
 class TrigSpline():
@@ -91,6 +93,32 @@ class TrigSpline():
             if len(arr) > 0 and np.any(abs(arr[1:]) >= epsilon):
                 return True
         return False
+
+    def phase_shift_xs1(self) -> None:
+        """Apply a phase shift so the sin(t) term of x is zero
+           This sometimes dramatically decreases the number of non-zero terms"""
+        if len(self._x_cos) < 2 and len(self._x_sin) < 2:
+            return
+        # get phase
+        xl = max(len(self._x_cos), len(self._x_sin))
+        self._x_cos = np.resize(self._x_cos, xl)
+        self._x_sin = np.resize(self._x_sin, xl)
+        a = math.atan2(self._x_sin[1], self._x_cos[1])
+        # shift x
+        xi = np.arange(xl)
+        ca, sa = np.cos(xi*a), np.sin(xi*a)
+        self._x_cos, self._x_sin = (
+            self._x_cos*ca+self._x_sin*sa,
+            self._x_cos*sa-self._x_sin*ca)
+        # shift y
+        yl = max(len(self._y_cos), len(self._y_sin))
+        yi = np.arange(yl)
+        ca, sa = np.cos(yi*a), np.sin(yi*a)
+        self._y_cos = np.resize(self._y_cos, yl)
+        self._y_sin = np.resize(self._y_sin, yl)
+        self._y_cos, self._y_sin = (
+            self._y_cos*ca+self._y_sin*sa,
+            self._y_cos*sa-self._y_sin*ca)
 
     def filter_lowest(self, n_waves: int) -> "TrigSpline":
         """Filter frequencies, keep lowest frequencies
@@ -187,26 +215,21 @@ class TrigSpline():
                 r_sin[-k] = amp
         return (np.array(r_cos), np.array(r_sin))
 
-    def get_latex(self, digits=4, optimize=False) -> str:
-        """Get the LateX of the curve to be exported to Desmos
-        Args:
-            digits: the number of significant digits of the greatest amplitude,
-                    if it has a decimal point.
-                    (each amplitude has equal number of decimal places)
-            minimize: whether minimize the latex string
+    def to_latex(self, decimals: int) -> str:
+        """Get the LateX of the curve
         Returns:
             a string of LaTeX that is compatible with Desmos
         """
-        latex_x = TrigSpline._get_latex_dim(
-            self._x_cos, self._x_sin, digits, optimize)
-        latex_y = TrigSpline._get_latex_dim(
-            self._y_cos, self._y_sin, digits, optimize)
-        bracket_l = "(" if optimize else "\\left("
-        bracket_r = ")" if optimize else "\\right)"
-        return bracket_l + latex_x + ',' + latex_y + bracket_r
+        scale = 10.0**decimals
+        latex_x = TrigSpline._to_latex_dim(
+            self._x_cos, self._x_sin, scale)
+        latex_y = TrigSpline._to_latex_dim(
+            self._y_cos, self._y_sin, scale)
+        scale = float_to_str(1.0/scale, 12).lstrip('+')
+        return scale+'('+latex_x+','+latex_y+')'
 
     @staticmethod
-    def _get_latex_dim(a_cos: list[float], a_sin: list[float], digits, optimize) -> str:
+    def _to_latex_dim(a_cos: list[float], a_sin: list[float], scale: float) -> str:
         """Get the LateX of the curve to be exported to Desmos, in one dimension"""
         max_val = max(
             0.0 if len(a_cos) <= 1 else max(np.abs(a_cos[1:])),
@@ -214,28 +237,18 @@ class TrigSpline():
         )
         if max_val == 0.0:
             return "0"
-        decimals = max(digits - (int(math.ceil(math.log10(max_val)))), 0)
-        bracket_l = "(" if optimize else "\\left("
-        bracket_r = ")" if optimize else "\\right)"
-        s = ""
+        s = []
         for k in range(max(len(a_cos), len(a_sin))):
             kt = str(k) + 't'
             a = a_cos[k] if k < len(a_cos) else 0.0
             b = a_sin[k] if k < len(a_sin) else 0.0
-            a = TrigSpline._float_to_str(a, decimals, optimize)
-            b = TrigSpline._float_to_str(b, decimals, optimize)
+            a = float_to_str(scale*a, 0)
+            b = float_to_str(scale*b, 0)
             if kt == "0t":
-                if a != "+0":
-                    s += a
+                s.append(a)
             else:
                 if kt == "1t":
                     kt = "t"
-                if a in ["+1", "-1"]:
-                    a = a[0]
-                if b in ["+1", "-1"]:
-                    b = b[0]
-                if float(a) != 0.0:
-                    s += a + "\\cos" + bracket_l + kt + bracket_r
-                if float(b) != 0.0:
-                    s += b + "\\sin" + bracket_l + kt + bracket_r
-        return s.lstrip('+')
+                s.append((a, f"c({kt})"))
+                s.append((b, f"s({kt})"))
+        return join_terms(s)

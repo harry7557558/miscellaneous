@@ -1,6 +1,7 @@
 from pygame import Vector2
 import math
 import re
+from copy import deepcopy
 
 
 def float_to_str(x: float, decimals: int) -> str:
@@ -39,10 +40,34 @@ def join_terms(terms: list[str]) -> str:
         elif type(term) == tuple:
             if is_zero(term[0]):
                 continue
-            s += term[0]
+            s += term[0][0] if term[0] in ['-1', '+1'] else term[0]
             if term[1][0].isnumeric():
                 s += '*'
             s += term[1]
     if s == "":
         return "0"
     return s.lstrip('+')
+
+
+def join_curves(curves: list[dict]) -> dict:
+    """Join multiple parametric curves as a single parametric curve
+       Assumes periodic parameter value (it won't change the equation)
+    Args:
+        curves: a list of { 'latex': str, parametricDomain: { 'max': str(int) }}
+    """
+    if len(curves) == 0:
+        raise ValueError("Empty curve list")
+    if len(curves) == 1:
+        return deepcopy(curves[0])
+    latexes = []
+    sum_t = 0
+    for i in range(len(curves)):
+        curve = curves[i]
+        sum_t += int(curve['parametricDomain']['max'])
+        cond = f"t<{sum_t}:" if i+1 < len(curves) else ''
+        latexes.append(cond + curve['latex'])
+    latex = f"\\left\\{{{','.join(latexes)}\\right\\}}"
+    return {
+        "latex": latex,
+        "parametricDomain": {"max": str(sum_t)},
+    }
