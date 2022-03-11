@@ -3,6 +3,7 @@ from pygame import Vector2
 from spline import Ellipse, BezierCurve, BezierSpline, clean_spline
 from trig_spline import TrigSpline
 from float_to_str import join_curves
+import emoji
 from copy import deepcopy
 import math
 import xml.dom.minidom
@@ -177,22 +178,22 @@ def load_svg_shapes(filename: str):
 
     def parse_node(node, existing_attributes={}):
         nodeName = node.nodeName
-        attributes = existing_attributes
+        attributes = deepcopy(existing_attributes)
         for (attrib, value) in dict(node.attributes.items()).items():
+            if attrib == 'transform' and attrib in attributes:
+                raise NotImplementedError(
+                    "Nested `transform` attributes is not supported.")
             attributes[attrib] = value
-
-        if 'fill' not in attributes:
-            raise AttributeError(
-                "`fill` attribute does not appear in attributes list.")
-        if 'transform' in attributes:
-            raise NotImplementedError(
-                "SVG `transform` attribute is not supported.")
 
         if nodeName == "g":
             shapes = []
             for child in node.childNodes:
                 shapes += parse_node(child, attributes)
             return shapes
+
+        if 'fill' not in attributes:
+            raise AttributeError(
+                "`fill` attribute does not appear in attributes list.")
 
         if nodeName == "path":
             spline = parse_path(attributes['d'])
@@ -205,9 +206,23 @@ def load_svg_shapes(filename: str):
                               attributes['rx'], attributes['ry'])
             shape = ellipse
 
+        elif nodeName == "circle":
+            ellipse = Ellipse(attributes['cx'], attributes['cy'],
+                              attributes['r'], attributes['r'])
+            shape = ellipse
+
         else:
             raise AttributeError(
                 f"Unsupported node name {nodeName} in {filename}")
+
+        if 'transform' in attributes:
+            transform = attributes['transform'].strip()
+            regex = r"^translate\(\s*([0-9\.]+)\,*\s*([0-9\.]+)\s*\)$"
+            match = re.match(regex, transform)
+            if match == None:
+                raise ValueError("Transform attribute parsing error.\
+                    Note that only transform is supported.")
+            shape.translate(float(match.group(1)), float(match.group(2)))
 
         shape.reverse_y()
         return [{
@@ -229,14 +244,17 @@ def compress_shape_fft_to_desmos(curve, decimals: int) -> dict:
     polygons = []
     if type(curve) == BezierSpline:
         for spline in clean_spline(curve):
-            polygons.append(spline.evaluate_n(256))
+            n = max(min(8*len(spline), 256), 32)
+            polygons.append(spline.evaluate_n(n))
     else:
-        polygons.append(curve.evaluate_n(256))
+        polygons.append(curve.evaluate_n(64))
     curves = []
     for polygon in polygons:
         tsp = TrigSpline(polygon)
         tsp.phase_shift_xs1()
         latex = tsp.to_latex(decimals)
+        if latex == "":
+            continue
         curves.append({
             'latex': latex,
             "parametricDomain": {"max": "1"},
@@ -247,7 +265,7 @@ def compress_shape_fft_to_desmos(curve, decimals: int) -> dict:
 def shapes_to_desmos(shapes: list[dict]) -> dict:
 
     FFT_COMPRESS = True  # enable lossy compression
-    DECIMALS = -math.log10(0.25)  # number of decimal places
+    DECIMALS = -math.log10(0.5)  # number of decimal places
 
     expressions = [
         {
@@ -303,11 +321,18 @@ def shapes_to_desmos(shapes: list[dict]) -> dict:
     return json.dumps(expressions).replace(' ', '')
 
 
-sob = "f7b3f6b926cb31a17d4928d076febab4.svg"
-sushi = "a3fdf36792c57acefbd11c5cf628a617.svg"
+if __name__ == "__main__":
 
-shapes, errors = load_svg_shapes(sushi)
-print(*errors, sep='\n')
-expressions = shapes_to_desmos(shapes)
-print("Calc.setExpressions(", expressions, ")")
-print(len(expressions))
+    def one_svg_to_desmos(filepath):
+        shapes, errors = load_svg_shapes(filepath)
+        print(*errors, sep='\n')
+        expressions = shapes_to_desmos(shapes)
+        print("Calc.setExpressions(", expressions, ")")
+        open(".desmos", 'w').write("Calc.setExpressions("+expressions+")")
+        print(len(expressions))
+
+    # one_svg_to_desmos("svg/003519a109cd19de38c8845aecf1bb98.svg")
+
+    filepath = "info/full.svg"
+    emoji.generate_emoji_table(filepath, False, ['nature'], 16)
+    one_svg_to_desmos(filepath)

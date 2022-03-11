@@ -221,16 +221,20 @@ class TrigSpline():
             a string of LaTeX that is compatible with Desmos
         """
         scale = 10.0**decimals
-        latex_x = TrigSpline._to_latex_dim(
+        latex_x, deg_x = TrigSpline._to_latex_dim(
             self._x_cos, self._x_sin, scale)
-        latex_y = TrigSpline._to_latex_dim(
+        latex_y, deg_y = TrigSpline._to_latex_dim(
             self._y_cos, self._y_sin, scale)
+        if deg_x or deg_y:
+            return ''
         scale = float_to_str(1.0/scale, 12).lstrip('+')
         return scale+'('+latex_x+','+latex_y+')'
 
     @staticmethod
-    def _to_latex_dim(a_cos: list[float], a_sin: list[float], scale: float) -> str:
-        """Get the LateX of the curve to be exported to Desmos, in one dimension"""
+    def _to_latex_dim(a_cos: list[float], a_sin: list[float], scale: float) -> tuple[str, bool]:
+        """Get the LaTeX of the curve to be exported to Desmos, in one dimension
+           Returns: (LaTeX, is_degenerate)
+        """
         max_val = max(
             0.0 if len(a_cos) <= 1 else max(np.abs(a_cos[1:])),
             0.0 if len(a_sin) <= 1 else max(np.abs(a_sin[1:]))
@@ -238,6 +242,7 @@ class TrigSpline():
         if max_val == 0.0:
             return "0"
         s = []
+        degenerate = True
         for k in range(max(len(a_cos), len(a_sin))):
             kt = str(k) + 't'
             a = a_cos[k] if k < len(a_cos) else 0.0
@@ -245,10 +250,15 @@ class TrigSpline():
             a = float_to_str(scale*a, 0)
             b = float_to_str(scale*b, 0)
             if kt == "0t":
-                s.append(a)
+                if a.lstrip('+') != '0':
+                    s.append(a)
             else:
                 if kt == "1t":
                     kt = "t"
-                s.append((a, f"c({kt})"))
-                s.append((b, f"s({kt})"))
-        return join_terms(s)
+                if a.lstrip('+') != '0':
+                    s.append((a, f"c({kt})"))
+                    degenerate = False
+                if b.lstrip('+') != '0':
+                    s.append((b, f"s({kt})"))
+                    degenerate = False
+        return (join_terms(s), degenerate)

@@ -27,6 +27,10 @@ class Ellipse():
         """Evaluate the curve at n points with evenly-spaced parameter values"""
         return [self.evaluate(i/n) for i in range(n)]
 
+    def translate(self, dx, dy) -> None:
+        self.cx += dx
+        self.cy += dy
+
     def reverse_y(self) -> None:
         self.cy = -self.cy
         self.ry = -self.ry  # not necessary
@@ -111,6 +115,12 @@ class BezierCurve():
             and (self._p1 - self._p2).length() < epsilon \
             and (self._p0 - self._p1).length() < epsilon
 
+    def translate(self, dx, dy) -> None:
+        self._p0 += Vector2(dx, dy)
+        self._p1 += Vector2(dx, dy)
+        self._p2 += Vector2(dx, dy)
+        self._p3 += Vector2(dx, dy)
+
     def reverse_y(self) -> None:
         self._p0 = Vector2(self._p0.x, -self._p0.y)
         self._p1 = Vector2(self._p1.x, -self._p1.y)
@@ -167,6 +177,10 @@ class BezierSpline():
         if type(curve) != BezierCurve:
             curve = BezierCurve(curve)
         self._curves.append(deepcopy(curve))
+
+    def translate(self, dx, dy) -> None:
+        for curve in self._curves:
+            curve.translate(dx, dy)
 
     def reverse_y(self) -> None:
         for curve in self._curves:
