@@ -235,12 +235,6 @@ class TrigSpline():
         """Get the LaTeX of the curve to be exported to Desmos, in one dimension
            Returns: (LaTeX, is_degenerate)
         """
-        max_val = max(
-            0.0 if len(a_cos) <= 1 else max(np.abs(a_cos[1:])),
-            0.0 if len(a_sin) <= 1 else max(np.abs(a_sin[1:]))
-        )
-        if max_val == 0.0:
-            return "0"
         s = []
         degenerate = True
         for k in range(max(len(a_cos), len(a_sin))):

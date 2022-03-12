@@ -12,6 +12,87 @@ import json
 import warnings
 
 
+class Mat2x3:
+    """2D transformation matrix"""
+
+    def __init__(self, mat: list[list[float]]):
+        self.mat = [
+            [float(mat[0][0]), float(mat[0][1]), float(mat[0][2])],
+            [float(mat[1][0]), float(mat[1][1]), float(mat[1][2])]
+        ]
+
+    def __mul__(a: "Mat2x3", b: "Mat2x3") -> "Mat2x3":
+        """Matrix multiplication, returns the matrix when a is applied to b"""
+        if type(b) is Vector2:
+            return Vector2(
+                a.mat[0][0]*b.x + a.mat[0][1]*b.y + a.mat[0][2],
+                a.mat[1][0]*b.x + a.mat[1][1]*b.y + a.mat[1][2]
+            )
+        return Mat2x3([
+            [
+                a.mat[0][0]*b.mat[0][0] + a.mat[0][1]*b.mat[1][0],
+                a.mat[0][0]*b.mat[0][1] + a.mat[0][1]*b.mat[1][1],
+                a.mat[0][0]*b.mat[0][2] + a.mat[0][1]*b.mat[1][2] + a.mat[0][2]
+            ],
+            [
+                a.mat[1][0]*b.mat[0][0] + a.mat[1][1]*b.mat[1][0],
+                a.mat[1][0]*b.mat[0][1] + a.mat[1][1]*b.mat[1][1],
+                a.mat[1][0]*b.mat[0][2] + a.mat[1][1]*b.mat[1][2] + a.mat[1][2]
+            ]
+        ])
+
+
+def parse_css_transform(transform: str) -> Mat2x3:
+    """Construct transformation matrix from a CSS transformation string
+       https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/transform
+       Not well-tested, may have bug
+    """
+    transform = transform.strip().replace(",", " ")
+    transform = re.sub(r"\s+", " ", transform)
+    transform = transform.replace("( ", "(").replace(" )", ")")
+    transform = [t.strip()+')' for t in transform.rstrip(')').split(')')]
+    matrix = Mat2x3([[1, 0, 0], [0, 1, 0]])
+    for ts in transform:
+        # matrix
+        regex = r"^matrix\(([0-9\.\+\-e]+) ([0-9\.\+\-e]+) ([0-9\.\+\-e]+) ([0-9\.\+\-e]+) ([0-9\.\+\-e]+) ([0-9\.\+\-e]+)\)$"
+        match = re.match(regex, ts)
+        if match:
+            matrix *= Mat2x3([[
+                float(match.group(1)),
+                float(match.group(2)),
+                float(match.group(3))
+            ], [
+                float(match.group(4)),
+                float(match.group(5)),
+                float(match.group(5))
+            ]])
+            continue
+        # translate
+        regex = r"^translate\(([0-9\.\+\-e]+) ([0-9\.\+\-e]+)\)$"
+        match = re.match(regex, ts)
+        if match:
+            dx = float(match.group(1))
+            dy = float(match.group(2))
+            matrix *= Mat2x3([[1, 0, dx], [0, 1, dy]])
+            continue
+        # rotate about a point
+        regex = r"^rotate\(([0-9\.\+\-e]+) ([0-9\.\+\-e]+) ([0-9\.\+\-e]+)\)$"
+        match = re.match(regex, ts)
+        if match:
+            a = float(match.group(1)) * math.pi/180.
+            sa, ca = math.sin(a), math.cos(a)
+            dx = float(match.group(2))
+            dy = float(match.group(3))
+            rmat = Mat2x3([[1, 0, dx], [0, 1, dy]]) \
+                * Mat2x3([[ca, -sa, 0], [sa, ca, 0]]) \
+                * Mat2x3([[1, 0, -dx], [0, 1, -dy]])
+            matrix *= rmat
+            continue
+        # not implemented
+        raise ValueError("Transform attribute parse error", ts)
+    return matrix
+
+
 def parse_path(s: str) -> BezierSpline:
     """Parse an SVG path
     Additional info:
@@ -171,6 +252,17 @@ def parse_path(s: str) -> BezierSpline:
     return spline
 
 
+def reduce_color(col: str) -> str:
+    """24 bit RGB hex color to 12 bit"""
+    col = col.lstrip('#')
+    if len(col) != 3:
+        col = int(col, base=16)
+        r, g, b = col//65536, (col//256) % 256, col % 256
+        col = ((((0xf0 | r//16) << 4) | g//16) << 4) | b//16
+        col = hex(col).lstrip('0x')[1:]
+    return '#' + col
+
+
 def load_svg_shapes(filename: str):
     doc = xml.dom.minidom.parse(filename)
     svg = doc.firstChild
@@ -181,8 +273,7 @@ def load_svg_shapes(filename: str):
         attributes = deepcopy(existing_attributes)
         for (attrib, value) in dict(node.attributes.items()).items():
             if attrib == 'transform' and attrib in attributes:
-                raise NotImplementedError(
-                    "Nested `transform` attributes is not supported.")
+                value = attributes[attrib] + value
             attributes[attrib] = value
 
         if nodeName == "g":
@@ -192,8 +283,14 @@ def load_svg_shapes(filename: str):
             return shapes
 
         if 'fill' not in attributes:
-            raise AttributeError(
-                "`fill` attribute does not appear in attributes list.")
+            attributes['fill'] = '#000'
+        if attributes['fill'] == "none":
+            return []
+        # case work for those appear in the list
+        if attributes['fill'] == "green":
+            attributes['fill'] = "#008000"
+        if attributes['fill'] == "navy":
+            attributes['fill'] = "#000080"
 
         if nodeName == "path":
             spline = parse_path(attributes['d'])
@@ -215,19 +312,14 @@ def load_svg_shapes(filename: str):
             raise AttributeError(
                 f"Unsupported node name {nodeName} in {filename}")
 
+        transform = Mat2x3([[1, 0, 0], [0, -1, 0]])
         if 'transform' in attributes:
-            transform = attributes['transform'].strip()
-            regex = r"^translate\(\s*([0-9\.]+)\,*\s*([0-9\.]+)\s*\)$"
-            match = re.match(regex, transform)
-            if match == None:
-                raise ValueError("Transform attribute parsing error.\
-                    Note that only transform is supported.")
-            shape.translate(float(match.group(1)), float(match.group(2)))
+            transform *= parse_css_transform(attributes['transform'])
 
-        shape.reverse_y()
         return [{
-            'fill': attributes['fill'],
-            'curve': shape
+            'fill': reduce_color(attributes['fill']),
+            'curve': shape,
+            'transform': transform
         }]
 
     shapes = []
@@ -236,11 +328,12 @@ def load_svg_shapes(filename: str):
         try:
             shapes += parse_node(child)
         except BaseException as err:
+            raise err
             errors.append(err)
     return (shapes, errors)
 
 
-def compress_shape_fft_to_desmos(curve, decimals: int) -> dict:
+def compress_shape_fft_to_desmos(curve, transform: Mat2x3, decimals: int) -> list[dict]:
     polygons = []
     if type(curve) == BezierSpline:
         for spline in clean_spline(curve):
@@ -250,6 +343,8 @@ def compress_shape_fft_to_desmos(curve, decimals: int) -> dict:
         polygons.append(curve.evaluate_n(64))
     curves = []
     for polygon in polygons:
+        for i in range(len(polygon)):
+            polygon[i] = transform * polygon[i]
         tsp = TrigSpline(polygon)
         tsp.phase_shift_xs1()
         latex = tsp.to_latex(decimals)
@@ -259,7 +354,7 @@ def compress_shape_fft_to_desmos(curve, decimals: int) -> dict:
             'latex': latex,
             "parametricDomain": {"max": "1"},
         })
-    return join_curves(curves)
+    return curves
 
 
 def shapes_to_desmos(shapes: list[dict]) -> dict:
@@ -267,7 +362,7 @@ def shapes_to_desmos(shapes: list[dict]) -> dict:
     FFT_COMPRESS = True  # enable lossy compression
     DECIMALS = -math.log10(0.5)  # number of decimal places
 
-    expressions = [
+    expressions_list = [
         {
             "type": "expression",
             "id": "c",
@@ -285,14 +380,14 @@ def shapes_to_desmos(shapes: list[dict]) -> dict:
     ]
     if not FFT_COMPRESS:
         # Bezier curve terms
-        expressions.append({
+        expressions_list.append({
             "type": "expression",
             "id": "f",
             "color": "#000",
             "latex": "f=\\operatorname{mod}(t,1)",
             "hidden": True
         })
-        expressions.append({
+        expressions_list.append({
             "type": "expression",
             "id": "b",
             "color": "#000",
@@ -303,7 +398,11 @@ def shapes_to_desmos(shapes: list[dict]) -> dict:
     for i in range(len(shapes)):
         shape = shapes[i]
         if FFT_COMPRESS:
-            expression = compress_shape_fft_to_desmos(shape['curve'], DECIMALS)
+            expressions = compress_shape_fft_to_desmos(
+                shape['curve'], shape['transform'], DECIMALS)
+            if len(expressions) == 0:
+                continue
+            expression = join_curves(expressions)
         else:
             expression = shape['curve'].to_desmos(DECIMALS)
         expression['parametricDomain']['min'] = ''
@@ -314,11 +413,12 @@ def shapes_to_desmos(shapes: list[dict]) -> dict:
         }
         expression['color'] = shape['fill']
         expression['fill'] = True
+        expression['lines'] = False  # more bytes but much faster
         expression['fillOpacity'] = '1'
         expression['type'] = "expression"
         expression['id'] = str(i+1)
-        expressions.append(expression)
-    return json.dumps(expressions).replace(' ', '')
+        expressions_list.append(expression)
+    return json.dumps(expressions_list).replace(' ', '')
 
 
 if __name__ == "__main__":
@@ -327,12 +427,13 @@ if __name__ == "__main__":
         shapes, errors = load_svg_shapes(filepath)
         print(*errors, sep='\n')
         expressions = shapes_to_desmos(shapes)
-        print("Calc.setExpressions(", expressions, ")")
-        open(".desmos", 'w').write("Calc.setExpressions("+expressions+")")
+        expressions = f"var s=Calc.getState();s['expressions']['list']={expressions};Calc.setState(s);"
+        print(expressions)
+        open(".desmos", 'w').write(expressions)
         print(len(expressions))
 
     # one_svg_to_desmos("svg/003519a109cd19de38c8845aecf1bb98.svg")
 
     filepath = "info/full.svg"
-    emoji.generate_emoji_table(filepath, False, ['nature'], 16)
+    emoji.generate_emoji_table(filepath, False, None)
     one_svg_to_desmos(filepath)

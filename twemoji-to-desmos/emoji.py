@@ -89,7 +89,7 @@ def download_emojis():
                 fp.write(content)
 
 
-def generate_emoji_table(save_path: str, include_diversity: bool, categories: list[str], max_count: int):
+def generate_emoji_table(save_path: str, include_diversity: bool, categories: list[str], slice=slice(None)):
     """Generate a table of emojis"""
     WIDTH = 36  # width of each emoji
     CELLWIDTH = 40  # width of grid cell
@@ -98,7 +98,7 @@ def generate_emoji_table(save_path: str, include_diversity: bool, categories: li
     SVG_START = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">'
     SVG_END = '</svg>'
 
-    emojis = get_emoji_list(include_diversity, categories)[:max_count]
+    emojis = get_emoji_list(include_diversity, categories)[slice]
     filenames = [emoji['path'] for emoji in emojis]
     gridsize = int(0.5+len(filenames)**0.5)
 
@@ -117,7 +117,9 @@ def generate_emoji_table(save_path: str, include_diversity: bool, categories: li
         content += "</g>"
     content += "</svg>"
 
-    open(save_path, "w").write(content)
+    content = bytearray(content, 'utf-8')
+    print(f"Merged SVG {len(content)} bytes")
+    open(save_path, "wb").write(content)
 
 
 if __name__ == "__main__":
