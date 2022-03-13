@@ -1,4 +1,3 @@
-from distutils.command.clean import clean
 from pygame import Vector2
 from spline import Ellipse, BezierCurve, BezierSpline, clean_spline
 from trig_spline import TrigSpline
@@ -6,6 +5,7 @@ from float_to_str import join_curves
 import emoji
 from copy import deepcopy
 import math
+import numpy as np
 import xml.dom.minidom
 import re
 import json
@@ -351,6 +351,7 @@ def compress_shape_fft_to_desmos(curve, transform: Mat2x3, decimals: int) -> lis
         if latex == "":
             continue
         curves.append({
+            'trigSpline': tsp,
             'latex': latex,
             "parametricDomain": {"max": "1"},
         })
@@ -402,6 +403,8 @@ def shapes_to_desmos(shapes: list[dict]) -> dict:
                 shape['curve'], shape['transform'], DECIMALS)
             if len(expressions) == 0:
                 continue
+            for expr in expressions:
+                expr.pop('trigSpline')
             expression = join_curves(expressions)
         else:
             expression = shape['curve'].to_desmos(DECIMALS)
@@ -432,8 +435,6 @@ if __name__ == "__main__":
         open(".desmos", 'w').write(expressions)
         print(len(expressions))
 
-    # one_svg_to_desmos("svg/003519a109cd19de38c8845aecf1bb98.svg")
-
-    filepath = "info/full.svg"
-    emoji.generate_emoji_table(filepath, False, None)
-    one_svg_to_desmos(filepath)
+    filename = "info/full.svg"
+    # emoji.generate_emoji_table(filename, False, None)
+    one_svg_to_desmos(filename)

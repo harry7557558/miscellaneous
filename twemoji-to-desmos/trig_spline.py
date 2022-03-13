@@ -40,8 +40,9 @@ class TrigSpline():
         y_sin = self._y_sin * np.sin(2.0*math.pi*np.arange(len(self._y_sin))*t)
         return Vector2(sum(x_cos)+sum(x_sin), sum(y_cos)+sum(y_sin))
 
-    def evaluate_n(self, n: int) -> list[Vector2]:
-        """Evaluate the curve at n points with evenly-spaced parameter values"""
+    def evaluate_n(self, n: int, raw: bool = False) -> list[Vector2]:
+        """Evaluate the curve at n points with evenly-spaced parameter values
+        When raw is True, returns (x, y); When raw is False, returns list[Vector2]"""
         if n < max(len(self._x_cos), len(self._x_sin), len(self._y_cos), len(self._y_sin)):
             return super().evaluate_n(n)  # O(MN), should be affordable for up to 2000
         # O(NlogN) using FFT
@@ -55,6 +56,8 @@ class TrigSpline():
         y_sin = np.zeros(n)
         y_sin[:len(self._y_sin)] = self._y_sin
         ys = np.real(np.fft.ifft(y_cos+y_sin*1j)) * n
+        if raw:
+            return (xs, ys)
         result = []
         for i in range(n):
             result.append(Vector2(xs[i], ys[i]))

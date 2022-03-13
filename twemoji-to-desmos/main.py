@@ -1,11 +1,13 @@
-import spline
-import trig_spline
-import svg_to_desmos
+import json
 
-bezier_splines = svg_to_desmos.load_svg("f7b3f6b926cb31a17d4928d076febab4.svg")
-trig_splines = []
-for trig_spline in bezier_splines:
-    points = trig_spline.evaluate_n_alp(100)
-    trig_splines.append(trig_spline.TrigSpline(points))
-for trig_spline in trig_splines:
-    print(trig_spline.get_latex(digits=3, optimize=False))
+start = "var s=Calc.getState();s['expressions']['list']="
+end = ";Calc.setState(s);"
+
+content = open(".desmos", "r").read()
+content = content[len(start):len(content)-len(end)]
+content = json.loads(content)
+print(len(content))
+content = content[:12000]
+content = json.dumps(content).replace(' ', '')
+content = start + content + end
+open(".desmos1", "w").write(content)
