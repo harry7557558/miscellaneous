@@ -132,7 +132,7 @@ def download_emojis():
                 fp.write(content)
 
 
-def generate_emoji_table(save_path: str, include_diversity: bool, categories: list[str], slice=slice(None)):
+def generate_emoji_table(save_path: str, include_diversity: bool, categories: list[str] = None, slice=slice(None)):
     """Generate a table of emojis"""
     WIDTH = 36  # width of each emoji
     CELLWIDTH = 40  # width of grid cell
@@ -176,5 +176,7 @@ def generate_emoji_table(save_path: str, include_diversity: bool, categories: li
 if __name__ == "__main__":
     # download_emojis()
 
-    generate_emoji_table("info/full.svg", False, None)
-    # generate_emoji_table("info/full.svg", False, ['people'], slice(36))
+    # generate_emoji_table("full.svg", False, None)
+    generate_emoji_table("full.svg", False, ['nature'])
+    # generate_emoji_table("full.svg", True, ['people'])
+    # generate_emoji_table("full.svg", True, None)

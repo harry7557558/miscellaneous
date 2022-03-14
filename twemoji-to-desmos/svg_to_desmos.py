@@ -1,8 +1,10 @@
+from heapq import merge
 from pygame import Vector2
 from spline import Ellipse, BezierCurve, BezierSpline, clean_spline
 from trig_spline import TrigSpline
 from float_to_str import join_curves
 import emoji
+import merge_shapes
 from copy import deepcopy
 import math
 import numpy as np
@@ -358,10 +360,15 @@ def compress_shape_fft_to_desmos(curve, transform: Mat2x3, decimals: int) -> lis
     return curves
 
 
-def shapes_to_desmos(shapes: list[dict]) -> dict:
+def shapes_to_desmos(shapes: list[dict], fft_compress: bool, precision: float) -> dict:
+    """Fit a list of shapes to Desmos
+       @shapes: returned from `load_svg_shapes()` or `merge_shapes.collect_shapes_greedy()`
+       The followings are meaningful if @shapes is returned from `load_svg_shapes()`:
+       @fft_compress: use FFT compression or Bezier curve
+       @precision: precision when rounding
+    """
 
-    FFT_COMPRESS = True  # enable lossy compression
-    DECIMALS = -math.log10(0.5)  # number of decimal places
+    decimals = -math.log10(precision)  # number of decimal places
 
     expressions_list = [
         {
@@ -379,7 +386,7 @@ def shapes_to_desmos(shapes: list[dict]) -> dict:
             "hidden": True
         },
     ]
-    if not FFT_COMPRESS:
+    if not fft_compress:
         # Bezier curve terms
         expressions_list.append({
             "type": "expression",
@@ -398,16 +405,22 @@ def shapes_to_desmos(shapes: list[dict]) -> dict:
 
     for i in range(len(shapes)):
         shape = shapes[i]
-        if FFT_COMPRESS:
-            expressions = compress_shape_fft_to_desmos(
-                shape['curve'], shape['transform'], DECIMALS)
-            if len(expressions) == 0:
-                continue
-            for expr in expressions:
-                expr.pop('trigSpline')
-            expression = join_curves(expressions)
+        if 'curve' in shape:
+            # returned from `load_svg_shapes()`
+            if fft_compress:
+                expressions = compress_shape_fft_to_desmos(
+                    shape['curve'], shape['transform'], decimals)
+                if len(expressions) == 0:
+                    continue
+                for expr in expressions:
+                    expr.pop('trigSpline')
+                expression = join_curves(expressions)
+            else:
+                expression = shape['curve'].to_desmos(decimals)
         else:
-            expression = shape['curve'].to_desmos(DECIMALS)
+            # returned from `merge_shapes.collect_shapes_greedy()`
+            expression = join_curves(shape['desmos'])
+
         expression['parametricDomain']['min'] = ''
         expression['domain'] = {
             # deprecated ?! still adding up bytes
@@ -426,15 +439,27 @@ def shapes_to_desmos(shapes: list[dict]) -> dict:
 
 if __name__ == "__main__":
 
-    def one_svg_to_desmos(filepath):
+    def one_svg_to_desmos(filepath, precision: float):
         shapes, errors = load_svg_shapes(filepath)
         print(*errors, sep='\n')
-        expressions = shapes_to_desmos(shapes)
+        expressions = shapes_to_desmos(shapes, True, 0.5)
         expressions = f"var s=Calc.getState();s['expressions']['list']={expressions};Calc.setState(s);"
         print(expressions)
         open(".desmos", 'w').write(expressions)
         print(len(expressions))
 
-    filename = "info/full.svg"
+    def one_svg_to_desmos_merge(filepath, precision: float):
+        shapes = merge_shapes.load_svg_to_trig_splines(
+            filepath, -math.log10(precision))
+        print(len(shapes), "shapes loaded.")
+        shapes = merge_shapes.collect_shapes_greedy(shapes)
+        print("Merged:", len(shapes), "shapes.")
+        expressions = shapes_to_desmos(shapes, True, precision)
+        expressions = f"var s=Calc.getState();s['expressions']['list']={expressions};Calc.setState(s);"
+        print(expressions)
+        open(".desmos", 'w').write(expressions)
+        print(len(expressions))
+
+    filename = "full.svg"
     # emoji.generate_emoji_table(filename, False, None)
-    one_svg_to_desmos(filename)
+    one_svg_to_desmos_merge(filename, 0.5)
