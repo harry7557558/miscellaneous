@@ -1,6 +1,5 @@
 # merge shapes with the same color to reduce bytes
 
-from re import L
 from pygame import Vector2
 from trig_spline import TrigSpline
 import math
@@ -9,7 +8,7 @@ import svg_to_desmos
 import time
 
 
-def load_svg_to_trig_splines(filename: str, decimals: int) -> list[dict]:
+def load_svg_to_trig_splines(filename: str, scale: float) -> list[dict]:
     """Load an SVG file to a list of shapes in order
        Each loaded shape contains max/min, fill, trigSplines, desmos"""
     time0 = time.perf_counter()
@@ -17,7 +16,7 @@ def load_svg_to_trig_splines(filename: str, decimals: int) -> list[dict]:
     time1 = time.perf_counter()
     if len(errors) != 0:
         print(*errors, sep='\n')
-    print("SVG shapes loaded in {:.1f}ms".format(1000.0*(time1-time0)))
+    print("SVG parsed in {:.1f}ms".format(1000.0*(time1-time0)))
 
     time0 = time.perf_counter()
     shapes_filtered = []
@@ -25,9 +24,13 @@ def load_svg_to_trig_splines(filename: str, decimals: int) -> list[dict]:
         if (i+1) % 1000 == 0:
             print(f"Processing {i+1}/{len(shapes)} shapes...")
         shape = shapes[i]
+        shape['transform'] = svg_to_desmos.Mat2x3([
+            [scale, 0, 0],
+            [0, scale, 0]
+        ]) * shape['transform']
         # convert to TrigSpline (most time-consuming part)
         expressions = svg_to_desmos.compress_shape_fft_to_desmos(
-            shape['curve'], shape['transform'], decimals)
+            shape['curve'], shape['transform'], 0)
         if len(expressions) == 0:
             continue
         # store TrigSpline and Desmos expression
@@ -300,9 +303,77 @@ def collect_shapes_greedy(shapes: list[dict],
     return lcollect + joined + ucollect
 
 
+def get_latex_translation(latex: str) -> tuple[tuple[str, str], str]:
+    """Get the translation of the LaTeX expression of an (x,y) trigonometric series,
+        as well as the expression with translation removed"""
+    def rip_latex(latex, i0) -> tuple[str, str]:
+        val = ""
+        i = i0
+        if latex[i] in ['+', '-']:
+            val += latex[i]
+            i += 1
+        while latex[i] not in ['+', '-']:
+            if latex[i] not in "0123456789.":
+                val = "0"
+                i = i0
+                break
+            val += latex[i]
+            i += 1
+        if latex[i] == '+':
+            i += 1
+        return (val, latex[:i0]+latex[i:])
+    dx, latex = rip_latex(latex, latex.find('(')+1)
+    dy, latex = rip_latex(latex, latex.find(',')+1)
+    return (dx, dy, latex)
+
+
+def extract_common_latex(shapes: list[dict]) -> list[dict]:
+    """Extract LaTeX expressions that are translations and define them in an expression
+    Args:
+        shapes: a list of shapes, usually returned by `collect_shapes_greedy()`
+    Returns:
+        A list of Desmos definitions of functions
+        shapes will be automatically compressed"""
+
+    # store the approximate number of saved bytes when applied
+    latexes = {}
+    for shape in shapes:
+        for expr in shape['desmos']:
+            dx, dy, latex = get_latex_translation(expr['latex'])
+            saved_bytes = len(latex)-10
+            if latex not in latexes:
+                latexes[latex] = -(len(latex)+90)
+            latexes[latex] += saved_bytes
+
+    # apply
+    expr_id = 0
+    comp_dict = {}
+    expressions = []
+    for shape in shapes:
+        for expr in shape['desmos']:
+            dx, dy, latex = get_latex_translation(expr['latex'])
+            if not latexes[latex] > 0:
+                continue
+            if latex not in comp_dict:
+                comp_dict[latex] = "a_{" + str(expr_id) + "}"
+                expressions.append(
+                    {
+                        "type": "expression",
+                        "id": f"a{expr_id}",
+                        "color": "#000",
+                        "latex": f"{comp_dict[latex]}(t)={latex}",
+                        "hidden": True
+                    },)
+                expr_id += 1
+            expr['latex'] = f"({dx},{dy})+{comp_dict[latex]}(t)"
+
+    return expressions
+
+
 if __name__ == "__main__":
 
     filename = "full.svg"
     shapes = load_svg_to_trig_splines(filename, 1)
     shapes = collect_shapes_greedy(shapes)
+    expressions_app = extract_common_latex(shapes)
     print(shapes)

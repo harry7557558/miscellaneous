@@ -231,6 +231,8 @@ class TrigSpline():
         if deg_x or deg_y:
             return ''
         scale = float_to_str(1.0/scale, 12).lstrip('+')
+        if scale == "1":
+            scale = ""
         return scale+'('+latex_x+','+latex_y+')'
 
     @staticmethod

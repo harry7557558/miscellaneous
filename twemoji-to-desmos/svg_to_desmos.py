@@ -360,15 +360,11 @@ def compress_shape_fft_to_desmos(curve, transform: Mat2x3, decimals: int) -> lis
     return curves
 
 
-def shapes_to_desmos(shapes: list[dict], fft_compress: bool, precision: float) -> dict:
-    """Fit a list of shapes to Desmos
-       @shapes: returned from `load_svg_shapes()` or `merge_shapes.collect_shapes_greedy()`
-       The followings are meaningful if @shapes is returned from `load_svg_shapes()`:
-       @fft_compress: use FFT compression or Bezier curve
-       @precision: precision when rounding
+def shapes_to_desmos(shapes: list[dict], expressions_app: list[dict] = []) -> dict:
+    """Fit a list of shapes to Desmos using FFT compression
+       @shapes: returned from `merge_shapes.collect_shapes_greedy()`
+       @expressions_app: append to the list of expressions
     """
-
-    decimals = -math.log10(precision)  # number of decimal places
 
     expressions_list = [
         {
@@ -386,40 +382,11 @@ def shapes_to_desmos(shapes: list[dict], fft_compress: bool, precision: float) -
             "hidden": True
         },
     ]
-    if not fft_compress:
-        # Bezier curve terms
-        expressions_list.append({
-            "type": "expression",
-            "id": "f",
-            "color": "#000",
-            "latex": "f=\\operatorname{mod}(t,1)",
-            "hidden": True
-        })
-        expressions_list.append({
-            "type": "expression",
-            "id": "b",
-            "color": "#000",
-            "latex": "b(x,y,x_1,y_1,x_2,y_2,x_3,y_3,t)=(x,y)(1-t)^3+(x+x_1,y+y_1)3t(1-t)^2+(x+x_2,y+y_2)3t^2(1-t)+(x+x_3,y+y_3)t^3",
-            "hidden": True
-        })
+    expressions_list += expressions_app
 
     for i in range(len(shapes)):
         shape = shapes[i]
-        if 'curve' in shape:
-            # returned from `load_svg_shapes()`
-            if fft_compress:
-                expressions = compress_shape_fft_to_desmos(
-                    shape['curve'], shape['transform'], decimals)
-                if len(expressions) == 0:
-                    continue
-                for expr in expressions:
-                    expr.pop('trigSpline')
-                expression = join_curves(expressions)
-            else:
-                expression = shape['curve'].to_desmos(decimals)
-        else:
-            # returned from `merge_shapes.collect_shapes_greedy()`
-            expression = join_curves(shape['desmos'])
+        expression = join_curves(shape['desmos'])
 
         expression['parametricDomain']['min'] = ''
         expression['domain'] = {
@@ -434,27 +401,19 @@ def shapes_to_desmos(shapes: list[dict], fft_compress: bool, precision: float) -
         expression['type'] = "expression"
         expression['id'] = str(i+1)
         expressions_list.append(expression)
-    return json.dumps(expressions_list).replace(' ', '')
+    return expressions_list
 
 
 if __name__ == "__main__":
 
-    def one_svg_to_desmos(filepath, precision: float):
-        shapes, errors = load_svg_shapes(filepath)
-        print(*errors, sep='\n')
-        expressions = shapes_to_desmos(shapes, True, 0.5)
-        expressions = f"var s=Calc.getState();s['expressions']['list']={expressions};Calc.setState(s);"
-        print(expressions)
-        open(".desmos", 'w').write(expressions)
-        print(len(expressions))
-
-    def one_svg_to_desmos_merge(filepath, precision: float):
+    def one_svg_to_desmos_merge(filepath, scale: float):
         shapes = merge_shapes.load_svg_to_trig_splines(
-            filepath, -math.log10(precision))
+            filepath, scale)
         print(len(shapes), "shapes loaded.")
         shapes = merge_shapes.collect_shapes_greedy(shapes)
         print("Merged:", len(shapes), "shapes.")
-        expressions = shapes_to_desmos(shapes, True, precision)
+        expressions = shapes_to_desmos(shapes)
+        expressions = json.dumps(expressions, separators=(',', ':'))
         expressions = f"var s=Calc.getState();s['expressions']['list']={expressions};Calc.setState(s);"
         print(expressions)
         open(".desmos", 'w').write(expressions)
@@ -462,4 +421,4 @@ if __name__ == "__main__":
 
     filename = "full.svg"
     # emoji.generate_emoji_table(filename, False, None)
-    one_svg_to_desmos_merge(filename, 0.5)
+    one_svg_to_desmos_merge(filename, 2.0)

@@ -177,6 +177,6 @@ if __name__ == "__main__":
     # download_emojis()
 
     # generate_emoji_table("full.svg", False, None)
-    generate_emoji_table("full.svg", False, ['nature'])
-    # generate_emoji_table("full.svg", True, ['people'])
+    # generate_emoji_table("full.svg", False, ['nature'])
+    generate_emoji_table("full.svg", True, ['people'], slice(200, 236))
     # generate_emoji_table("full.svg", True, None)
