@@ -41,6 +41,9 @@ def generate_date_attr(attr: str, ignore_deleted: bool):
             if message['author']['discriminator'] == "0000":
                 continue
         val = message[attr]
+        if attr == 'author':
+            a = message[attr]
+            val = '#'.join([a['username'], a['discriminator']])
         if type(val) is not str:
             val = json.dumps(val)
         if val not in data:
@@ -58,9 +61,7 @@ def plot_user_count_date(num_users: int=-1, ignore_deleted=True):
     dates = [datetime.strptime(date, "%Y-%m-%d") for date in dates]
     # get the PSA of message count
     data = []
-    for (key, count) in raw_data.items():
-        author = json.loads(key)
-        author = f"{author['username']}#{author['discriminator']}"
+    for (author, count) in raw_data.items():
         for i in range(1, len(count)):
             count[i] += count[i-1]
         data.append({
