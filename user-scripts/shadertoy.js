@@ -86,10 +86,9 @@ function customizeShaderTable() {
         totComments += comments[i];
         maxComments = max(comments[i], maxComments);
         // ratio of likes to views
-        ratio.push(likes[i] / views[i]);
-        if (isNaN(ratio[i])) ratio[i] = 0;
+        ratio.push(views[i] == 0 ? 0.0 : likes[i] / views[i]);
         maxRatio = max(ratio[i], maxRatio);
-        if (status[i] == "public" || cell[6].style.color == "rgb(0, 160, 0)") {
+        if (cell[7].style.color == "rgb(0, 128, 160)" || cell[7].style.color == "rgb(0, 160, 0)") {
             totViewsPub += views[i];
             totLikesPub += likes[i];
         }
@@ -147,7 +146,7 @@ window.addEventListener("load", function () {
     const MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
     // customize table
-    if (/shadertoy.com\/profile\//.test(document.URL)) {
+    if (/shadertoy\.com\/profile/.test(document.URL)) {
         var table = document.getElementById("divShadersTable");
         // customize table on DOM modification
         var alreadyCustomized = false;
