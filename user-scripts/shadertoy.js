@@ -130,13 +130,15 @@ function customizeShaderTable() {
 
 
 // Sort a user's shaders by likes by default
-function changeUserLinkToLikes() {
-    var links = document.getElementsByTagName("a");
+function changeUserLinkToLikes(node) {
+    var links = node.getElementsByTagName("a");
     for (var i = 0; i < links.length; i++) {
         var url = new URL(links[i].href, document.baseURI);
-        if (/shadertoy\.com/.test(url.host) && /^\/user\/\w+$/.test(url.pathname)) {
+        if (!/shadertoy\.com/.test(url.host)) continue;
+        if (/^\/user\/\w+$/.test(url.pathname))
             links[i].href = url.href + "/sort=love";
-        }
+        if (/^\/results\/?$/.test(url.pathname) && url.search != "" && !/sort\=/.test(url.search))
+            links[i].href = url.href + "&sort=love";
     }
 }
 
@@ -163,6 +165,16 @@ window.addEventListener("load", function () {
     }
 
     // change links
-    changeUserLinkToLikes();
-
+    if (true) {
+        changeUserLinkToLikes(document.body);
+        var observer = new MutationObserver(function (mutationList, observer) {
+            for (var i = 0; i < mutationList.length; i++) {
+                if (mutationList[i].type == "childList") {
+                    changeUserLinkToLikes(mutationList[i].target);
+                }
+            }
+        });
+        observer.observe(document.body, { subtree: true, childList: true });
+        document.getElementById("headerSearch").innerHTML += `<input type="hidden" name="sort" value="love" />`;
+    }
 });
