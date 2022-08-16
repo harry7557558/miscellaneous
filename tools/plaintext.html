@@ -1,51 +1,80 @@
 ﻿<!doctype html>
 <html>
+
 <head>
-    <title>test</title>
+    <title>Plain text math typer</title>
     <meta charset="utf-8" />
-    <script src="./plaintext.js"></script>
+    <script src="./plaintext.js" charset="utf-8"></script>
 </head>
-<body onbeforeunload="return 'oops'">
+
+<body>
+    <select id="select-font">
+        <option value="Arial" selected>Arial</option>
+        <option value="Calibri">Calibri</option>
+        <option value="Comic Sans MS">Comic Sans MS</option>
+        <option value="Consolas">Consolas</option>
+        <option value="Times New Roman">Times New Roman</option>
+        <option value="Verdana">Verdana</option>
+    </select>
     <script>
-        var render = function () {
-            document.querySelector('#formatted').innerHTML =
-                formatPlainText(document.querySelector('#source').innerHTML);
-        };
+        if (/^file:/.test(document.URL))
+            document.body.onbeforeunload = function () {
+                return "This page prevents accidentally closing the browser window.";
+            };
         window.onload = function () {
+            let formatted = document.querySelector('#formatted');
+            let source = document.querySelector('#source');
+            function render() {
+                formatted.style.fontFamily = source.style.fontFamily =
+                    document.getElementById("select-font").value;
+                formatted.innerHTML = formatPlainText(source.innerHTML);
+            };
             render();
-            document.querySelector('#source').addEventListener("input", render, false);
+            document.getElementById('source').addEventListener(
+                /Trident/.test(navigator.userAgent) ? 'textinput' : 'input',
+                render);
+
+            document.getElementById("select-font").addEventListener("input", render);
         };
     </script>
     <style>
+        body {
+            padding: 0 10px;
+        }
+
         pre {
-            margin: 20px 10px;
+            margin: 10px 0px;
             min-height: 100px;
             border: 2px solid gray;
             padding: 10px;
-            font-family: Arial;
             white-space: pre-wrap;
         }
     </style>
     <pre id="source" contenteditable="true">
-Examples:
-sin(\theta)*cos(\phi) + 1
-A={x|x\notin\R,x\ne0}
+:sparkles::arrow_forward: Examples :arrow_backward::eyes:
+(sin\theta\cdot\cos\phi, \cos\theta\cdot\cos\phi, \sin\phi)
 sin(30\deg)
-\oiint_0^\infty
-\pm\sqrt{b^2-4ac}\div 2a
-x\le1, y\ge-1
-\uparrow
-v_1^2=v_0^2+2ad
-x_ps
-2m/s^2
-e^x2
-F_Ng=F_ng=mgsin\theta
-(\mu\mgsin\theta)/m=\mu\gsin\theta
-x^4-2x^3+x^2-x+1
+(100\fahrenheit-32)\times5/9 = 37.8\celsius
+A={x|x\in\R,x\le0,x\ne-2}
+e^{2x}
+x^4+4=(x^2+2x+2)(x^2-2x+2)
 \sqrt32=4\sqrt2
-R={y\in\R,y\ge\10}
-\Delta{y}/\Delta{x}
+\pm\sqrt{b^2-4ac}\div2a
+\up \right \lrarr \Rightarrow \iff \rightleftharpoons
+v_1^2=v_0^2+2ad
+x_ps v_t2 v_{t2}
+-9.80665 m/s^2
+F_gx=mgsin\theta
+\dot{v}_x=(\mu\mgsin\theta)/m=\mu\gsin\theta
+\sin\theta = |\vec{u}\times\vec{v}|/(|\vec{u}|\cdot|\vec{v}|)
+\Delta\y/\Delta\x
+\vec{a}=\dot{\vec{v}}=d\vec{v}/dt
+\iiint_v\nabla\cdot\F\dV = \oiint_s\F\cdot\hat{n}d\Sigma
+e^{-∫x^{-1}sin^2(x-\phi)dx
+e^{i\theta}+1=0
+\partial/\partial[m,b]^T \sum_i(y_i-(mx_i+b))^2
 </pre>
     <pre id="formatted"></pre>
 </body>
+
 </html>
