@@ -5,17 +5,23 @@ import json
 from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+from scipy.ndimage import gaussian_filter
 
 
 with open(".messages.json", "r") as fp:
     MESSAGES = json.load(fp)
 
+IGNORE_DELETED = False
+NUM_DAYS = 180
+NUM_TOPS = 10
 
-def generate_date_attr(attr: str, ignore_deleted: bool):
+
+def generate_date_attr(attr: str, counter: str):
     """Generate a graph of attribute vs. date
         Attribute is the dictionary key, can be 'author' or 'channel_name'
         Returns a table where the rows are dictionaries and columns are dates
     """
+    assert counter in ['message', 'character']
     # get date range
     oldest = "9999-99-99"
     newest = "0000-00-00"
@@ -37,7 +43,7 @@ def generate_date_attr(attr: str, ignore_deleted: bool):
     for message in MESSAGES:
         if attr not in message:
             continue
-        if ignore_deleted:
+        if IGNORE_DELETED:
             if message['author']['discriminator'] == "0000":
                 continue
         val = message[attr]
@@ -50,79 +56,75 @@ def generate_date_attr(attr: str, ignore_deleted: bool):
             data[val] = [0] * len(headers)
         timestamp = message['timestamp']
         date = datetime.fromisoformat(timestamp).strftime("%Y-%m-%d")
-        data[val][date_map[date]] += 1
-        #data[val][date_map[date]] += len(message['content'])
+        if counter == "message":
+            data[val][date_map[date]] += 1
+        if counter == "character":
+            data[val][date_map[date]] += len(message['content'])
     return headers, data
 
 
-def plot_user_count_date(num_users: int=-1, ignore_deleted=True):
+def plot_count_date(attr_name, counter):
     """Generate a graph of message count vs. date for the top users"""
-    dates, raw_data = generate_date_attr('author', ignore_deleted)
+    dates, raw_data = generate_date_attr(attr_name, counter)
     dates = [datetime.strptime(date, "%Y-%m-%d") for date in dates]
+
     # get the PSA of message count
     data = []
-    for (author, count) in raw_data.items():
-        for i in range(1, len(count)):
-            count[i] += count[i-1]
-        data.append({
-            'author': author,
-            'count': count
-        })
-    # get top users
-    data = sorted(data, key=lambda _: -_['count'][-1])
-    if num_users >= 0:
-        data = data[:num_users]
-    # plot data
-    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
-    plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=90))
-    for user in data:
+    for (name, raw_count) in raw_data.items():
+        raw_count = list(map(float, raw_count))
+
+        # prefix sum array
+        psa = raw_count[:]
+        for i in range(1, len(raw_count)):
+            psa[i] += psa[i-1]
+
+        # daily number of messages
+        count = gaussian_filter(raw_count, 0.02*NUM_DAYS, mode='reflect')
+
+        # truncate at the first nonzero
         ni = 0
-        for c in user['count']:
-            if c > 0:
+        for c in raw_count:
+            if c > 1:
                 break
             ni += 1
-        ni = max(ni-1, 0)
-        plt.plot(dates[ni:], user['count'][ni:], label=user['author'])
-    plt.legend()
-    plt.gcf().autofmt_xdate()
-    plt.show()
+        ni = max(ni-1, len(raw_count)-NUM_DAYS, 0)
 
-
-def plot_channel_count_date(num_channels: int=-1, ignore_deleted=False):
-    """Generate a graph of message count vs. date for top channels"""
-    dates, raw_data = generate_date_attr('channel_name', ignore_deleted)
-    dates = [datetime.strptime(date, "%Y-%m-%d") for date in dates]
-    # get the PSA of message count
-    data = []
-    for (channel, count) in raw_data.items():
-        for i in range(1, len(count)):
-            count[i] += count[i-1]
+        # apply
         data.append({
-            'channel': channel,
-            'count': count
+            'name': name,
+            'dates': dates[ni:],
+            'count': count[ni:],
+            'psa': psa[ni:],
+            'total': sum(raw_count[ni:])
         })
-    # get top channels
-    data = sorted(data, key=lambda _: -_['count'][-1])
-    if num_channels >= 0:
-        data = data[:num_channels]
+
+    # get top values
+    data = sorted(data, key=lambda _: -_['total'])
+    if NUM_TOPS >= 0:
+        data = data[:NUM_TOPS]
+
     # plot data
-    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
-    plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=90))
-    for channel in data:
-        ni = 0
-        for c in channel['count']:
-            if c > 0:
-                break
-            ni += 1
-        ni = max(ni-1, 0)
-        plt.plot(dates[ni:], channel['count'][ni:], label=channel['channel'])
-    plt.legend()
+    fig, (ax1, ax2) = plt.subplots(2, 1)
+    ax1.set_zorder(2)
+    ax2.set_xlabel("Date")
+    ax1.set_title(f"{counter.capitalize()} count by {attr_name} vs. date"
+                  f" in the past {NUM_DAYS} days")
+    for (attr, ax, label) in zip(
+        ['psa', 'count'], [ax1, ax2],
+        ["culmulative", "daily"]
+    ):
+        ax.set_ylabel(label)
+        for obj in data:
+            ax.plot(obj['dates'], obj[attr], label=obj['name'])
+    ax1.legend(loc='upper left')
+    ax2.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
+    ax2.xaxis.set_major_locator(mdates.DayLocator(interval=NUM_DAYS//6))
     plt.gcf().autofmt_xdate()
     plt.show()
 
 
 if __name__ == "__main__":
-    #print(MESSAGES[-1])
-    count = 10
-    plot_user_count_date(count, False)
-    plot_channel_count_date(count)
+    plot_count_date('channel_name', 'message')
+    plot_count_date('channel_name', 'character')
+    plot_count_date('author', 'message')
+    plot_count_date('author', 'character')
