@@ -34,7 +34,7 @@ def get_roles(mentionable_only=False):
             continue
         name = role['name']
         rid = role['id']
-        print("@"+name)
+        print(f"<@&{rid}>", "@"+name)
         mentions.append(f"<@&{rid}>")
     return ' '.join(mentions)
 
@@ -54,7 +54,7 @@ def get_channels():
         name = channel['name']
         topic = channel['topic'] if 'topic' in channel else None
         cid = channel['id']
-        print('#'+channel['name'],
+        print(f"<#{cid}>", '#'+channel['name'],
               '- '+topic if topic is not None else '')
         mentions.append(f"<#{cid}>")
     return ' '.join(mentions)
@@ -81,6 +81,9 @@ def send_without_ping(info, content):
 
 
 if __name__ == "__main__":
-    roles = get_roles(False)
-    #channels = get_channels()
-    send_without_ping("All roles.", roles)
+
+    # roles = get_roles(False)
+    # send_without_ping("All roles.", roles)
+
+    channels = get_channels()
+    send_without_ping("All channels.", channels)

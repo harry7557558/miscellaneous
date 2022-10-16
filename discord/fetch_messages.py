@@ -7,6 +7,7 @@ import json
 ROOT = "https://discord.com/api/v9"
 GUILD_ID = 822212636619309056  # bot spam
 # GUILD_ID = 754104240301015130  # Math Circle
+# GUILD_ID = 959874115311906957  # EngSci 2T6
 
 HEADERS = {
     "authorization": open(".token").read(),
