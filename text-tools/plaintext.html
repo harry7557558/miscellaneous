@@ -9,13 +9,15 @@
 
 <body>
     <select id="select-font">
-        <option value="Arial" selected>Arial</option>
-        <option value="Calibri">Calibri</option>
-        <option value="Comic Sans MS">Comic Sans MS</option>
-        <option value="Consolas">Consolas</option>
-        <option value="Times New Roman">Times New Roman</option>
-        <option value="Verdana">Verdana</option>
+        <option value="sans-serif" selected>sans-serif</option>
+        <option value="serif">serif</option>
+        <option value="monospace">monospace</option>
+        <option value="cursive">cursive</option>
+        <option value="math">math</option>
     </select>
+    <input id="input-search" type="text" title="search symbol/emoji by name" />
+    <br />
+    <pre id="search-result" style="min-height:inherit;display:none"></pre>
     <script>
         if (/^file:/.test(document.URL))
             document.body.onbeforeunload = function () {
@@ -35,6 +37,21 @@
                 render);
 
             document.getElementById("select-font").addEventListener("input", render);
+
+            let search_input = document.getElementById("input-search");
+            var search_result = document.getElementById("search-result");
+            search_input.addEventListener("input", function() {
+                var keyword = search_input.value.trim();
+                if (keyword == "") {
+                    search_result.style.display = "none";
+                    return;
+                }
+                let results = searchCommand(keyword);
+                results = results.join(" ｜ ");
+                if (results == "") results = "No result found.";
+                search_result.style.display = "block";
+                search_result.textContent = results;
+            });
         };
     </script>
     <style>
@@ -43,11 +60,14 @@
         }
 
         pre {
+            display: inline-block;
+            width: 90%;
             margin: 10px 0px;
             min-height: 100px;
             border: 2px solid gray;
             padding: 10px;
             white-space: pre-wrap;
+            font-family: monospace;
         }
     </style>
     <pre id="source" contenteditable="true">
@@ -74,6 +94,7 @@ e^{-∫x^{-1}sin^2(x-\phi)dx
 e^{i\theta}+1=0
 \partial/\partial[m,b]^T \sum_i(y_i-(mx_i+b))^2
 </pre>
+    <br />
     <pre id="formatted"></pre>
 </body>
 

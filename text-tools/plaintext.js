@@ -254,17 +254,30 @@ function formatPlainText(src) {
 }
 
 
-// Google meet tool - deprecated
-if (false) (window.onclick = function () {
-    var s = document.getElementsByTagName('textarea')[0];
-    if (s !== undefined) {
-        s.onkeydown = function (e) {
-            if (e.keyCode == 9) {
-                e.preventDefault();
-                var msg = formatPlainText(s.value);
-                s.value = msg;
-                s.setAttribute('data-initial-value', msg);
-            }
+// Search command
+function searchDict(formatter, dict, keyword) {
+    var result = [];
+    keyword = keyword.split(' ');
+    for (var key in dict) {
+        if (!dict.hasOwnProperty(key)) continue;
+        var match = true;
+        for (var i = 0; i < keyword.length; i++) {
+            if (key.search(keyword[i]) == -1) match = false;
+        }
+        if (match) {
+            var formatted = formatter.replace("{key}", key).replaceAll("{char}", dict[key]);
+            result.push(formatted);
         }
     }
-});
+    return result
+}
+function searchCommand(keyword) {
+    var emojis = searchDict(":{key}: {char}", EMOJIS, keyword);
+    var symbols = searchDict("\\{key} {char}", SYMBOLS, keyword);
+    // var accents = searchDict("\\{key} \u25cc{char}", ACCENTS, keyword);
+    var accents = searchDict("\\{key} a{char}b{char}c{char}", ACCENTS, keyword);
+    var commands = emojis.concat(symbols).concat(accents);
+    let comp = (s) => s.replace(/^[^\w]/g, '').toLowerCase();
+    commands.sort((a, b) => comp(a) > comp(b) ? 1 : -1);
+    return commands;
+}
