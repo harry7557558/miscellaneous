@@ -69,7 +69,7 @@ def get_all_shaders(max_pages: int, max_dt: int, min_likes: int):
             break
         for shader in shaders:
             info = shader['info']
-            if current_time - int(info['date']) > max_dt:
+            if time.time() - int(info['date']) > max_dt:
                 return all_shaders
             if info['likes'] >= min_likes:
                 all_shaders.append(shader)
@@ -378,24 +378,28 @@ def send_message(content, embeds):
     assert r.status_code in [200, 204]
 
 
-FILENAME = ".shadertoy_checked_timestamp"
-current_time = int(time.time())
+FILENAME = ".shadertoy_checked.json"
 try:
-    last_checked = int(open(FILENAME).read().strip())
+    with open(FILENAME, 'r') as fp:
+        checked_shaders = set(json.load(fp))
 except:
-    last_checked = 0
-    send_message("No previous checked date found.", [])
+    checked_shaders = set()
+    send_message("Checked shader list initialized.", [])
 
 MAX_PAGES = 12
-MAX_DT = min(86400 * 5, current_time - last_checked)
+MAX_DT = 86400 * 7
 MIN_LIKES = 10
 shaders = get_all_shaders(MAX_PAGES, MAX_DT, MIN_LIKES)
 for shader in shaders[::-1]:
-    dt = current_time - int(shader['info']['date'])
+    if shader['info']['id'] in checked_shaders:
+        continue
+    dt = time.time() - int(shader['info']['date'])
     time_taken = MIN_LIKES / int(shader['info']['likes']) * (dt / 3600)
     stars = ''.join([":star:" for h in [40, 20, 10, 5, 2] if time_taken < h])
     send_message(
         "Achieved {:d} likes in {:.1f} hours. {}".format(
             MIN_LIKES, time_taken, stars), [generate_embed(shader)])
+    checked_shaders.add(shader['info']['id'])
 
-open(FILENAME, 'w').write(str(current_time))
+with open(FILENAME, 'w') as fp:
+    json.dump(sorted(checked_shaders), fp)
