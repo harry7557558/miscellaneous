@@ -325,8 +325,7 @@ def generate_embed(shader: dict):
             'url': author_url,
             'icon_url': author_icon_url
         },
-        'description':
-        "Hello!" + 0 * description,
+        'description': description,
         'image': {
             'url': thumb_url
         },
