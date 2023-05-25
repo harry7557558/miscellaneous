@@ -1,13 +1,15 @@
 # Replit - ping this repo using UptimeRobot every 1 hour.
 
 scripts = [
-    "dmoj_problem_notifier",
+    # "dmoj_problem_notifier",
     "shadertoy_notifier",
+    "colossal_notifier"
 ]
 for script in scripts:
     try:
         __import__(script)
     except BaseException as e:
+        raise e
         print(e)
 
 if __name__ == "__main__":
@@ -26,3 +28,4 @@ if __name__ == "__main__":
 
     __import__("time").sleep(120)
     __import__("sys").exit(0)
+
