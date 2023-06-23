@@ -8,7 +8,7 @@ import matplotlib.dates as mdates
 from scipy.ndimage import gaussian_filter
 
 
-with open(".messages.json", "r") as fp:
+with open("messages.json", "r") as fp:
     MESSAGES = json.load(fp)
 
 IGNORE_DELETED = False
@@ -49,7 +49,7 @@ def generate_date_attr(attr: str, counter: str):
         val = message[attr]
         if attr == 'author':
             a = message[attr]
-            val = '#'.join([a['username'], a['discriminator']])
+            val = '#'.join([a['username']] + [a['discriminator']]*(a['discriminator']!='0'))
         if type(val) is not str:
             val = json.dumps(val)
         if val not in data:
