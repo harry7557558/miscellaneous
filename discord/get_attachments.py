@@ -45,6 +45,7 @@ def get_attachments(filename):
 
 
 def download_attachments(attachments):
+    attachments = sorted(set(attachments))
     n = len(attachments)
     for i in range(n):
         url, filename = attachments[i]

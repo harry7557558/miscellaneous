@@ -10,7 +10,7 @@ CHANNEL_ID = 823613678683291668  # the channel to send the message to
 
 
 HEADERS = {
-    "authorization": open(".token").read(),
+    "authorization": open(".token").read().strip(),
     "origin": "https://discord.com",
     "referer": "https://discord.com/channels/{GUILD_ID}/",
     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36",
