@@ -5,8 +5,8 @@ import json
 
 
 ROOT = "https://discord.com/api/v9"
-GUILD_ID = 822212636619309056  # the server to get roles/channels
-CHANNEL_ID = 823613678683291668  # the channel to send the message to
+GUILD_ID = 826076379912994857  # the server to get roles/channels
+CHANNEL_ID = 959874115311906962  # the channel to send the message to
 
 
 HEADERS = {
@@ -82,8 +82,8 @@ def send_without_ping(info, content):
 
 if __name__ == "__main__":
 
-    # roles = get_roles(False)
-    # send_without_ping("All roles.", roles)
+    roles = get_roles(False)
+    #send_without_ping("All roles.", roles)
 
-    channels = get_channels()
-    send_without_ping("All channels.", channels)
+    #channels = get_channels()
+    #send_without_ping("All channels.", channels)

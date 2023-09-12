@@ -13,10 +13,18 @@ GUILDS = [
     826076379912994857,  # EngSci 2T5
     1079271713818288179,  # Frosh 2T3
     1076975255475732490,  # Robo 2T5
+    1074923999320092714,  # MI 2T5
+    1132786163225206904,  # DS101
+]
+CHANNELS = [
+    1038182905228300360,  # CIV102 bridge
+    1026554291948896286,  # Praxis I
+    1067147631970762813,  # Praxis II
+    1131300770160058398,  # UTMIST
 ]
 
 HEADERS = {
-    "authorization": open(".token").read().strip(),
+    "authorization": open(".token").read().split()[0],
     "origin": "https://discord.com",
     "referer": "https://discord.com/channels/{GUILD_ID}/",
     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36",
@@ -59,15 +67,13 @@ def fetch_messages(channel_id):
             break
         parsed = json.loads(r.text)
         messages += parsed
-        if len(parsed) < limit:
-            break
         reach_end = False
         for message in parsed:
             if message['id'] in existing_messages:
                 reach_end = True
             else:
                 existing_messages[message['id']] = message
-        if reach_end:
+        if len(parsed) < limit or reach_end:
             break
         before = parsed[-1]['id']
     return messages
@@ -103,7 +109,11 @@ if __name__ == "__main__":
             with open("messages.json", "w") as fp:
                 json.dump(messages, fp)
     if len(GUILDS) != 1:
+        for CHANNEL_ID in CHANNELS:
+            print(CHANNEL_ID)
+            fetched = fetch_messages(CHANNEL_ID)
         existing_messages = sorted(existing_messages.values(),
                                    key=lambda m: (m['channel_id'], m['timestamp']))
         with open("messages_all.json", "w") as fp:
             json.dump(existing_messages, fp)
+

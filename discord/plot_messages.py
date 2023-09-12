@@ -12,7 +12,7 @@ with open("messages.json", "r") as fp:
     MESSAGES = json.load(fp)
 
 IGNORE_DELETED = False
-NUM_DAYS = 180
+NUM_DAYS = 40
 NUM_TOPS = 10
 
 
@@ -107,8 +107,8 @@ def plot_count_date(attr_name, counter):
     fig, (ax1, ax2) = plt.subplots(2, 1)
     ax1.set_zorder(2)
     ax2.set_xlabel("Date")
-    ax1.set_title(f"{counter.capitalize()} count by {attr_name} vs. date"
-                  f" in the past {NUM_DAYS} days")
+    ax1.set_title(f"{counter.capitalize()} count,"
+                  f" past {NUM_DAYS} days")
     for (attr, ax, label) in zip(
         ['psa', 'count'], [ax1, ax2],
         ["culmulative", "daily"]
