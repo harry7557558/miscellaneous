@@ -8,12 +8,34 @@ import matplotlib.dates as mdates
 from scipy.ndimage import gaussian_filter
 
 
-with open("messages.json", "r") as fp:
-    MESSAGES = json.load(fp)
+MESSAGES = []
+
+def load_messages(guild_id=None):
+    global MESSAGES
+
+    if guild_id is None:
+        with open("messages_all.json", "r") as fp:
+            MESSAGES = json.load(fp)
+    else:
+        from fetch_messages import fetch_channels
+        channels = set()
+        if type(guild_id) is not list:
+            guild_id = [guild_id]
+        for gi in guild_id:
+            for channel in fetch_channels(gi):
+                channels.add(channel['id'])
+        with open("messages_all.json", "r") as fp:
+            messages = json.load(fp)
+        for message in messages:
+            if message['channel_id'] in channels:
+                MESSAGES.append(message)
+    MESSAGES.sort(key=lambda m: int(m['id']))
+
 
 IGNORE_DELETED = False
-NUM_DAYS = 40
-NUM_TOPS = 10
+NUM_DAYS = 120
+NUM_TOPS = 20
+AUTHORS = {}
 
 
 def generate_date_attr(attr: str, counter: str):
@@ -49,7 +71,9 @@ def generate_date_attr(attr: str, counter: str):
         val = message[attr]
         if attr == 'author':
             a = message[attr]
-            val = '#'.join([a['username']] + [a['discriminator']]*(a['discriminator']!='0'))
+            username = '#'.join([a['username']] + [a['discriminator']]*(a['discriminator']!='0'))
+            val = a['id']
+            AUTHORS[val] = username
         if type(val) is not str:
             val = json.dumps(val)
         if val not in data:
@@ -59,7 +83,7 @@ def generate_date_attr(attr: str, counter: str):
         if counter == "message":
             data[val][date_map[date]] += 1
         if counter == "character":
-            data[val][date_map[date]] += len(message['content'])
+            data[val][date_map[date]] += 1e-3*len(message['content'])
     return headers, data
 
 
@@ -71,6 +95,9 @@ def plot_count_date(attr_name, counter):
     # get the PSA of message count
     data = []
     for (name, raw_count) in raw_data.items():
+        if attr_name == 'author':
+            name = AUTHORS[name]
+
         raw_count = list(map(float, raw_count))
 
         # prefix sum array
@@ -79,7 +106,7 @@ def plot_count_date(attr_name, counter):
             psa[i] += psa[i-1]
 
         # daily number of messages
-        count = gaussian_filter(raw_count, 0.02*NUM_DAYS, mode='reflect')
+        count = gaussian_filter(raw_count, 0.02*NUM_DAYS, mode='nearest')
 
         # truncate at the first nonzero
         ni = 0
@@ -104,7 +131,7 @@ def plot_count_date(attr_name, counter):
         data = data[:NUM_TOPS]
 
     # plot data
-    fig, (ax1, ax2) = plt.subplots(2, 1)
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 10))
     ax1.set_zorder(2)
     ax2.set_xlabel("Date")
     ax1.set_title(f"{counter.capitalize()} count,"
@@ -113,18 +140,30 @@ def plot_count_date(attr_name, counter):
         ['psa', 'count'], [ax1, ax2],
         ["culmulative", "daily"]
     ):
+        if counter == 'character':
+            label += ' (×1e3)'
         ax.set_ylabel(label)
         for obj in data:
             ax.plot(obj['dates'], obj[attr], label=obj['name'])
     ax1.legend(loc='upper left')
     ax2.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
     ax2.xaxis.set_major_locator(mdates.DayLocator(interval=NUM_DAYS//6))
+    ax1.set_xlim([obj['dates'][0], obj['dates'][-1]])
+    ax2.set_xlim([obj['dates'][0], obj['dates'][-1]])
     plt.gcf().autofmt_xdate()
     plt.show()
 
 
 if __name__ == "__main__":
-    plot_count_date('channel_name', 'message')
-    plot_count_date('channel_name', 'character')
+    guilds = [
+        959874115311906957,  # EngSci 2T6
+        1078486370252771369,  # EngSci 2T7
+        826076379912994857,  # EngSci 2T5
+        1079271713818288179,  # Frosh 2T3
+        1132786163225206904,  # DS101
+    ]
+    load_messages()
+    #plot_count_date('channel_name', 'message')
+    #plot_count_date('channel_name', 'character')
     plot_count_date('author', 'message')
     plot_count_date('author', 'character')

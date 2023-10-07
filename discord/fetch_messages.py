@@ -21,6 +21,8 @@ CHANNELS = [
     1026554291948896286,  # Praxis I
     1067147631970762813,  # Praxis II
     1131300770160058398,  # UTMIST
+    1156685485880660099,  # CHE260 lab
+    1154166716172095569,  # PHY293 lab
 ]
 
 HEADERS = {
@@ -66,21 +68,22 @@ def fetch_messages(channel_id):
             print(r.status_code)
             break
         parsed = json.loads(r.text)
-        messages += parsed
         reach_end = False
         for message in parsed:
             if message['id'] in existing_messages:
                 reach_end = True
+                break
             else:
                 existing_messages[message['id']] = message
+                messages.append(message)
         if len(parsed) < limit or reach_end:
             break
         before = parsed[-1]['id']
     return messages
 
 
-def fetch_channels():
-    url = f"{ROOT}/guilds/{GUILD_ID}/channels"
+def fetch_channels(guild_id):
+    url = f"{ROOT}/guilds/{guild_id}/channels"
     r = requests.get(url, headers=HEADERS)
     if r.status_code != 200:
         print(r.status_code)
@@ -94,24 +97,26 @@ def fetch_channels():
 
 
 if __name__ == "__main__":
-    if len(GUILDS) != 1:
+    if len(GUILDS)+len(CHANNELS) != 1:
         existing_messages = get_existing_messages()
     for GUILD_ID in GUILDS:
-        channels = fetch_channels()
+        channels = fetch_channels(GUILD_ID)
         messages = []
         for channel in channels:
             print(channel['name'])
             fetched = fetch_messages(channel['id'])
             for message in fetched:
                 message['channel_name'] = channel['name']
+            print(len(fetched), 'new messages')
             messages += fetched
-        if len(GUILDS) == 1:
+        if len(GUILDS)+len(CHANNELS) == 1:
             with open("messages.json", "w") as fp:
                 json.dump(messages, fp)
-    if len(GUILDS) != 1:
+    if len(GUILDS)+len(CHANNELS) != 1:
         for CHANNEL_ID in CHANNELS:
             print(CHANNEL_ID)
             fetched = fetch_messages(CHANNEL_ID)
+            print(len(fetched), 'new messages')
         existing_messages = sorted(existing_messages.values(),
                                    key=lambda m: (m['channel_id'], m['timestamp']))
         with open("messages_all.json", "w") as fp:

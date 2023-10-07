@@ -26,7 +26,7 @@ def get_attachments(filename):
             #if content_type.startswith('text'):
             #    continue
             url = attachment['url']
-            assert '?' not in url
+            url = url[:(url+'?').find('?')]
             filename = attachment['filename']
             if len(filename) >= 232:
                 ext = filename[filename.rfind('.'):]
@@ -47,13 +47,20 @@ def get_attachments(filename):
 def download_attachments(attachments):
     attachments = sorted(set(attachments))
     n = len(attachments)
+    print("Total", n, "attachments")
+    to_download = []
     for i in range(n):
         url, filename = attachments[i]
         filename = 'attachments/' + filename
         if os.path.isfile(filename):
             continue
+        to_download.append((url, filename))
+    n = len(to_download)
+    print("Download", n, "attachments")
+    for i in range(n):
+        url, filename = to_download[i]
         r = requests.get(url)
-        print(f"{i}/{n}", r.status_code, url)
+        print(f"{i+1}/{n}", r.status_code, url)
         with open(filename, 'wb') as f:
             f.write(r.content)
 
@@ -63,11 +70,12 @@ def get_all_attachments():
     for filename in os.listdir():
         if os.path.isfile(filename):
             if filename.endswith('.json'):
+                print(filename)
                 try:
                     res += get_attachments(filename)
-                    print(filename)
-                except:
-                    pass
+                except BaseException as e:
+                    print("Error:", e)
+    print()
     return res
 
 
