@@ -15,11 +15,12 @@
         <option value="cursive">cursive</option>
         <option value="math">math</option>
     </select>
-    <input id="input-search" type="text" title="search symbol/emoji by name" />
+    <input id="input-search" type="text" title="search symbol/emoji by name"
+        spellcheck="false" autocorrect="off" autocapitalize="none" />
     <br />
     <pre id="search-result" style="min-height:inherit;display:none"></pre>
     <script>
-        if (/^file:/.test(document.URL))
+        if (/^file:/.test(document.URL) && false)
             document.body.onbeforeunload = function () {
                 return "This page prevents accidentally closing the browser window.";
             };
