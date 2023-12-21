@@ -80,4 +80,6 @@ def get_all_attachments():
 
 
 attachments = get_all_attachments()
+with open("attachments/attachments.json", "w") as fp:
+    json.dump(attachments, fp)
 download_attachments(attachments)

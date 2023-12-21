@@ -33,9 +33,10 @@ def load_messages(guild_id=None):
 
 
 IGNORE_DELETED = False
-NUM_DAYS = 120
+NUM_DAYS = 60
 NUM_TOPS = 20
 AUTHORS = {}
+CHANNELS = {}
 
 
 def generate_date_attr(attr: str, counter: str):
@@ -63,17 +64,20 @@ def generate_date_attr(attr: str, counter: str):
     # get data
     data = {}
     for message in MESSAGES:
-        if attr not in message:
+        if attr not in ['author', 'channel']:
             continue
         if IGNORE_DELETED:
             if message['author']['discriminator'] == "0000":
                 continue
-        val = message[attr]
         if attr == 'author':
             a = message[attr]
             username = '#'.join([a['username']] + [a['discriminator']]*(a['discriminator']!='0'))
             val = a['id']
             AUTHORS[val] = username
+        if attr == 'channel':
+            channelname = message['channel_name']
+            val = message['channel_id']
+            CHANNELS[val] = channelname
         if type(val) is not str:
             val = json.dumps(val)
         if val not in data:
@@ -97,6 +101,8 @@ def plot_count_date(attr_name, counter):
     for (name, raw_count) in raw_data.items():
         if attr_name == 'author':
             name = AUTHORS[name]
+        if attr_name == 'channel':
+            name = CHANNELS[name]
 
         raw_count = list(map(float, raw_count))
 
@@ -162,8 +168,8 @@ if __name__ == "__main__":
         1079271713818288179,  # Frosh 2T3
         1132786163225206904,  # DS101
     ]
-    load_messages()
-    #plot_count_date('channel_name', 'message')
-    #plot_count_date('channel_name', 'character')
+    load_messages(guilds)
+    #plot_count_date('channel', 'message')
+    #plot_count_date('channel', 'character')
     plot_count_date('author', 'message')
     plot_count_date('author', 'character')
