@@ -4,6 +4,12 @@ import json
 import hashlib
 
 
+USERS = [
+    '489540173999112230',  # harry7557558
+    '946906238808117301',  # spirulae
+]
+
+
 def get_attachments(filename):
     with open(filename, 'r') as fp:
         messages = json.load(fp)
@@ -11,7 +17,7 @@ def get_attachments(filename):
     res = []
     content_types = set({})
     for message in messages:
-        if message['author']['id'] not in ['489540173999112230', '946906238808117301']:
+        if message['author']['id'] not in USERS:
             continue
         if 'attachments' not in message:
             continue
@@ -26,7 +32,7 @@ def get_attachments(filename):
             #if content_type.startswith('text'):
             #    continue
             url = attachment['url']
-            url = url[:(url+'?').find('?')]
+            # url = url[:(url+'?').find('?')]
             filename = attachment['filename']
             if len(filename) >= 232:
                 ext = filename[filename.rfind('.'):]
