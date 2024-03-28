@@ -16,6 +16,7 @@ GUILDS = [
     1078486370252771369,  # EngSci 2T7
     1205550774277636159,  # EngSci 2T8
     1079271713818288179,  # Frosh 2T3
+    984959608420442132,  # Frosh 2T2
     1132786163225206904,  # DS101
     1188346884264316928,  # EngSci 2T6 Robo
     1211069529589948428,  # EngSci 2T6 MI
@@ -24,8 +25,11 @@ GUILDS = [
     1206059028082593902,  # EngSci 2T6 ECE
     1211434529236062269,  # EngSci 2T6 Physics
     1206048310209683486,  # EngSci 2T6 MSF
+    1212632317948989510,  # EngSci 2T6 Energy
     1074923999320092714,  # EngSci 2T5 MI
     1076832945794453564,  # EngSci 2T5 ECE
+    1052788182103629917,  # Bnad
+    1032803181618540624,  # Godiva Week
     1157167424198676480,  # UTMIST denoising
     1197229140886167582,  # ESC204
 ]
@@ -71,8 +75,16 @@ existing_messages = {}
 checked_threads = set()
 
 
-def fetch_messages(channel):
+def fetch_messages(channel, force_refresh=False):
     print(channel['name'], end=' ')
+
+    if 'last_message_id' in channel and \
+        channel['last_message_id'] is not None and \
+        channel['last_message_id'] in existing_messages and \
+            not force_refresh:
+        print("skipped")
+        return []
+
     channel_id = channel['id']
     limit = 100
     before = None
@@ -90,18 +102,22 @@ def fetch_messages(channel):
         parsed = json.loads(r.text)
         reach_end = False
         for message in parsed:
+            if force_refresh:
+                messages.append(message)
             if message['id'] in existing_messages:
                 reach_end = True
                 break
             else:
                 existing_messages[message['id']] = message
-                messages.append(message)
+                if not force_refresh:
+                    messages.append(message)
         if len(parsed) < limit or reach_end:
             break
         before = parsed[-1]['id']
         print('*', end='')
-    if len(messages) > 0:
-        print(f' +{len(messages)}', end='')
+    n_messages = len(messages) - int(force_refresh)
+    if n_messages > 0:
+        print(f' +{n_messages}', end='')
     print()
     return messages
 
@@ -113,11 +129,13 @@ def fetch_messages_thread(thread):
     checked_threads.add(thread['id'])
 
     time = snowflake_time(thread['id'])
+    if 'last_message_id' in thread and thread['last_message_id'] is not None:
+        time = snowflake_time(thread['last_message_id'])
     now = datetime.datetime.now()
     dt = (now-time).total_seconds()/86400
     if THREAD_HISTORY > 0 and dt > THREAD_HISTORY:
         return []
-    fetched = fetch_messages(thread)
+    fetched = fetch_messages(thread, True)
     for message in fetched:
         message['channel_name'] = thread['name']
     return fetched
@@ -177,7 +195,10 @@ def main():
                 for message in fetched:
                     message['channel_name'] = channel['name']
                 messages += fetched
-            if channel['type'] in [0, 5, 15, 16]:
+                if fetched != []:
+                    threads = fetch_threads(channel)
+                    all_threads += threads
+            if channel['type'] in [15, 16]:
                 threads = fetch_threads(channel)
                 all_threads += threads
 
@@ -192,7 +213,15 @@ def main():
     for mid in list(existing_messages.keys()):
         message = existing_messages[mid]
         if 'thread' in message:
-            fetch_messages_thread(message['thread'])
+            messages = fetch_messages_thread(message['thread'])
+            last_message_id = message['thread']['last_message_id']
+            if last_message_id is None:
+                last_message_id = '0'
+            for msg in messages:
+                if int(msg['id']) > int(last_message_id):
+                    last_message_id = msg['id']
+            if last_message_id != '0':
+                message['thread']['last_message_id'] = last_message_id
 
     # channels
     if len(GUILDS)+len(CHANNELS) != 1:
