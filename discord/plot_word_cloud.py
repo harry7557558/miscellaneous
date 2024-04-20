@@ -44,6 +44,7 @@ def get_messages_words(messages):
     for m in messages:
         if 'content' in m and isinstance(m['content'], str):
             s = m['content'].strip()
+            s = '\n'.join(s.split('```')[::2])
             if len(s) > 0:
                 content.append(s)
     text = '\n'.join(content[:])
@@ -53,18 +54,33 @@ def get_messages_words(messages):
         'i', 'the', 'to', 'a', 'and', 'is', 'in', 'it', 'of', 'you', 'that', 'for', 'not',
         'my', 'me', 'this', 'like', 'but', 'on', 'are', 'with', 'if', 'what', 'be', 'have',
         'no', 'just', 'can', 'so', 'was', 'or', 'do', 'one', 'they', "don't", 'he', 'there',
-        "i'm", 'get', 'at', 'some', 'when', 's', 'from', 'also', 'will', 'how', 'know', 'more',
+        "i'm", 'get', 'at', 'some', 'when', 's', 'from', 'also', 'will', 'how', 'more',
         'why', 'as', 'who', 'by', 'up', 'got', 'should', 'about', 'she', 'all', 'yes', 'want',
         'than', 'an', 'your', 'its', 'we', 'did', 'x', 'now', 'out', 'oh', 'y', 'too', 'go',
-        'see', 'only', 'yeah', 'has', 'f', 'then', 'her', 'u', 'last', 'them', 'even', 'going',
+        'only', 'yeah', 'has', 'f', 'then', 'her', 'u', 'last', 'them', 'even', 'going',
         'would', 'much', "can't", 'ok', "didn't", 'am', 't', 'other', 'him', 'may', 'his',
         "i'll", '-', 'k', 'any', 'where', "doesn't", 'their', 'z', 'here', 'because', 'those',
         'many', 'had', 'which', "i've", 'were', 'ur', 'does', 'n', 'cuz', 'most', 'could', 'c',
         'use', 'being', 'getting', 'made', 'p', 'w', 'very', 'these', 'both', 'b', 'put', 'yo',
         'less', 'kinda', 'used', "isn't", 'im', 'us', 'every', 'while', 'next', 'over', 'might',
         'doing', 'thing', 'r', 'hi', 'thanks', 'thank', 'sorry', 'ones', 'take', 'set', 'ill',
-        'lmao', 'lol', 'tho', 'don', 'ye', 'nah', 'rn', 'ah', 'mhm', 'gonna', 'wanna',
-        'done', 'yet', 'please', 'mm', 'hmm', 'lot', 'lots', 'let', 'etc',
+        'lol', 'bro', 'tho', 'don', 'ye', 'nah', 'rn', 'ah', 'mhm', 'mm', 'hmm', 'gonna', 'wanna',
+        'idk', 'lmao', 'done', 'yet', 'please', 'lot', 'lots', 'let', 'etc', 'isnt', 'cant', 'yea',
+        'been', 'since', 'things', 'into', 'without', 'went', "you're", 'dont', 'thats', 'bruh',
+        'didnt', 'wtf', 'hey', 'doesnt', 'each', 'gotta', 'else', 'blud', 'nvm', 'tbh', 'ngl',
+        'hes', 'theres', 'okay', 'using', 'boutta', 'll', 'tf', 'taking', 'imma', 'whats', 'aint',
+        'ya', 'fr', 'having', 'although', 'aight', 'such', 'didn', 'goes', 'gets', "won't", 'ig',
+        'vs', 'away', 'tryna', 'ight', 'bc', 'theyre', 'few', 'btw', 'ty', 'bros', 'per', 'doesn',
+        'uh', 'must', 'ive', 'takes', "haven't", 'under', 've', 'alr', 'yall', 'ik', "they're",
+        'thx', 'isn', 'jus', 'bout', 'wants', "we're", 'ong', 'wont', "wasn't", "wouldn't",
+        'wdym', 'cannot', 'ab', 'huh', "you'll", 'dw', 'non', 'smth', 'smt', 'mb', 'ohhh', "aren't",
+        "alright", "couldn't", "lemme", "asf", 'idek', 'wouldnt', 'yup', 'omg', 'arent', 'ahh',
+        'rlly', 'thru', 'wow', 'whos', "shouldn't", 'youre', 'imo', 'lmfao', 'irl', 'ohh', 'np',
+        'doe', 'haha', 'okok', "y'all", 'ez', 'af', 'gg', 'gone', 'wat', 'op', 'ofc', 'um', 'couldnt',
+        'yjk', 'sth', 'uhh', 'stfu', 'shes', 'iirc', "ain't", 'plz', 'lawl', 'shouldnt', 'smh',
+        'youll', "we'll", 'eh', 'heh', 'tru', 'mf', 'mfs', 'st', 'xd', 'kn', 'jk', 'wouldn', 'rly',
+        'ayo', 'uhhh', 'shall', "it'll", 'ain', 'wasn', 'lmaoo', 'hm', 'iii', 'kk', "they'll", 'la',
+        'wut', 'ohhhh', 'hmmm', 'wym', 'dy', 'aka', "you've", 'thus', 'lolz', 'ant', 'th'
     ])
 
     word_freq = defaultdict(int)
@@ -84,12 +100,14 @@ def get_messages_words(messages):
 
     print(len(word_freq))
     print(sorted(word_freq.items(), key=lambda _: -_[1])[:200])
+    # print(','.join([_[0] for _ in sorted(word_freq.items(), key=lambda _: -_[1])[:2000]]))
 
     from wordcloud import WordCloud
     wc = WordCloud(background_color="white",
-                          width=1024, height=768,
-                          max_font_size=80,
-                          min_word_length=2)
+                   colormap="viridis",
+                   width=1024, height=768,
+                   max_font_size=80,
+                   min_word_length=2)
     # wc.generate(text)
     wc.generate('\n'.join(all_words))
     wc.to_file("wordcloud.png")
