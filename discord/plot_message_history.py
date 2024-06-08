@@ -33,7 +33,7 @@ def load_messages(guild_id=None):
 
 
 IGNORE_DELETED = False
-NUM_DAYS = 60
+NUM_DAYS = 180
 NUM_TOPS = 20
 AUTHORS = {}
 CHANNELS = {}
@@ -44,7 +44,7 @@ def generate_date_attr(attr: str, counter: str):
         Attribute is the dictionary key, can be 'author' or 'channel_name'
         Returns a table where the rows are dictionaries and columns are dates
     """
-    assert counter in ['message', 'character']
+    assert counter in ['message', 'character', 'attachment']
     # get date range
     oldest = "9999-99-99"
     newest = "0000-00-00"
@@ -88,6 +88,8 @@ def generate_date_attr(attr: str, counter: str):
             data[val][date_map[date]] += 1
         if counter == "character":
             data[val][date_map[date]] += 1e-3*len(message['content'])
+        if counter == "attachment":
+            data[val][date_map[date]] += len(message['attachments'])
     return headers, data
 
 
@@ -98,50 +100,59 @@ def plot_count_date(attr_name, counter):
 
     # get the PSA of message count
     data = []
-    for (name, raw_count) in raw_data.items():
+    for (name, count) in raw_data.items():
         if attr_name == 'author':
             name = AUTHORS[name]
         if attr_name == 'channel':
             name = CHANNELS[name]
 
-        raw_count = list(map(float, raw_count))
+        count = list(map(float, count))
 
         # prefix sum array
-        psa = raw_count[:]
-        for i in range(1, len(raw_count)):
+        psa = count[:]
+        for i in range(1, len(count)):
             psa[i] += psa[i-1]
-
-        # daily number of messages
-        count = gaussian_filter(raw_count, 0.02*NUM_DAYS, mode='nearest')
 
         # truncate at the first nonzero
         ni = 0
-        for c in raw_count:
-            if c > 1:
+        for c in count:
+            if c > 0:
                 break
             ni += 1
-        ni = max(ni-1, len(raw_count)-NUM_DAYS, 0)
+        ni = max(ni-1, len(count)-NUM_DAYS, 0)
+        nj = len(count)
+        for c in count[::-1]:
+            if c > 0:
+                break
+            nj -= 1
 
         # apply
         data.append({
             'name': name,
-            'dates': dates[ni:],
-            'count': count[ni:],
-            'psa': psa[ni:],
-            'total': sum(raw_count[ni:])
+            'dates': dates[ni:nj],
+            'count': count[ni:nj],
+            'psa': psa[ni:nj],
+            'total': sum(count[ni:nj])
         })
 
     # get top values
     data = sorted(data, key=lambda _: -_['total'])
     if NUM_TOPS >= 0:
         data = data[:NUM_TOPS]
+    num_days = max([len(d['dates']) for d in data])
+    min_date = min([obj['dates'][0] for obj in data])
+    max_date = max([obj['dates'][-1] for obj in data])
+
+    for d in data:
+        d['count'] = gaussian_filter(
+            d['count'], 0.015*num_days, mode='nearest')
 
     # plot data
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 10))
     ax1.set_zorder(2)
     ax2.set_xlabel("Date")
     ax1.set_title(f"{counter.capitalize()} count,"
-                  f" past {NUM_DAYS} days")
+                  f" past {num_days} days")
     for (attr, ax, label) in zip(
         ['psa', 'count'], [ax1, ax2],
         ["culmulative", "daily"]
@@ -153,9 +164,9 @@ def plot_count_date(attr_name, counter):
             ax.plot(obj['dates'], obj[attr], label=obj['name'])
     ax1.legend(loc='upper left')
     ax2.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
-    ax2.xaxis.set_major_locator(mdates.DayLocator(interval=NUM_DAYS//6))
-    ax1.set_xlim([obj['dates'][0], obj['dates'][-1]])
-    ax2.set_xlim([obj['dates'][0], obj['dates'][-1]])
+    ax2.xaxis.set_major_locator(mdates.DayLocator(interval=num_days//6))
+    ax1.set_xlim([min_date, max_date])
+    ax2.set_xlim([min_date, max_date])
     plt.gcf().autofmt_xdate()
     plt.show()
 
@@ -167,8 +178,10 @@ if __name__ == "__main__":
         1205550774277636159,  # EngSci 2T8
         1132786163225206904,  # DS101
     ]
+    guilds = [1188335600126918736]  # spirulae
     load_messages(guilds)
-    # plot_count_date('channel', 'message')
+    plot_count_date('channel', 'message')
     # plot_count_date('channel', 'character')
     plot_count_date('author', 'message')
-    plot_count_date('author', 'character')
+    # plot_count_date('author', 'character')
+    plot_count_date('channel', 'attachment')
