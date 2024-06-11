@@ -66,9 +66,10 @@ def download_attachments(attachments):
     for i in range(n):
         url, filename = to_download[i]
         r = requests.get(url)
-        print(f"{i+1}/{n}", r.status_code, url)
-        with open(filename, 'wb') as f:
-            f.write(r.content)
+        print(f"{i+1}/{n}", r.status_code, url, filename.split('/')[-1])
+        if r.status_code == 200:
+            with open(filename, 'wb') as f:
+                f.write(r.content)
 
 
 def get_all_attachments():
