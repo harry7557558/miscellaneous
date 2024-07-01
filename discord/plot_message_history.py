@@ -34,7 +34,7 @@ def load_messages(guild_id=None):
 
 
 IGNORE_DELETED = False
-NUM_DAYS = 180
+NUM_DAYS = 720
 NUM_TOPS = 20
 AUTHORS = {}
 CHANNELS = {}
@@ -192,7 +192,8 @@ if __name__ == "__main__":
         1205550774277636159,  # EngSci 2T8
         1132786163225206904,  # DS101
     ]
-    guilds = [1188335600126918736]  # spirulae
+    guilds = [959874115311906957]  # EngSci 2T6
+    # guilds = [1188335600126918736]  # spirulae
     load_messages(guilds)
     plot_count_date('channel', 'message')
     # plot_count_date('channel', 'character')

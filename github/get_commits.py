@@ -3,8 +3,8 @@ import git
 
 
 INCLUDE_TYPES = set([
-    'py', 'h', 'hpp', 'c', 'cpp', 'js', 'java', 'm', 'ipynb', 'glsl', 'sv',
-    'bash', 'launch', 'do',
+    'py', 'h', 'hpp', 'c', 'cpp', 'cu', 'js', 'java', 'm', 'ipynb', 'glsl', 'sv',
+    'bash', 'sh', 'launch', 'do',
     'html', 'css', 'md', 'tex', 'bib',
     'gitignore', 'gitmodules', 'gitattributes',
 ])
@@ -120,7 +120,7 @@ def plot_per_type(commits, field):
     x = date2num([c['date'] for c in commits])
     y = [c['line_delta'][''] for c in commits]
 
-    bw = 7
+    bw = 0.02*(max(x)-min(x))
     n = 1000
     xs = np.linspace(min(x)-0*bw, max(x)+0*bw, n)
 
@@ -144,7 +144,7 @@ def plot_per_type(commits, field):
     plt.legend()
     plt.gca().xaxis_date()
     plt.xlabel('Date')
-    plt.ylabel(f'Average daily (σ={bw})')
+    plt.ylabel('Average daily (σ={:.3g})'.format(bw))
     plt.title(f"Repository `{repo_path.split('/')[-1]}`, by {field}s of code")
     plt.show()
 
