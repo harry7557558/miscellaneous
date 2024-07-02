@@ -68,21 +68,21 @@ def get_commit_info(repo_path):
     return commits_info
 
 
-def plot_all(commits):
+def plot_all(commits, field="commit"):
     import numpy as np
     # import seaborn as sns
     import matplotlib.pyplot as plt
     from matplotlib.dates import date2num
 
     x = date2num([c['date'] for c in commits])
-    y = [c['line_delta'][''] for c in commits]
+    if field == "commit":
+        y = [1] * len(commits)
+    else:
+        y = [c[field+'_delta'][''] for c in commits]
 
     plt.figure()
 
-    dx = max(x) - min(x)
-    bw = 7
-    # sns.kdeplot(x=x, weights=y, bw_method=bw/dx, fill=True)
-
+    bw = 0.02*(max(x)-min(x))
     n = 1000
     xs = np.linspace(min(x)-2*bw, max(x)+2*bw, n)
     ys = np.zeros(xs.shape)
@@ -96,8 +96,8 @@ def plot_all(commits):
 
     plt.gca().xaxis_date()
     plt.xlabel('Date')
-    plt.ylabel('Lines of code per day')
-    plt.title(f"Repository `{repo_path.split('/')[-1]}`")
+    plt.ylabel('Average daily (σ={:.3g} days)'.format(bw))
+    plt.title(f"Repository `{repo_path.split('/')[-1]}`, by {field}s")
     plt.show()
 
 
@@ -144,7 +144,7 @@ def plot_per_type(commits, field):
     plt.legend()
     plt.gca().xaxis_date()
     plt.xlabel('Date')
-    plt.ylabel('Average daily (σ={:.3g})'.format(bw))
+    plt.ylabel('Average daily (σ={:.3g} days)'.format(bw))
     plt.title(f"Repository `{repo_path.split('/')[-1]}`, by {field}s of code")
     plt.show()
 
