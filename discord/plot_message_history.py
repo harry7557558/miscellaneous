@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import numpy as np
 from scipy.ndimage import gaussian_filter
+import re
 
 
 MESSAGES = []
@@ -45,7 +46,7 @@ def generate_date_attr(attr: str, counter: str):
         Attribute is the dictionary key, can be 'author' or 'channel_name'
         Returns a table where the rows are dictionaries and columns are dates
     """
-    assert counter in ['message', 'character', 'attachment']
+    assert counter in ['message', 'character', 'word', 'attachment']
     # get date range
     oldest = np.inf
     newest = -np.inf
@@ -83,6 +84,8 @@ def generate_date_attr(attr: str, counter: str):
             delta = 1
         if counter == "character":
             delta = 1e-3*len(message['content'])
+        if counter == "word":
+            delta = re.sub(r'\s+',' ',message['content'].strip()).count(' ')+1
         if counter == "attachment":
             delta = len(message['attachments'])
         if delta != 0.0:
@@ -171,6 +174,8 @@ def plot_count_date(attr_name, counter):
         for obj in data:
             # dates = mdates.epoch2num(obj['timestamps'])
             dates = [datetime.fromtimestamp(t) for t in obj[tlabel]]
+            if len(dates) <= 1:
+                continue
             ax.plot(dates, obj[attr], label=obj['name'])
     ax1.legend(loc='upper left')
     ax2.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
@@ -192,12 +197,14 @@ if __name__ == "__main__":
         1205550774277636159,  # EngSci 2T8
         1132786163225206904,  # DS101
     ]
-    guilds = [959874115311906957]  # EngSci 2T6
-    # guilds = [1188335600126918736]  # spirulae
+    # guilds = [959874115311906957]  # EngSci 2T6
+    guilds = [1188335600126918736]  # spirulae
     load_messages(guilds)
     plot_count_date('channel', 'message')
     # plot_count_date('channel', 'character')
+    plot_count_date('channel', 'word')
     plot_count_date('author', 'message')
     # plot_count_date('author', 'character')
+    # plot_count_date('author', 'word')
     plot_count_date('channel', 'attachment')
     # plot_count_date('author', 'attachment')
